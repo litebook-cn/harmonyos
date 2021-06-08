@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>应用权限管理 · 鸿蒙OS开发文档</title>
+        <title>开发准备 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,10 +73,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="ying-yong-yin-si-bao-hu.html" />
+    <link rel="next" href="diyigeyemian.html" />
     
-    
-    <link rel="prev" href="ying-yong-shu-ju-guan-li.html" />
     
 
     </head>
@@ -361,7 +359,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.3.5" data-path="ying-yong-quan-xian-guan-li.html">
+        <li class="chapter " data-level="2.3.5" data-path="ying-yong-quan-xian-guan-li.html">
             
                 <a href="ying-yong-quan-xian-guan-li.html">
             
@@ -419,7 +417,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.4.1" data-path="kaifazhunbei.html">
+        <li class="chapter active" data-level="2.4.1" data-path="kaifazhunbei.html">
             
                 <a href="kaifazhunbei.html">
             
@@ -548,7 +546,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >应用权限管理</a>
+        <a href="." >开发准备</a>
     </h1>
 </div>
 
@@ -563,38 +561,20 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="应用权限管理"><a name="应用权限管理" class="plugin-anchor" href="#应用权限管理"><i class="fa fa-link" aria-hidden="true"></i></a>应用权限管理</h1>
-<p>HarmonyOS中所有的应用均在应用沙盒内运行。默认情况下，应用只能访问有限的系统资源，系统负责管理应用对资源的访问权限。</p>
-<p>应用权限管理是由接口提供方（Ability）、接口使用方（应用）、系统（包括云侧和端侧）以及用户等多方共同参与的整个流程，保证受限接口是在约定好的规则下被正常使用，避免接口被滥用而导致用户、应用和设备受损。</p>
-<p>本节重点介绍应用权限管理的基本思想。有关权限使用的详细信息，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-overview-0000000000029883" target="_blank">权限</a>。</p>
-<h2 id="权限声明"><a name="权限声明" class="plugin-anchor" href="#权限声明"><i class="fa fa-link" aria-hidden="true"></i></a>权限声明</h2>
-<ul>
-<li>应用需要在config.json中使用“reqPermissions”属性对需要的权限逐个进行声明。</li>
-<li>若使用到的三方库也涉及权限使用，也需统一在应用的config.json中逐个声明。</li>
-<li>没有在config.json中声明的权限，应用就无法获得此权限的授权。</li>
-</ul>
-<h2 id="动态申请敏感权限"><a name="动态申请敏感权限" class="plugin-anchor" href="#动态申请敏感权限"><i class="fa fa-link" aria-hidden="true"></i></a>动态申请敏感权限</h2>
-<p>动态申请敏感权限基于用户可知可控的原则，需要应用在运行时主动调用系统动态申请权限的接口，系统弹框由用户授权，用户结合应用运行场景的上下文，识别出应用申请相应敏感权限的合理性，从而做出正确的选择。</p>
-<p>即使用户向应用授予了请求的权限，应用在调用受此权限管控的接口前，也应该先检查自己有无此权限，而不能把之前授予的状态持久化，因为用户在动态授予后还可以通过设置取消应用的权限。</p>
-<p>有关于应用动态申请敏感权限的详细信息，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__section7431121314439" target="_blank">动态申请权限</a>。</p>
-<h2 id="自定义权限"><a name="自定义权限" class="plugin-anchor" href="#自定义权限"><i class="fa fa-link" aria-hidden="true"></i></a>自定义权限</h2>
-<p>HarmonyOS为了保证应用对外提供的接口不被恶意调用，需要对调用接口的调用者进行鉴权。</p>
-<p>大多情况下，系统已定义的权限满足了应用的基本需要，若有特殊的访问控制需要，应用可在config.json中以&quot;defPermissions&quot;: []属性来定义新的权限，并通过“availableScope”和“grantMode”两个属性分别确定权限的开放范围和授权方式，使得权限定义更加灵活且易于理解。有关HarmonyOS权限开放范围和授权方式详细的描述，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__table4183104093414" target="_blank">权限授予方式字段说明</a>和<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__table17184134033416" target="_blank">权限限制范围字段说明</a>。</p>
-<p>为了避免应用自定义新权限出现重名的情况，建议应用对新权限的命名以包名的前两个字段开头，这样可以防止不同开发者的应用间出现自定义权限重名的情况。</p>
-<h2 id="权限保护方法"><a name="权限保护方法" class="plugin-anchor" href="#权限保护方法"><i class="fa fa-link" aria-hidden="true"></i></a>权限保护方法</h2>
-<ul>
-<li>保护Ability：通过在config.json里对应的Ability中配置&quot;permissions&quot;: [&quot;<em>权限名</em>&quot;]属性，即可实现保护整个Ability的目的，无指定权限的应用不能访问此Ability。</li>
-<li>保护API：若Ability对外提供的数据或能力有多种，且开放范围或保护级别也不同，可以针对不同的数据或能力在接口代码实现中通过verifyPermission(String permissionName, int pid, int uid)来对uid标识的调用者进行鉴权。</li>
-</ul>
-<h2 id="权限使用原则"><a name="权限使用原则" class="plugin-anchor" href="#权限使用原则"><i class="fa fa-link" aria-hidden="true"></i></a>权限使用原则</h2>
-<ul>
-<li>权限申请最小化。跟用户提供的功能无关的权限，不要申请；尽量采用其他无需权限的操作来实现相应功能（如：通过intent拉起系统UI界面由用户交互、应用自己生成uuid代替设备ID等）。</li>
-<li>权限申请完整。应用所需权限（包括应用调用到的三方库依赖的权限）都要逐个在应用的config.json中按格式声明。</li>
-<li>满足用户可知。应用申请的敏感权限的目的需要真实准确告知用户。</li>
-<li>权限就近申请。应用在用户触发相关业务功能时，就近提示用户授予实现此功能所需的权限。</li>
-<li>权限不扩散。在用户未授权的情况下，不允许提供给其他应用使用。</li>
-<li>应用自定义权限防止重名。建议以包名为前缀来命名权限，防止跟系统定义的权限重名。</li>
-</ul>
+                                <h1 id="开发准备"><a name="开发准备" class="plugin-anchor" href="#开发准备"><i class="fa fa-link" aria-hidden="true"></i></a>开发准备</h1>
+<h2 id="任务说明"><a name="任务说明" class="plugin-anchor" href="#任务说明"><i class="fa fa-link" aria-hidden="true"></i></a>任务说明</h2>
+<p>本文档适用于HarmonyOS应用开发的初学者。通过构建一个简单的具有页面跳转功能的应用（如下图<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/previewer-0000001054328973#ZH-CN_TOPIC_0000001056725592__section16523172216252" target="_blank">预览器</a>运行效果所示），熟悉HarmonyOS应用开发流程。</p>
+<p>为确保运行效果，请使用最新版本的<strong>DevEco Studio</strong>完成本任务，点击<a href="https://developer.harmonyos.com/cn/develop/deveco-studio#download" target="_blank">此处</a>获取下载链接。</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210602180913.33084654701596708240994817529191:50520601130328:2800:505E79BA95317B5BEA932302ED3D6D9142B7EDF41E42D6E860B82823262711DB.png?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<h2 id="开发准备"><a name="开发准备" class="plugin-anchor" href="#开发准备"><i class="fa fa-link" aria-hidden="true"></i></a>开发准备</h2>
+<ol>
+<li>开始前请参考<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/software_install-0000001053582415" target="_blank">下载与安装软件</a>、<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/environment_config-0000001052902427" target="_blank">配置开发环境</a>，完成<strong>DevEco Studio</strong>的安装和开发环境的配置。</li>
+<li><p>开发环境配置完成后，请参考<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/hello_world-0000001054516888" target="_blank">创建和运行Hello World</a>创建一个新工程，设备类型以“Phone”为例，使用Java语言开发，模板选择“Empty Feature Ability(Java)”。</p>
+</li>
+<li><p>工程创建完成后，使用<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/previewer-0000001054328973#ZH-CN_TOPIC_0000001056725592__section16523172216252" target="_blank">预览器</a>或Phone<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/run_simulator-0000001053303709" target="_blank">模拟器</a>运行该工程。</p>
+</li>
+</ol>
+<p>完成上述操作后，请继续下一步的学习。</p>
 
                                 
                                 </section>
@@ -622,12 +602,8 @@
 
             
                 
-                <a href="ying-yong-shu-ju-guan-li.html" class="navigation navigation-prev " aria-label="Previous page: 应用数据管理">
-                    <i class="fa fa-angle-left"></i>
-                </a>
                 
-                
-                <a href="ying-yong-yin-si-bao-hu.html" class="navigation navigation-next " aria-label="Next page: 应用隐私保护">
+                <a href="diyigeyemian.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 编写第一个页面">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -638,7 +614,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"应用权限管理","level":"2.3.5","depth":2,"next":{"title":"应用隐私保护","level":"2.3.6","depth":2,"path":"ying-yong-yin-si-bao-hu.md","ref":"ying-yong-yin-si-bao-hu.md","articles":[]},"previous":{"title":"应用数据管理","level":"2.3.4","depth":2,"path":"ying-yong-shu-ju-guan-li.md","ref":"ying-yong-shu-ju-guan-li.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"ying-yong-quan-xian-guan-li.md","mtime":"2021-06-08T13:21:37.351Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T13:25:49.039Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"开发准备","level":"2.4.1","depth":2,"next":{"title":"编写第一个页面","level":"2.4.2","depth":2,"path":"diyigeyemian.md","ref":"diyigeyemian.md","articles":[]},"previous":{"title":"快速入门","level":"2.4","depth":1,"ref":"","articles":[{"title":"开发准备","level":"2.4.1","depth":2,"path":"kaifazhunbei.md","ref":"kaifazhunbei.md","articles":[]},{"title":"编写第一个页面","level":"2.4.2","depth":2,"path":"diyigeyemian.md","ref":"diyigeyemian.md","articles":[]},{"title":"创建另一个页面","level":"2.4.3","depth":2,"path":"lingyigeyemian.md","ref":"lingyigeyemian.md","articles":[]},{"title":"实现页面跳转","level":"2.4.4","depth":2,"path":"shi-xian-ye-mian-tiao-zhuan.md","ref":"shi-xian-ye-mian-tiao-zhuan.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"kaifazhunbei.md","mtime":"2021-06-08T13:24:14.754Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T13:25:49.039Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

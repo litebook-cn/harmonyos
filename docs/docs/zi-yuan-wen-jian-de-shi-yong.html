@@ -246,9 +246,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.3.2.1" data-path="ying-yong-pei-zhi-wen-jian/jian-jie.html">
+        <li class="chapter " data-level="2.3.2.1" data-path="jian-jie.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/jian-jie.html">
+                <a href="jian-jie.html">
             
                     
                     简介
@@ -259,9 +259,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3.2.2" data-path="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-de-yuan-su.html">
+        <li class="chapter " data-level="2.3.2.2" data-path="pei-zhi-wen-jian-de-yuan-su.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-de-yuan-su.html">
+                <a href="pei-zhi-wen-jian-de-yuan-su.html">
             
                     
                     配置文件的元素
@@ -272,9 +272,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3.2.3" data-path="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-shi-li.html">
+        <li class="chapter " data-level="2.3.2.3" data-path="pei-zhi-wen-jian-shi-li.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-shi-li.html">
+                <a href="pei-zhi-wen-jian-shi-li.html">
             
                     
                     配置文件示例
@@ -419,40 +419,40 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.4.1" >
+        <li class="chapter " data-level="2.4.1" data-path="kaifazhunbei.html">
             
-                <span>
+                <a href="kaifazhunbei.html">
             
                     
-                    开始准备
+                    开发准备
             
-                </span>
+                </a>
             
 
             
         </li>
     
-        <li class="chapter " data-level="2.4.2" >
+        <li class="chapter " data-level="2.4.2" data-path="diyigeyemian.html">
             
-                <span>
+                <a href="diyigeyemian.html">
             
                     
                     编写第一个页面
             
-                </span>
+                </a>
             
 
             
         </li>
     
-        <li class="chapter " data-level="2.4.3" >
+        <li class="chapter " data-level="2.4.3" data-path="lingyigeyemian.html">
             
-                <span>
+                <a href="lingyigeyemian.html">
             
                     
                     创建另一个页面
             
-                </span>
+                </a>
             
 
             
@@ -563,7 +563,113 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="资源文件的使用"><a name="资源文件的使用" class="plugin-anchor" href="#资源文件的使用"><i class="fa fa-link" aria-hidden="true"></i></a>资源文件的使用</h1>
+<p>更新时间: 2021-06-02 21:03</p>
+<h2 id="资源文件的引用方法"><a name="资源文件的引用方法" class="plugin-anchor" href="#资源文件的引用方法"><i class="fa fa-link" aria-hidden="true"></i></a>资源文件的引用方法</h2>
+<p><strong>base目录与限定词目录中的资源文件</strong>：通过指定资源类型（type）和资源名称（name）来引用。</p>
+<ul>
+<li><p>Java文件引用资源文件的格式：</p>
+<p>ResourceTable.<em>type</em>_</p>
+<p><strong>name</strong></p>
+<p>。特别地，如果引用的是系统资源，则采用：</p>
+<p>ohos.global.systemres.ResourceTable.<em>type</em>_<em>name</em></p>
+<p>。</p>
+<ul>
+<li><p>示例一：在Java文件中，引用</p>
+<p>string.json</p>
+<p>文件中类型为“String”、名称为“app_name”的资源。</p>
+<pre><code>ohos.global.resource.ResourceManager resManager = this.getResourceManager();String result = resManager.getElement(ResourceTable.String_app_name).getString();
+</code></pre></li>
+<li><p>示例二：在Java文件中，引用</p>
+<p>color.json</p>
+<p>文件中类型为“Color”、名称为“red”的资源。</p>
+<pre><code>ohos.global.resource.ResourceManager resManager = this.getResourceManager();int color = resManager.getElement(ResourceTable.Color_red).getColor();
+</code></pre></li>
+</ul>
+</li>
+<li><p>XML文件引用资源文件的格式：</p>
+<p>$<em>type<strong>:</strong>name</em></p>
+<p>。特别地，如果引用的是系统资源，则采用：</p>
+<p>$ohos:<em>type<strong>:</strong>name</em></p>
+<p>。</p>
+<p>在XML文件中，引用<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-example-0000001051733014#ZH-CN_TOPIC_0000001063096195__section1921624113243" target="_blank">string.json</a>文件中类型为“String”、名称为“app_name”的资源，示例如下：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;DirectionalLayout xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:width=&quot;match_parent&quot;    ohos:height=&quot;match_parent&quot;    ohos:orientation=&quot;vertical&quot;&gt;    &lt;Text ohos:text=&quot;$string:app_name&quot;/&gt;&lt;/DirectionalLayout&gt;
+</code></pre></li>
+</ul>
+<p><strong>rawfile目录中的资源文件</strong>：通过指定文件路径和文件名称来引用。</p>
+<p>在Java文件中，引用一个路径为“resources/rawfile/”、名称为“example.js”的资源文件，示例如下：</p>
+<pre><code>ohos.global.resource.ResourceManager resManager = this.getResourceManager();ohos.global.resource.RawFileEntry rawFileEntry = resManager.getRawFileEntry(&quot;resources/rawfile/example.js&quot;);
+</code></pre><h2 id="系统资源文件"><a name="系统资源文件" class="plugin-anchor" href="#系统资源文件"><i class="fa fa-link" aria-hidden="true"></i></a>系统资源文件</h2>
+<p>目前支持的部分系统资源文件详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-example-0000001051733014#ZH-CN_TOPIC_0000001063096195__table54943152412" target="_blank">表1</a>。</p>
+<table>
+<thead>
+<tr>
+<th>系统资源名称</th>
+<th>含义</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ic_app</strong></td>
+<td>表示HarmonyOS应用的默认图标。</td>
+<td>媒体</td>
+</tr>
+<tr>
+<td><strong>request_location_reminder_title</strong></td>
+<td>表示“请求使用设备定位功能”的提示标题。</td>
+<td>字符串</td>
+</tr>
+<tr>
+<td><strong>request_location_reminder_content</strong></td>
+<td>表示“请求使用设备定位功能”的提示内容，即：请在下拉快捷栏打开&quot;位置信息&quot;开关。</td>
+<td>字符串</td>
+</tr>
+</tbody>
+</table>
+<h2 id="颜色模式的定义"><a name="颜色模式的定义" class="plugin-anchor" href="#颜色模式的定义"><i class="fa fa-link" aria-hidden="true"></i></a>颜色模式的定义</h2>
+<p>应用可以在config.json的module字段下定义“colorMode”字段，“colorMode”字段用来定义应用自身的颜色模式，值可以是“dark”，“light”，“auto”（默认值）。示例：</p>
+<pre><code>&quot;colorMode&quot;: &quot;light&quot;
+</code></pre><p>当应用的颜色模式值是“dark”时，无论系统当前颜色模式是什么，应用始终会按照深色模式选取资源；同理，当应用的颜色模式值是“light”时，无论系统当前颜色模式是什么，应用始终会按照浅色模式选取资源；当应用的颜色模式值是“auto”时，应用会跟随系统的颜色模式值选取资源。应用可以在代码中通过如下方式获取应用当前的颜色模式：</p>
+<pre><code>int colorMode = Configuration.colorMode;
+</code></pre><h2 id="为element资源文件添加注释或特殊标识"><a name="为element资源文件添加注释或特殊标识" class="plugin-anchor" href="#为element资源文件添加注释或特殊标识"><i class="fa fa-link" aria-hidden="true"></i></a>为Element资源文件添加注释或特殊标识</h2>
+<p>Element目录下的不同种类元素的资源均采用JSON文件表示，资源的名称“name”和取值“value”是每一条资源的必备字段。</p>
+<ul>
+<li>如果需要为某一条资源备注信息，以便于资源的理解和使用，可以<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-example-0000001051733014#ZH-CN_TOPIC_0000001063096195__section835316337575" target="_blank">通过comment字段添加注释</a>。</li>
+<li>如果value字段中的部分文本不需要被翻译人员处理，也不会被显示在应用界面上，可以<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-example-0000001051733014#ZH-CN_TOPIC_0000001063096195__section18694191515571" target="_blank">通过特殊结构来标识无需翻译的内容</a>。</li>
+</ul>
+<h3 id="通过comment字段添加注释"><a name="通过comment字段添加注释" class="plugin-anchor" href="#通过comment字段添加注释"><i class="fa fa-link" aria-hidden="true"></i></a>通过comment字段添加注释</h3>
+<p>通过comment字段，可以为JSON文件的资源添加注释。示例如下：</p>
+<pre><code>{    &quot;string&quot;:[        {            &quot;name&quot;:&quot;message_arrive&quot;,            &quot;value&quot;:&quot;We will arrive at %s&quot;,            &quot;comment&quot;:&quot;Transfer Arrival Time. %s is time,like 5:00 am&quot;        }    ]}
+</code></pre><h3 id="通过特殊结构来标识无需翻译的内容"><a name="通过特殊结构来标识无需翻译的内容" class="plugin-anchor" href="#通过特殊结构来标识无需翻译的内容"><i class="fa fa-link" aria-hidden="true"></i></a>通过特殊结构来标识无需翻译的内容</h3>
+<p>在string、strarray、plural这三类资源中，可以通过特殊标识来处理无需被翻译的内容。例如，一个字符串资源的Value取值为“We will arrive at %s”，其中的变量“%s”在翻译过程中希望保持不变。有以下两种方式处理：</p>
+<ul>
+<li><p>方式一：在value字段中添加{}。示例如下：</p>
+<pre><code>{    &quot;string&quot;:[        {            &quot;name&quot;:&quot;message_arrive&quot;,            &quot;value&quot;:[&quot;We will arrive at&quot;,{                &quot;id&quot;:&quot;time&quot;,                &quot;example&quot;:&quot;5:00 am&quot;,                &quot;value&quot;:&quot;%s&quot;            }            ]        }    ]}
+</code></pre></li>
+<li><p>方式二：添加<xliff:g>&lt;/xliff:g&gt;标记对。示例如下：</xliff:g></p>
+<pre><code>{    &quot;string&quot;:[        {            &quot;name&quot;:&quot;message_arrive&quot;,            &quot;value&quot;:&quot;We will arrive at &lt;xliff:g id=&apos;time&apos; example=&apos;5:00 am&apos;&gt;%s&lt;/xliff:g&gt;&quot;        }    ]}
+</code></pre></li>
+</ul>
+<h2 id="booleanjson示例"><a name="booleanjson示例" class="plugin-anchor" href="#booleanjson示例"><i class="fa fa-link" aria-hidden="true"></i></a>boolean.json示例</h2>
+<pre><code>{    &quot;boolean&quot;:[        {            &quot;name&quot;:&quot;boolean_1&quot;,            &quot;value&quot;:true        },        {            &quot;name&quot;:&quot;boolean_ref&quot;,            &quot;value&quot;:&quot;$boolean:boolean_1&quot;        }    ]}
+</code></pre><h2 id="colorjson示例"><a name="colorjson示例" class="plugin-anchor" href="#colorjson示例"><i class="fa fa-link" aria-hidden="true"></i></a>color.json示例</h2>
+<pre><code>{    &quot;color&quot;:[        {            &quot;name&quot;:&quot;red&quot;,            &quot;value&quot;:&quot;#ff0000&quot;        },        {            &quot;name&quot;:&quot;red_ref&quot;,            &quot;value&quot;:&quot;$color:red&quot;        }    ]}
+</code></pre><h2 id="floatjson示例"><a name="floatjson示例" class="plugin-anchor" href="#floatjson示例"><i class="fa fa-link" aria-hidden="true"></i></a>float.json示例</h2>
+<pre><code>{    &quot;float&quot;:[        {            &quot;name&quot;:&quot;float_1&quot;,            &quot;value&quot;:&quot;30.6&quot;        },        {            &quot;name&quot;:&quot;float_ref&quot;,            &quot;value&quot;:&quot;$float:float_1&quot;        },        {            &quot;name&quot;:&quot;float_px&quot;,            &quot;value&quot;:&quot;100px&quot;        }    ]}
+</code></pre><h2 id="intarrayjson示例"><a name="intarrayjson示例" class="plugin-anchor" href="#intarrayjson示例"><i class="fa fa-link" aria-hidden="true"></i></a>intarray.json示例</h2>
+<pre><code>{    &quot;intarray&quot;:[        {            &quot;name&quot;:&quot;intarray_1&quot;,            &quot;value&quot;:[                100,                200,                &quot;$integer:integer_1&quot;            ]        }    ]}
+</code></pre><h2 id="integerjson示例"><a name="integerjson示例" class="plugin-anchor" href="#integerjson示例"><i class="fa fa-link" aria-hidden="true"></i></a>integer.json示例</h2>
+<pre><code>{    &quot;integer&quot;:[        {            &quot;name&quot;:&quot;integer_1&quot;,            &quot;value&quot;:100        },        {            &quot;name&quot;:&quot;integer_ref&quot;,            &quot;value&quot;:&quot;$integer:integer_1&quot;        }    ]}
+</code></pre><h2 id="patternjson示例"><a name="patternjson示例" class="plugin-anchor" href="#patternjson示例"><i class="fa fa-link" aria-hidden="true"></i></a>pattern.json示例</h2>
+<pre><code>{    &quot;pattern&quot;:[        {            &quot;name&quot;:&quot;base&quot;,            &quot;value&quot;:[                {                    &quot;name&quot;:&quot;width&quot;,                    &quot;value&quot;:&quot;100vp&quot;                },                {                    &quot;name&quot;:&quot;height&quot;,                    &quot;value&quot;:&quot;100vp&quot;                },                {                    &quot;name&quot;:&quot;size&quot;,                    &quot;value&quot;:&quot;25px&quot;                }            ]        },        {           &quot;name&quot;:&quot;child&quot;,           &quot;parent&quot;:&quot;base&quot;,           &quot;value&quot;:[               {                   &quot;name&quot;:&quot;noTitile&quot;,                   &quot;value&quot;:&quot;Yes&quot;               }           ]        }    ]}
+</code></pre><h2 id="pluraljson示例"><a name="pluraljson示例" class="plugin-anchor" href="#pluraljson示例"><i class="fa fa-link" aria-hidden="true"></i></a>plural.json示例</h2>
+<pre><code>{    &quot;plural&quot;:[        {            &quot;name&quot;:&quot;eat_apple&quot;,            &quot;value&quot;:[                {                    &quot;quantity&quot;:&quot;one&quot;,                    &quot;value&quot;:&quot;%d apple&quot;                },                {                    &quot;quantity&quot;:&quot;other&quot;,                    &quot;value&quot;:&quot;%d apples&quot;                }            ]        }    ]}
+</code></pre><h2 id="strarrayjson示例"><a name="strarrayjson示例" class="plugin-anchor" href="#strarrayjson示例"><i class="fa fa-link" aria-hidden="true"></i></a>strarray.json示例</h2>
+<pre><code>{    &quot;strarray&quot;:[       {           &quot;name&quot;:&quot;size&quot;,           &quot;value&quot;:[               {                   &quot;value&quot;:&quot;small&quot;               },               {                   &quot;value&quot;:&quot;$string:hello&quot;               },               {                   &quot;value&quot;:&quot;large&quot;               },               {                   &quot;value&quot;:&quot;extra large&quot;               }            ]       }    ]}
+</code></pre><h2 id="stringjson示例"><a name="stringjson示例" class="plugin-anchor" href="#stringjson示例"><i class="fa fa-link" aria-hidden="true"></i></a>string.json示例</h2>
+<pre><code>{    &quot;string&quot;:[        {            &quot;name&quot;:&quot;hello&quot;,            &quot;value&quot;:&quot;hello base&quot;        },        {            &quot;name&quot;:&quot;app_name&quot;,            &quot;value&quot;:&quot;my application&quot;        },        {            &quot;name&quot;:&quot;app_name_ref&quot;,            &quot;value&quot;:&quot;$string:app_name&quot;        },        {            &quot;name&quot;:&quot;app_sys_ref&quot;,            &quot;value&quot;:&quot;$ohos:string:request_location_reminder_title&quot;        }    ]}
+</code></pre>
                                 
                                 </section>
                             
@@ -606,7 +712,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"资源文件的使用","level":"2.3.3.2","depth":3,"next":{"title":"国际化","level":"2.3.3.3","depth":3,"path":"guo-ji-hua.md","ref":"guo-ji-hua.md","articles":[]},"previous":{"title":"资源文件的分类","level":"2.3.3.1","depth":3,"path":"zi-yuan-wen-jian-de-fen-lei.md","ref":"zi-yuan-wen-jian-de-fen-lei.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"readme.md","glossary":"GLOSSARY.md","summary":"summary.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"zi-yuan-wen-jian-de-shi-yong.md","mtime":"2021-06-08T02:58:42.593Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T11:52:33.922Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"资源文件的使用","level":"2.3.3.2","depth":3,"next":{"title":"国际化","level":"2.3.3.3","depth":3,"path":"guo-ji-hua.md","ref":"guo-ji-hua.md","articles":[]},"previous":{"title":"资源文件的分类","level":"2.3.3.1","depth":3,"path":"zi-yuan-wen-jian-de-fen-lei.md","ref":"zi-yuan-wen-jian-de-fen-lei.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"zi-yuan-wen-jian-de-shi-yong.md","mtime":"2021-06-08T13:20:37.455Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T13:25:49.039Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

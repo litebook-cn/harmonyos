@@ -246,9 +246,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.3.2.1" data-path="ying-yong-pei-zhi-wen-jian/jian-jie.html">
+        <li class="chapter " data-level="2.3.2.1" data-path="jian-jie.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/jian-jie.html">
+                <a href="jian-jie.html">
             
                     
                     简介
@@ -259,9 +259,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3.2.2" data-path="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-de-yuan-su.html">
+        <li class="chapter " data-level="2.3.2.2" data-path="pei-zhi-wen-jian-de-yuan-su.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-de-yuan-su.html">
+                <a href="pei-zhi-wen-jian-de-yuan-su.html">
             
                     
                     配置文件的元素
@@ -272,9 +272,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3.2.3" data-path="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-shi-li.html">
+        <li class="chapter " data-level="2.3.2.3" data-path="pei-zhi-wen-jian-shi-li.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-shi-li.html">
+                <a href="pei-zhi-wen-jian-shi-li.html">
             
                     
                     配置文件示例
@@ -419,40 +419,40 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.4.1" >
+        <li class="chapter " data-level="2.4.1" data-path="kaifazhunbei.html">
             
-                <span>
+                <a href="kaifazhunbei.html">
             
                     
-                    开始准备
+                    开发准备
             
-                </span>
+                </a>
             
 
             
         </li>
     
-        <li class="chapter " data-level="2.4.2" >
+        <li class="chapter " data-level="2.4.2" data-path="diyigeyemian.html">
             
-                <span>
+                <a href="diyigeyemian.html">
             
                     
                     编写第一个页面
             
-                </span>
+                </a>
             
 
             
         </li>
     
-        <li class="chapter " data-level="2.4.3" >
+        <li class="chapter " data-level="2.4.3" data-path="lingyigeyemian.html">
             
-                <span>
+                <a href="lingyigeyemian.html">
             
                     
                     创建另一个页面
             
-                </span>
+                </a>
             
 
             
@@ -563,7 +563,35 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="国际化能力的支持"><a name="国际化能力的支持" class="plugin-anchor" href="#国际化能力的支持"><i class="fa fa-link" aria-hidden="true"></i></a>国际化能力的支持</h1>
+<h2 id="时间日期国际化"><a name="时间日期国际化" class="plugin-anchor" href="#时间日期国际化"><i class="fa fa-link" aria-hidden="true"></i></a>时间日期国际化</h2>
+<p>不同的区域具有不同的时间日期显示习惯。例如，英语（美国）区域short时间格式为“9:31 AM”；简体中文（中国）区域short时间格式为“上午9:31”；芬兰语（芬兰）区域short时间格式为“9.31”。因此为开发者提供了获取不同区域的时间日期规格的能力。</p>
+<p>界面时间日期字串和时间类控件显示，应当遵循当地习惯的规则，当需要展示时间或日期时，建议获取当前地区的时间日期规格，并对显示的字串根据获取到的规格进行格式化后再使用。</p>
+<p>示例1：</p>
+<pre><code>Locale locale = new Locale(&quot;de&quot;, &quot;CH&quot;);String skeleton = &quot;MMMMd&quot;;String bestPattern = DateFormatUtil.getBestPattern(skeleton, locale); // 返回值为&quot;d. MMMM&quot;
+</code></pre><p>示例2：</p>
+<pre><code>String languageTag = &quot;zh&quot;;String out = DateFormatUtil.format(&quot;EEEEdMMMMy&quot;, languageTag, &quot;Asia/Shanghai&quot;, 0, 3600 * 1000); // 返回值为&quot;1970年1月1日星期四&quot;
+</code></pre><h2 id="电话号码国际化"><a name="电话号码国际化" class="plugin-anchor" href="#电话号码国际化"><i class="fa fa-link" aria-hidden="true"></i></a>电话号码国际化</h2>
+<p>不同的区域的电话号码有不同的格式化效果，当需要展示本地电话号码时，应遵循当地电话号码的格式化原则。因此为开发者提供了对不同地区电话号码格式化的能力，以便于在显示电话号码时正确的格式化。并提供了获取电话号码归属地的能力，开发者可以使用相关接口获取电话号码的归属地信息。</p>
+<p>示例1：</p>
+<pre><code>InputFormatter formatter = InputFormatter.getInstance(&quot;CN&quot;);formatter.inputNumberAndRememberPosition(&apos;1&apos;); // 返回值为&quot;1&quot;formatter.inputNumber(&apos;5&apos;); // 返回值为&quot;15&quot;formatter.inputNumber(&apos;6&apos;); // 返回值为&quot;156&quot;formatter.inputNumberAndRememberPosition(&apos;1&apos;);// 返回值为&quot;156 1&quot;
+</code></pre><p>示例2：</p>
+<pre><code>Locale.Builder builder = new Locale.Builder();builder.setLanguage(&quot;zh&quot;);builder.setRegion(&quot;CN&quot;);builder.setScript(&quot;Hant&quot;);Locale locale = builder.build();String displayName = PhoneNumberAttribution.getAttribute(&quot;+8615611xxxxxx&quot;, &quot;CN&quot;, locale); // x为任意数字，返回值为&quot;北京市&quot;
+</code></pre><h2 id="文本识别"><a name="文本识别" class="plugin-anchor" href="#文本识别"><i class="fa fa-link" aria-hidden="true"></i></a>文本识别</h2>
+<p>提供了对地址、时间日期与电话号码的文本识别能力，可以调用相关接口识别一段文本中包含的地址、时间日期与电话号码。</p>
+<p>示例：</p>
+<pre><code>// 当Locale.getDefault().getLanguage()为&quot;en&quot;时String source = &quot;it is 123 test St&quot;;int[] re = TextRecognitionUtils.getAddress(source);if (re[0] == 1) {    result = source.substring(re[1], re[2] + 1);// 返回值为&quot;123 main St&quot;}
+</code></pre><h2 id="度量衡格式化"><a name="度量衡格式化" class="plugin-anchor" href="#度量衡格式化"><i class="fa fa-link" aria-hidden="true"></i></a>度量衡格式化</h2>
+<p>提供了对度量衡国际化能力的支持，可支持度量衡体系和维度之间的转换，与不同国家度量衡体系的自动转换。在开发包含度量衡的功能时，可以调用此能力满足多语言和不同国家用户的需求。</p>
+<p>示例1：</p>
+<pre><code>Locale zhCN = Locale.CHINA;MeasureFormatter mes = MeasureFormatter.getInstance(zhCN);mes.format(MeasureOptions.Unit.AREA_UK_ACRE,           10000,           MeasureOptions.Usage.AREA_LAND_AGRICULT,           MeasureOptions.FormatStyle.WIDE,           MeasureOptions.Style.AUTO_STYLE_ON));// 返回值为&quot;4,046.856公顷&quot;
+</code></pre><p>示例2：</p>
+<pre><code>Locale enUS = Locale.US;MeasureFormatter mes = MeasureFormatter.getInstance(enUS);mes.format(MeasureOptions.Unit.VOLUME_US_CUP,           1000,           MeasureOptions.Unit.VOLUME_SI_LITER,           MeasureOptions.FormatStyle.WIDE));// 返回值为&quot;236.588 liters&quot;
+</code></pre><h2 id="敏感禁忌"><a name="敏感禁忌" class="plugin-anchor" href="#敏感禁忌"><i class="fa fa-link" aria-hidden="true"></i></a>敏感禁忌</h2>
+<p>提供对政治敏感地区、城市、及语言的获取能力，以及对地区名称更正的能力。</p>
+<p>示例：</p>
+<pre><code>Locale locale = Locale.getDefault();ArrayList&lt;String&gt; result = LocaleHelperUtils.getBlockedRegions(context, locale);//返回值包含&quot;EH&quot;与&quot;XK&quot;(西撒哈拉与科索沃），这两个地区为有政治争议的地区需谨慎使用
+</code></pre>
                                 
                                 </section>
                             
@@ -606,7 +634,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"国际化","level":"2.3.3.3","depth":3,"next":{"title":"应用数据管理","level":"2.3.4","depth":2,"path":"ying-yong-shu-ju-guan-li.md","ref":"ying-yong-shu-ju-guan-li.md","articles":[]},"previous":{"title":"资源文件的使用","level":"2.3.3.2","depth":3,"path":"zi-yuan-wen-jian-de-shi-yong.md","ref":"zi-yuan-wen-jian-de-shi-yong.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"readme.md","glossary":"GLOSSARY.md","summary":"summary.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"guo-ji-hua.md","mtime":"2021-06-08T02:58:42.592Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T11:52:33.922Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"国际化","level":"2.3.3.3","depth":3,"next":{"title":"应用数据管理","level":"2.3.4","depth":2,"path":"ying-yong-shu-ju-guan-li.md","ref":"ying-yong-shu-ju-guan-li.md","articles":[]},"previous":{"title":"资源文件的使用","level":"2.3.3.2","depth":3,"path":"zi-yuan-wen-jian-de-shi-yong.md","ref":"zi-yuan-wen-jian-de-shi-yong.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"guo-ji-hua.md","mtime":"2021-06-08T13:21:02.834Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T13:25:49.039Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

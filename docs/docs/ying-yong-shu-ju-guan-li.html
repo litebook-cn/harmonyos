@@ -246,9 +246,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.3.2.1" data-path="ying-yong-pei-zhi-wen-jian/jian-jie.html">
+        <li class="chapter " data-level="2.3.2.1" data-path="jian-jie.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/jian-jie.html">
+                <a href="jian-jie.html">
             
                     
                     简介
@@ -259,9 +259,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3.2.2" data-path="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-de-yuan-su.html">
+        <li class="chapter " data-level="2.3.2.2" data-path="pei-zhi-wen-jian-de-yuan-su.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-de-yuan-su.html">
+                <a href="pei-zhi-wen-jian-de-yuan-su.html">
             
                     
                     配置文件的元素
@@ -272,9 +272,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3.2.3" data-path="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-shi-li.html">
+        <li class="chapter " data-level="2.3.2.3" data-path="pei-zhi-wen-jian-shi-li.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-shi-li.html">
+                <a href="pei-zhi-wen-jian-shi-li.html">
             
                     
                     配置文件示例
@@ -419,40 +419,40 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.4.1" >
+        <li class="chapter " data-level="2.4.1" data-path="kaifazhunbei.html">
             
-                <span>
+                <a href="kaifazhunbei.html">
             
                     
-                    开始准备
+                    开发准备
             
-                </span>
+                </a>
             
 
             
         </li>
     
-        <li class="chapter " data-level="2.4.2" >
+        <li class="chapter " data-level="2.4.2" data-path="diyigeyemian.html">
             
-                <span>
+                <a href="diyigeyemian.html">
             
                     
                     编写第一个页面
             
-                </span>
+                </a>
             
 
             
         </li>
     
-        <li class="chapter " data-level="2.4.3" >
+        <li class="chapter " data-level="2.4.3" data-path="lingyigeyemian.html">
             
-                <span>
+                <a href="lingyigeyemian.html">
             
                     
                     创建另一个页面
             
-                </span>
+                </a>
             
 
             
@@ -563,7 +563,24 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="应用数据管理"><a name="应用数据管理" class="plugin-anchor" href="#应用数据管理"><i class="fa fa-link" aria-hidden="true"></i></a>应用数据管理</h1>
+<p>HarmonyOS应用数据管理支持单设备的各种结构化数据的持久化，以及跨设备之间数据的同步、共享以及搜索功能。开发者通过应用数据管理，能够方便地完成应用程序数据在不同终端设备间的无缝衔接，满足用户跨设备使用数据的一致性体验。</p>
+<h2 id="本地应用数据管理"><a name="本地应用数据管理" class="plugin-anchor" href="#本地应用数据管理"><i class="fa fa-link" aria-hidden="true"></i></a>本地应用数据管理</h2>
+<p>提供单设备上结构化数据的存储和访问能力。使用SQLite作为持久化存储引擎，提供了多种类型的本地数据库，分别是关系型数据库（Relational Database）和对象关系映射数据库（Object Relational Mapping Database），此外还提供一种轻量级偏好数据库（Light Weight Preference Database），用以满足开发人员使用不同数据模型对应用数据进行持久化和访问的需求。</p>
+<p>有关于本地应用数据管理的详细信息，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-relational-overview-0000000000030046" target="_blank">关系型数据库</a>、<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-orm-overview-0000000000030070" target="_blank">对象关系映射数据库</a>和<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-preference-overview-0000000000030086" target="_blank">轻量级偏好数据库</a>。</p>
+<h2 id="分布式数据服务"><a name="分布式数据服务" class="plugin-anchor" href="#分布式数据服务"><i class="fa fa-link" aria-hidden="true"></i></a>分布式数据服务</h2>
+<p>分布式数据库支持用户数据跨设备相互同步，为用户提供在多种终端设备上一致的数据访问体验。通过调用分布式数据接口，应用可以将数据保存到分布式数据库中。通过结合帐号、应用唯一标识和数据库三元组，分布式数据库对属于不同应用的数据进行隔离。</p>
+<p>有关于分布式数据库的详细信息，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-mdds-overview-0000000000030123" target="_blank">分布式数据服务</a>。</p>
+<h2 id="分布式文件服务"><a name="分布式文件服务" class="plugin-anchor" href="#分布式文件服务"><i class="fa fa-link" aria-hidden="true"></i></a>分布式文件服务</h2>
+<p>在多个终端设备间为单个设备上应用程序创建的文件提供多终端的分布式共享能力。每台设备上都存储一份全量的文件元数据，应用程序通过文件元数据中的路径，可以实现同一应用文件的跨设备访问。</p>
+<p>有关于分布式文件的详细信息，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-dfs-overview-0000000000030154" target="_blank">分布式文件服务</a>。</p>
+<h2 id="数据搜索服务"><a name="数据搜索服务" class="plugin-anchor" href="#数据搜索服务"><i class="fa fa-link" aria-hidden="true"></i></a>数据搜索服务</h2>
+<p>在单个设备上，为应用程序提供搜索引擎级的全文索引管理、建立索引和搜索功能。</p>
+<p>有关于数据搜索的详细信息，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-fusion-search-overview-0000001050191132" target="_blank">融合搜索</a>。</p>
+<h2 id="数据存储管理"><a name="数据存储管理" class="plugin-anchor" href="#数据存储管理"><i class="fa fa-link" aria-hidden="true"></i></a>数据存储管理</h2>
+<p>为应用开发者提供系统存储路径、存储设备列表，存储设备属性的查询和管理功能。</p>
+<p>有关于数据存储的详细信息，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-storage-overview-0000000000030212" target="_blank">数据存储管理</a>。</p>
+
                                 
                                 </section>
                             
@@ -606,7 +623,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"应用数据管理","level":"2.3.4","depth":2,"next":{"title":"应用权限管理","level":"2.3.5","depth":2,"path":"ying-yong-quan-xian-guan-li.md","ref":"ying-yong-quan-xian-guan-li.md","articles":[]},"previous":{"title":"国际化","level":"2.3.3.3","depth":3,"path":"guo-ji-hua.md","ref":"guo-ji-hua.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"readme.md","glossary":"GLOSSARY.md","summary":"summary.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"ying-yong-shu-ju-guan-li.md","mtime":"2021-06-08T02:58:42.593Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T11:52:33.922Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"应用数据管理","level":"2.3.4","depth":2,"next":{"title":"应用权限管理","level":"2.3.5","depth":2,"path":"ying-yong-quan-xian-guan-li.md","ref":"ying-yong-quan-xian-guan-li.md","articles":[]},"previous":{"title":"国际化","level":"2.3.3.3","depth":3,"path":"guo-ji-hua.md","ref":"guo-ji-hua.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"ying-yong-shu-ju-guan-li.md","mtime":"2021-06-08T13:21:22.027Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T13:25:49.039Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

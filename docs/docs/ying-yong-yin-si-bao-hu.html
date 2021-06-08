@@ -246,9 +246,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.3.2.1" data-path="ying-yong-pei-zhi-wen-jian/jian-jie.html">
+        <li class="chapter " data-level="2.3.2.1" data-path="jian-jie.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/jian-jie.html">
+                <a href="jian-jie.html">
             
                     
                     简介
@@ -259,9 +259,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3.2.2" data-path="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-de-yuan-su.html">
+        <li class="chapter " data-level="2.3.2.2" data-path="pei-zhi-wen-jian-de-yuan-su.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-de-yuan-su.html">
+                <a href="pei-zhi-wen-jian-de-yuan-su.html">
             
                     
                     配置文件的元素
@@ -272,9 +272,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3.2.3" data-path="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-shi-li.html">
+        <li class="chapter " data-level="2.3.2.3" data-path="pei-zhi-wen-jian-shi-li.html">
             
-                <a href="ying-yong-pei-zhi-wen-jian/pei-zhi-wen-jian-shi-li.html">
+                <a href="pei-zhi-wen-jian-shi-li.html">
             
                     
                     配置文件示例
@@ -419,40 +419,40 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.4.1" >
+        <li class="chapter " data-level="2.4.1" data-path="kaifazhunbei.html">
             
-                <span>
+                <a href="kaifazhunbei.html">
             
                     
-                    开始准备
+                    开发准备
             
-                </span>
+                </a>
             
 
             
         </li>
     
-        <li class="chapter " data-level="2.4.2" >
+        <li class="chapter " data-level="2.4.2" data-path="diyigeyemian.html">
             
-                <span>
+                <a href="diyigeyemian.html">
             
                     
                     编写第一个页面
             
-                </span>
+                </a>
             
 
             
         </li>
     
-        <li class="chapter " data-level="2.4.3" >
+        <li class="chapter " data-level="2.4.3" data-path="lingyigeyemian.html">
             
-                <span>
+                <a href="lingyigeyemian.html">
             
                     
                     创建另一个页面
             
-                </span>
+                </a>
             
 
             
@@ -563,7 +563,115 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="应用隐私保护"><a name="应用隐私保护" class="plugin-anchor" href="#应用隐私保护"><i class="fa fa-link" aria-hidden="true"></i></a>应用隐私保护</h1>
+<p>更新时间: 2021-06-04 15:12</p>
+<p>随着移动终端及其相关业务（如移动支付、终端云等）的普及，用户隐私保护的重要性愈发突出。应用开发者在产品设计阶段就需要考虑用户隐私的保护，提高应用的安全性。HarmonyOS应用开发需要遵从其隐私保护规则，在应用上架应用市场时，应用市场会根据规则进行校验，如不满足条件则无法上架。</p>
+<p>个人数据是指与一个身份已被识别或者身份可被识别的自然人相关的任何信息，包括但不限于个人身份信息、身份验证信息、财务和付款信息、联系方式、用户搜索、浏览记录、使用习惯、位置信息、短信和通话相关数据、麦克风数据、摄像头数据以及其他设备或应用使用情况数据等，其中敏感个人数据是个人数据的一个重要子集，指的是涉及数据主体的最私密领域的信息或者一旦泄露可能会给数据主体造成重大不利影响的数据，如导致个人名誉、身心健康受到损害或歧视性待遇等；敏感个人数据在各国家/地区相关法律法规中的定义有所不同，建议根据当地的法律法规要求处理。</p>
+<h2 id="数据收集及使用公开透明"><a name="数据收集及使用公开透明" class="plugin-anchor" href="#数据收集及使用公开透明"><i class="fa fa-link" aria-hidden="true"></i></a>数据收集及使用公开透明</h2>
+<p>应用采集个人数据时，应清晰、明确地告知用户，并确保告知用户的个人信息将被如何使用。</p>
+<ul>
+<li><p>应用申请操作系统</p>
+<p>敏感权限</p>
+<p>时，需要明确告知用户权限申请的目的和用途，并获取用户的同意；敏感权限弹框参考示例如下。权限API使用方案请参考</p>
+<p>权限</p>
+<p>章节。详细的设计原则请参考</p>
+<p>隐私设计</p>
+<p>。</p>
+<p><strong>图1</strong> 敏感权限获取弹框示例</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210604104806.49017631579200086141680381111080:50520603071259:2800:5D84F5184E673F29F13994936981A9D4748B75A48A7082EA1E5BE0389FCEF6E7.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+</li>
+<li><p>开发者应制定并遵从适当的隐私政策，在收集、使用留存和第三方分享用户数据时需要符合所有适用法律、政策和规定。如在收集个人数据前，需充分告知用户处理个人数据的种类、目的、处理方式、保留期限等，满足数据主体权利等要求。</p>
+</li>
+<li><p>应用向第三方披露任何个人信息须在隐私政策中说明披露内容、目的和披露对象。</p>
+<p>根据以上要求，我们设计了示例以供参考。隐私通知/声明的参考示例如下：</p>
+<p><strong>图2</strong> 应用隐私通知与隐私声明示例图</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210604104806.08170007257074757081089960108398:50520603071259:2800:0263DCD6400C0CF2558F04C78D5C3F9472931E2BC8F592C5706C87476095B41F.png?needInitFileName=true?needInitFileName=true" alt="img"> <img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210604104806.88691866060094837746204826594264:50520603071259:2800:B6EED83E1ACDB7E11F3A7258FF37796875659B4AECDE9174B2E90701508AE240.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+</li>
+<li><p>个人数据应当基于具体、明确、合法的目的收集，不应与此目的不相符的方式作进一步处理。对于收集目的变更和用户撤销同意后再次使用的场景都需要用户重新同意。隐私声明变更与隐私声明撤销同意如图所示。</p>
+<p><strong>图3</strong> 隐私声明变更示例图</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210604104806.51376415102699990773479627858868:50520603071259:2800:5C0529200A7A556F016CE682518FF41FD2F75919EB4A2EBD0762762179B3F53E.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<p><strong>图4</strong> 隐私声明撤销同意示例图</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210604104806.70322720250266325459766577236961:50520603071259:2800:66A2004D4F37625F86F6BDB2FA930099DD72FC9F452FF8A0AE3B68B125AD2B06.png?needInitFileName=true?needInitFileName=true" alt="img"> <img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210604104806.88948168389280425847805422857514:50520603071259:2800:1F8400B6D18043BBC9C5EE009FD162B706D29546E19061A62C2D978E70EF41C0.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+</li>
+<li><p>应用需要提供用户查看隐私声明的入口。例如在应用的“关于”界面提供查看隐私声明的入口，如示例图所示：</p>
+<p><strong>图5</strong> 隐私声明的查看界面示例图</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210604104807.03450341897341126122278504394521:50520603071259:2800:F5A256690565A8FC2AC5A6D66B558C892A1A18A89948C71EA5B059FD4A7D6D1A.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+</li>
+<li><p>应用的隐私声明应覆盖本应用所有收集的个人数据。</p>
+</li>
+<li><p>在后台持续读取位置信息场景时，请申请ohos.permission.LOCATION_IN_BACKGROUND权限，详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-available-0000001051089272#ZH-CN_TOPIC_0000001073014298__section1727613371109" target="_blank">敏感权限</a>；</p>
+</li>
+<li><p>应用存在调用第三方的<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-ability-overview-0000000000029852" target="_blank">元能力（Particle Ability）</a>或<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-ability-overview-0000000000029852" target="_blank">元服务（Feature Ability）</a>场景时，需要在应用的隐私声明中明确第三方责任，如涉及个人数据收集则需要告知用户第三方的名称及收集的个人数据类型、目的和方式，申请的敏感权限、申请目的等。</p>
+</li>
+</ul>
+<h2 id="数据收集及使用最小化"><a name="数据收集及使用最小化" class="plugin-anchor" href="#数据收集及使用最小化"><i class="fa fa-link" aria-hidden="true"></i></a>数据收集及使用最小化</h2>
+<p>应用个人数据收集应与数据处理目的相关，且是适当、必要的。开发者应尽可能对个人数据进行匿名化或假名化处理，降低数据主体的风险。仅可收集和处理与特定目的相关且必需的个人数据，不能对数据做出与特定目的不相关的处理。</p>
+<ul>
+<li>敏感权限申请的时候要满足权限最小化的要求，在进行权限申请时，只申请获取必需的信息或资源所需要的权限。如应用不需要相机权限就能够实现其功能时，则不应该向用户申请相机权限。</li>
+<li>应用针对数据的收集要满足最小化要求，不收集与应用提供服务无关联的数据。如通信社交类应用，不应收集用户的网页浏览记录。</li>
+<li>数据使用的功能要求能够使用户受益，收集的数据不能用于与用户正常使用无关的功能。如应用不得将“生物特征”、“健康数据”等敏感个人数据用于服务改进、投放广告或营销等非业务核心功能。</li>
+<li>系统禁止应用在后台访问相机和麦克风的数据；</li>
+<li>应用使用第三方支付交易过程中，如非适用法律要求或为提供第三方支付服务所必需，不得记录用户交易类鉴权信息，或向第三方批露与用户特定交易无关的用户个人信息。</li>
+<li>应用不得仅出于广告投放或数据分析的目的而请求位置权限。</li>
+<li>禁止在日志中打印敏感个人数据，如需要打印个人数据时，应对个人数据进行匿名化或假名化处理；</li>
+<li>避免使用IMEI和序列号等永久性的标识符，尽量使用可以重置的标识符，如系统提供了<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/device-identifier-networkid-0000001084507694" target="_blank">NetworkID</a>和<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/device-identifier-dvid-0000001131409565" target="_blank">DVID</a>作为分布式场景下的设备标识符，广告业务场景下则建议使用<a href="https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/oaid-0000001050783198" target="_blank">OAID</a>，基于应用的分析则建议使用<a href="https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/odid-0000001051063255" target="_blank">ODID</a>和<a href="https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/aaid-0000001051142988" target="_blank">AAID</a>，其他需要唯一标识符的场景可以使用<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/device-identifier-uuid-0000001084827280" target="_blank">UUID</a>接口生成；</li>
+<li>不再需要使用的数据需要及时清除，降低数据泄露的风险。如分布式业务场景下设备断开分布式网络，临时缓存的数据需要及时删除。</li>
+</ul>
+<h2 id="数据处理选择和控制"><a name="数据处理选择和控制" class="plugin-anchor" href="#数据处理选择和控制"><i class="fa fa-link" aria-hidden="true"></i></a>数据处理选择和控制</h2>
+<p>对个人数据处理必须要征得用户的同意或遵守适用的法律法规，用户对其个人数据要有充分的控制权。</p>
+<ul>
+<li>系统对于用户的敏感数据和系统关键资源的获取设置了对应的权限，应用访问这些数据时需要申请对应的权限。相关权限列表请参考<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-available-0000001051089272" target="_blank">应用权限列表</a>章节。</li>
+<li>应用申请使用敏感权限：应用弹窗提醒，向用户呈现应用需要获取的权限和权限使用目的、应用需要收集的数据和使用目的等，通过用户点击“同意”或“始终允许”的方式完成用户授权，让用户对应用权限的授予和个人数据的使用做到透明、可知、可控。</li>
+<li>用户可以修改、取消授予应用的权限：当用户不同意某一权限或者数据收集时，应当允许用户使用与这部分权限和数据收集不相关的功能。如通信社交类应用，用户可以拒绝授予相机权限，不应该影响与相机无关的功能操作，如语音通话。</li>
+<li>在进入应用的主界面之前不建议直接弹窗申请敏感权限，仅在用户使用功能时才请求对应的权限。如通信社交类应用，在没有启用位置相关的功能时，不建议在启动应用时就申请位置权限。</li>
+<li>应用若使用个人数据用于个性化广告和精准营销，需提供独立的关闭选项。</li>
+<li>需要向用户提供对个人数据的控制能力；如在云服务上存储了个人数据，需要提供删除数据的方法。</li>
+<li>应用同时支持单设备和跨设备场景时，用户能够单独关闭跨设备应用场景。</li>
+</ul>
+<h2 id="数据安全"><a name="数据安全" class="plugin-anchor" href="#数据安全"><i class="fa fa-link" aria-hidden="true"></i></a>数据安全</h2>
+<p>从技术上保证数据处理活动的安全性，包括个人数据的加密存储、安全传输等安全机制，应默认开启或采取安全保护措施。</p>
+<ul>
+<li><p>数据存储</p>
+<ol>
+<li>应用产生的密钥以及用户的敏感个人数据需要存储在应用的私有目录下。</li>
+<li>应用可以调用系统提供的本地数据库RdbStore的加密接口对敏感个人数据进行加密存储。接口详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-relational-overview-0000000000030046" target="_blank">关系型数据库</a>章节。</li>
+<li>应用产生的分布式数据可以调用系统的分布式数据库进行存储，对于敏感个人数据需要采用分布式数据库提供的加密接口进行加密，接口详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-mdds-overview-0000000000030123" target="_blank">分布式数据服务</a>章节。</li>
+</ol>
+</li>
+<li><p>安全传输</p>
+<p>需要分别针对本地传输和远程传输采取不同的安全保护措施。</p>
+<p>本地传输：</p>
+<ol>
+<li>应用通过intent跨应用传输数据时避免包含敏感个人数据，防止隐式调用导致intent劫持，导致个人数据泄露。</li>
+<li>应用内组件调用应采用安全方式，避免通过隐式方式进行调用组件，防止组件劫持。</li>
+<li>避免使用socket方式进行本地通信，如需使用，localhost端口号随机生成，并对端口连接对象进行身份认证和鉴权。</li>
+<li>本地IPC通信安全：作为服务提供方需要校验服务使用方的身份和访问权限，防止服务使用方进行身份仿冒或者权限绕过。</li>
+</ol>
+<p>远程传输：</p>
+<ol>
+<li>使用https代替http进行通信，并对https证书进行严格校验。</li>
+<li>避免进行远程端口进行通信，如需使用，需要对端口连接对象进行身份认证和鉴权。</li>
+<li>应用进行跨设备通信时，需要校验被访问设备和应用的身份信息，防止被访问方的设备和应用进行身份仿冒。</li>
+<li>应用进行跨设备通信时，作为服务提供方需要校验服务使用方的身份和权限，防止服务使用方进行身份仿冒或者权限绕过。</li>
+</ol>
+</li>
+</ul>
+<h2 id="本地化处理"><a name="本地化处理" class="plugin-anchor" href="#本地化处理"><i class="fa fa-link" aria-hidden="true"></i></a>本地化处理</h2>
+<p>应用开发的数据优先在本地进行处理，对于本地无法处理的数据上传云服务要满足最小化的原则，不能默认选择上传云服务。</p>
+<h2 id="未成年人数据保护要求"><a name="未成年人数据保护要求" class="plugin-anchor" href="#未成年人数据保护要求"><i class="fa fa-link" aria-hidden="true"></i></a>未成年人数据保护要求</h2>
+<p>如果应用是给未成年人设计的，或者应用通过收集的用户年龄数据识别出用户是未成年人，开发者应该结合目标市场国家的相关法律，专门分析未成年人个人数据保护的问题。收集未成年人数据前需要征得监护人的同意。</p>
+<p>专为未成年人设计的应用不建议请求获取位置权限。</p>
+<h2 id="元服务（feature-ability）"><a name="元服务（feature-ability）" class="plugin-anchor" href="#元服务（feature-ability）"><i class="fa fa-link" aria-hidden="true"></i></a>元服务（Feature Ability）</h2>
+<p>对于Visible=true的元服务，需要满足如下要求：</p>
+<ul>
+<li>元服务启动时，需要在明显位置展示元服务的功能名称及开发者名称/logo。</li>
+<li>元服务如涉及个人数据的收集，应提供独立的隐私声明，并在收集个人数据前向用户告知隐私声明。</li>
+<li>元服务应按照法律法规要求收集个人数据，基于用户同意收集的个人数据，用户有权撤销同意。</li>
+<li>元服务需要提供隐私声明的查看入口。</li>
+<li>元服务隐私声明发生变更时，需要用户重新同意。</li>
+<li>禁止在元服务免安装过程中捆绑安装与本服务不相关的功能，如扫描二维码的元服务不应该支持录音功能。</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -606,7 +714,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"应用隐私保护","level":"2.3.6","depth":2,"next":{"title":"三方应用调用管控机制","level":"2.3.7","depth":2,"path":"san-fang-ying-yong-diao-yong-guan-kong-ji-zhi.md","ref":"san-fang-ying-yong-diao-yong-guan-kong-ji-zhi.md","articles":[]},"previous":{"title":"应用权限管理","level":"2.3.5","depth":2,"path":"ying-yong-quan-xian-guan-li.md","ref":"ying-yong-quan-xian-guan-li.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"readme.md","glossary":"GLOSSARY.md","summary":"summary.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"ying-yong-yin-si-bao-hu.md","mtime":"2021-06-08T02:58:42.593Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T11:52:33.922Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"应用隐私保护","level":"2.3.6","depth":2,"next":{"title":"三方应用调用管控机制","level":"2.3.7","depth":2,"path":"san-fang-ying-yong-diao-yong-guan-kong-ji-zhi.md","ref":"san-fang-ying-yong-diao-yong-guan-kong-ji-zhi.md","articles":[]},"previous":{"title":"应用权限管理","level":"2.3.5","depth":2,"path":"ying-yong-quan-xian-guan-li.md","ref":"ying-yong-quan-xian-guan-li.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"ying-yong-yin-si-bao-hu.md","mtime":"2021-06-08T13:22:10.741Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T13:25:49.039Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

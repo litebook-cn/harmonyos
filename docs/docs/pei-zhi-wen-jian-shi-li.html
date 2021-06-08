@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>应用权限管理 · 鸿蒙OS开发文档</title>
+        <title>配置文件示例 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,10 +73,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="ying-yong-yin-si-bao-hu.html" />
     
-    
-    <link rel="prev" href="ying-yong-shu-ju-guan-li.html" />
+    <link rel="prev" href="pei-zhi-wen-jian-de-yuan-su.html" />
     
 
     </head>
@@ -272,7 +270,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3.2.3" data-path="pei-zhi-wen-jian-shi-li.html">
+        <li class="chapter active" data-level="2.3.2.3" data-path="pei-zhi-wen-jian-shi-li.html">
             
                 <a href="pei-zhi-wen-jian-shi-li.html">
             
@@ -361,7 +359,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.3.5" data-path="ying-yong-quan-xian-guan-li.html">
+        <li class="chapter " data-level="2.3.5" data-path="ying-yong-quan-xian-guan-li.html">
             
                 <a href="ying-yong-quan-xian-guan-li.html">
             
@@ -548,7 +546,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >应用权限管理</a>
+        <a href="." >配置文件示例</a>
     </h1>
 </div>
 
@@ -563,38 +561,110 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="应用权限管理"><a name="应用权限管理" class="plugin-anchor" href="#应用权限管理"><i class="fa fa-link" aria-hidden="true"></i></a>应用权限管理</h1>
-<p>HarmonyOS中所有的应用均在应用沙盒内运行。默认情况下，应用只能访问有限的系统资源，系统负责管理应用对资源的访问权限。</p>
-<p>应用权限管理是由接口提供方（Ability）、接口使用方（应用）、系统（包括云侧和端侧）以及用户等多方共同参与的整个流程，保证受限接口是在约定好的规则下被正常使用，避免接口被滥用而导致用户、应用和设备受损。</p>
-<p>本节重点介绍应用权限管理的基本思想。有关权限使用的详细信息，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-overview-0000000000029883" target="_blank">权限</a>。</p>
-<h2 id="权限声明"><a name="权限声明" class="plugin-anchor" href="#权限声明"><i class="fa fa-link" aria-hidden="true"></i></a>权限声明</h2>
-<ul>
-<li>应用需要在config.json中使用“reqPermissions”属性对需要的权限逐个进行声明。</li>
-<li>若使用到的三方库也涉及权限使用，也需统一在应用的config.json中逐个声明。</li>
-<li>没有在config.json中声明的权限，应用就无法获得此权限的授权。</li>
-</ul>
-<h2 id="动态申请敏感权限"><a name="动态申请敏感权限" class="plugin-anchor" href="#动态申请敏感权限"><i class="fa fa-link" aria-hidden="true"></i></a>动态申请敏感权限</h2>
-<p>动态申请敏感权限基于用户可知可控的原则，需要应用在运行时主动调用系统动态申请权限的接口，系统弹框由用户授权，用户结合应用运行场景的上下文，识别出应用申请相应敏感权限的合理性，从而做出正确的选择。</p>
-<p>即使用户向应用授予了请求的权限，应用在调用受此权限管控的接口前，也应该先检查自己有无此权限，而不能把之前授予的状态持久化，因为用户在动态授予后还可以通过设置取消应用的权限。</p>
-<p>有关于应用动态申请敏感权限的详细信息，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__section7431121314439" target="_blank">动态申请权限</a>。</p>
-<h2 id="自定义权限"><a name="自定义权限" class="plugin-anchor" href="#自定义权限"><i class="fa fa-link" aria-hidden="true"></i></a>自定义权限</h2>
-<p>HarmonyOS为了保证应用对外提供的接口不被恶意调用，需要对调用接口的调用者进行鉴权。</p>
-<p>大多情况下，系统已定义的权限满足了应用的基本需要，若有特殊的访问控制需要，应用可在config.json中以&quot;defPermissions&quot;: []属性来定义新的权限，并通过“availableScope”和“grantMode”两个属性分别确定权限的开放范围和授权方式，使得权限定义更加灵活且易于理解。有关HarmonyOS权限开放范围和授权方式详细的描述，请参阅<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__table4183104093414" target="_blank">权限授予方式字段说明</a>和<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__table17184134033416" target="_blank">权限限制范围字段说明</a>。</p>
-<p>为了避免应用自定义新权限出现重名的情况，建议应用对新权限的命名以包名的前两个字段开头，这样可以防止不同开发者的应用间出现自定义权限重名的情况。</p>
-<h2 id="权限保护方法"><a name="权限保护方法" class="plugin-anchor" href="#权限保护方法"><i class="fa fa-link" aria-hidden="true"></i></a>权限保护方法</h2>
-<ul>
-<li>保护Ability：通过在config.json里对应的Ability中配置&quot;permissions&quot;: [&quot;<em>权限名</em>&quot;]属性，即可实现保护整个Ability的目的，无指定权限的应用不能访问此Ability。</li>
-<li>保护API：若Ability对外提供的数据或能力有多种，且开放范围或保护级别也不同，可以针对不同的数据或能力在接口代码实现中通过verifyPermission(String permissionName, int pid, int uid)来对uid标识的调用者进行鉴权。</li>
-</ul>
-<h2 id="权限使用原则"><a name="权限使用原则" class="plugin-anchor" href="#权限使用原则"><i class="fa fa-link" aria-hidden="true"></i></a>权限使用原则</h2>
-<ul>
-<li>权限申请最小化。跟用户提供的功能无关的权限，不要申请；尽量采用其他无需权限的操作来实现相应功能（如：通过intent拉起系统UI界面由用户交互、应用自己生成uuid代替设备ID等）。</li>
-<li>权限申请完整。应用所需权限（包括应用调用到的三方库依赖的权限）都要逐个在应用的config.json中按格式声明。</li>
-<li>满足用户可知。应用申请的敏感权限的目的需要真实准确告知用户。</li>
-<li>权限就近申请。应用在用户触发相关业务功能时，就近提示用户授予实现此功能所需的权限。</li>
-<li>权限不扩散。在用户未授权的情况下，不允许提供给其他应用使用。</li>
-<li>应用自定义权限防止重名。建议以包名为前缀来命名权限，防止跟系统定义的权限重名。</li>
-</ul>
+                                <h1 id="配置文件示例"><a name="配置文件示例" class="plugin-anchor" href="#配置文件示例"><i class="fa fa-link" aria-hidden="true"></i></a>配置文件示例</h1>
+<p>以JSON文件为config.json的一个简单示例，该示例的应用声明为三个Ability。</p>
+<pre><code class="lang-json">{
+    <span class="hljs-string">&quot;app&quot;</span>: {
+        <span class="hljs-string">&quot;bundleName&quot;</span>: <span class="hljs-string">&quot;com.huawei.hiworld.himusic&quot;</span>,
+        <span class="hljs-string">&quot;vendor&quot;</span>: <span class="hljs-string">&quot;huawei&quot;</span>,
+        <span class="hljs-string">&quot;version&quot;</span>: {
+            <span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">2</span>, 
+            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;2.0&quot;</span>
+        },
+        <span class="hljs-string">&quot;apiVersion&quot;</span>: {
+            <span class="hljs-string">&quot;compatible&quot;</span>: <span class="hljs-number">3</span>, 
+            <span class="hljs-string">&quot;target&quot;</span>: <span class="hljs-number">3</span>,
+            <span class="hljs-string">&quot;releaseType&quot;</span>: <span class="hljs-string">&quot;Beta1&quot;</span>
+        }
+    },
+    <span class="hljs-string">&quot;deviceConfig&quot;</span>: {
+        <span class="hljs-string">&quot;default&quot;</span>: {
+        }
+    },
+    <span class="hljs-string">&quot;module&quot;</span>: {
+        <span class="hljs-string">&quot;mainAbility&quot;</span>: <span class="hljs-string">&quot;MainAbility&quot;</span>,
+        <span class="hljs-string">&quot;package&quot;</span>: <span class="hljs-string">&quot;com.huawei.hiworld.himusic.entry&quot;</span>,
+        <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;.MainApplication&quot;</span>,
+        <span class="hljs-string">&quot;supportedModes&quot;</span>: [
+            <span class="hljs-string">&quot;drive&quot;</span>
+        ],
+        <span class="hljs-string">&quot;distro&quot;</span>: {
+            <span class="hljs-string">&quot;moduleType&quot;</span>: <span class="hljs-string">&quot;entry&quot;</span>,
+            <span class="hljs-string">&quot;deliveryWithInstall&quot;</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-string">&quot;moduleName&quot;</span>: <span class="hljs-string">&quot;hap-car&quot;</span>
+        },
+        <span class="hljs-string">&quot;deviceType&quot;</span>: [
+            <span class="hljs-string">&quot;car&quot;</span>
+        ],
+        <span class="hljs-string">&quot;abilities&quot;</span>: [
+            {
+                <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;.MainAbility&quot;</span>,
+                <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;himusic main ability&quot;</span>,
+                <span class="hljs-string">&quot;icon&quot;</span>: <span class="hljs-string">&quot;$media:ic_launcher&quot;</span>,
+                <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;HiMusic&quot;</span>,
+                <span class="hljs-string">&quot;launchType&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
+                <span class="hljs-string">&quot;orientation&quot;</span>: <span class="hljs-string">&quot;unspecified&quot;</span>,
+                <span class="hljs-string">&quot;visible&quot;</span>: <span class="hljs-literal">true</span>,
+                <span class="hljs-string">&quot;skills&quot;</span>: [
+                    {
+                        <span class="hljs-string">&quot;actions&quot;</span>: [
+                            <span class="hljs-string">&quot;action.system.home&quot;</span>
+                        ],
+                        <span class="hljs-string">&quot;entities&quot;</span>: [
+                            <span class="hljs-string">&quot;entity.system.home&quot;</span>
+                        ]
+                    }
+                ],
+                <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;page&quot;</span>,
+                <span class="hljs-string">&quot;formsEnabled&quot;</span>: <span class="hljs-literal">false</span>
+            },
+            {
+                <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;.PlayService&quot;</span>,
+                <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;himusic play ability&quot;</span>,
+                <span class="hljs-string">&quot;icon&quot;</span>: <span class="hljs-string">&quot;$media:ic_launcher&quot;</span>,
+                <span class="hljs-string">&quot;label&quot;</span>: <span class="hljs-string">&quot;HiMusic&quot;</span>,
+                <span class="hljs-string">&quot;launchType&quot;</span>: <span class="hljs-string">&quot;standard&quot;</span>,
+                <span class="hljs-string">&quot;orientation&quot;</span>: <span class="hljs-string">&quot;unspecified&quot;</span>,
+                <span class="hljs-string">&quot;visible&quot;</span>: <span class="hljs-literal">false</span>,
+                <span class="hljs-string">&quot;skills&quot;</span>: [
+                    {
+                        <span class="hljs-string">&quot;actions&quot;</span>: [
+                            <span class="hljs-string">&quot;action.play.music&quot;</span>,
+                            <span class="hljs-string">&quot;action.stop.music&quot;</span>
+                        ],
+                        <span class="hljs-string">&quot;entities&quot;</span>: [
+                            <span class="hljs-string">&quot;entity.audio&quot;</span>
+                        ]
+                    }
+                ],
+                <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;service&quot;</span>,
+                <span class="hljs-string">&quot;backgroundModes&quot;</span>: [
+                    <span class="hljs-string">&quot;audioPlayback&quot;</span>
+                ]
+            },
+            {
+                <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;.UserADataAbility&quot;</span>,
+                <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;data&quot;</span>,
+                <span class="hljs-string">&quot;uri&quot;</span>: <span class="hljs-string">&quot;dataability://com.huawei.hiworld.himusic.UserADataAbility&quot;</span>,
+                <span class="hljs-string">&quot;visible&quot;</span>: <span class="hljs-literal">true</span>
+            }
+        ],
+        <span class="hljs-string">&quot;reqPermissions&quot;</span>: [
+            {
+                <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;ohos.permission.DISTRIBUTED_DATASYNC&quot;</span>,
+                <span class="hljs-string">&quot;reason&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,
+                <span class="hljs-string">&quot;usedScene&quot;</span>: {
+                    <span class="hljs-string">&quot;ability&quot;</span>: [
+                        <span class="hljs-string">&quot;com.huawei.hiworld.himusic.entry.MainAbility&quot;</span>,
+                        <span class="hljs-string">&quot;com.huawei.hiworld.himusic.entry.PlayService&quot;</span>
+                    ],
+                    <span class="hljs-string">&quot;when&quot;</span>: <span class="hljs-string">&quot;inuse&quot;</span>
+                }
+            }
+        ]
+    }
+}
+</code></pre>
 
                                 
                                 </section>
@@ -622,14 +692,10 @@
 
             
                 
-                <a href="ying-yong-shu-ju-guan-li.html" class="navigation navigation-prev " aria-label="Previous page: 应用数据管理">
+                <a href="pei-zhi-wen-jian-de-yuan-su.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 配置文件的元素">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="ying-yong-yin-si-bao-hu.html" class="navigation navigation-next " aria-label="Next page: 应用隐私保护">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -638,7 +704,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"应用权限管理","level":"2.3.5","depth":2,"next":{"title":"应用隐私保护","level":"2.3.6","depth":2,"path":"ying-yong-yin-si-bao-hu.md","ref":"ying-yong-yin-si-bao-hu.md","articles":[]},"previous":{"title":"应用数据管理","level":"2.3.4","depth":2,"path":"ying-yong-shu-ju-guan-li.md","ref":"ying-yong-shu-ju-guan-li.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"ying-yong-quan-xian-guan-li.md","mtime":"2021-06-08T13:21:37.351Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T13:25:49.039Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"配置文件示例","level":"2.3.2.3","depth":3,"next":{"title":"资源文件","level":"2.3.3","depth":2,"ref":"","articles":[{"title":"资源文件的分类","level":"2.3.3.1","depth":3,"path":"zi-yuan-wen-jian-de-fen-lei.md","ref":"zi-yuan-wen-jian-de-fen-lei.md","articles":[]},{"title":"资源文件的使用","level":"2.3.3.2","depth":3,"path":"zi-yuan-wen-jian-de-shi-yong.md","ref":"zi-yuan-wen-jian-de-shi-yong.md","articles":[]},{"title":"国际化","level":"2.3.3.3","depth":3,"path":"guo-ji-hua.md","ref":"guo-ji-hua.md","articles":[]}]},"previous":{"title":"配置文件的元素","level":"2.3.2.2","depth":3,"path":"pei-zhi-wen-jian-de-yuan-su.md","ref":"pei-zhi-wen-jian-de-yuan-su.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"pei-zhi-wen-jian-shi-li.md","mtime":"2021-06-08T13:18:50.572Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-08T13:25:49.039Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
