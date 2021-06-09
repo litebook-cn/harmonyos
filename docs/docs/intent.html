@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>Intent · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -74,7 +74,7 @@
 
     
     
-    <link rel="prev" href="./" />
+    <link rel="prev" href="data-accessing.html" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -761,7 +761,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.1.5" data-path="intent.html">
+        <li class="chapter active" data-level="3.2.1.5" data-path="intent.html">
             
                 <a href="intent.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >Intent</a>
     </h1>
 </div>
 
@@ -1469,7 +1469,103 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="intent"><a name="intent" class="plugin-anchor" href="#intent"><i class="fa fa-link" aria-hidden="true"></i></a>Intent</h1>
+<h2 id="基本概念"><a name="基本概念" class="plugin-anchor" href="#基本概念"><i class="fa fa-link" aria-hidden="true"></i></a>基本概念</h2>
+<p>Intent是对象之间传递信息的载体。例如，当一个Ability需要启动另一个Ability时，或者一个AbilitySlice需要导航到另一个AbilitySlice时，可以通过Intent指定启动的目标同时携带相关数据。Intent的构成元素包括Operation与Parameters，具体描述参见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-intent-0000000000038799#ZH-CN_TOPIC_0000001076675608__table610715348476" target="_blank">表1</a>。</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>子属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Operation</td>
+<td>Action</td>
+<td>表示动作，通常使用系统预置Action，应用也可以自定义Action。例如IntentConstants.ACTION_HOME表示返回桌面动作。</td>
+</tr>
+<tr>
+<td>Entity</td>
+<td>表示类别，通常使用系统预置Entity，应用也可以自定义Entity。例如Intent.ENTITY_HOME表示在桌面显示图标。</td>
+<td></td>
+</tr>
+<tr>
+<td>Uri</td>
+<td>表示Uri描述。如果在Intent中指定了Uri，则Intent将匹配指定的Uri信息，包括scheme, schemeSpecificPart, authority和path信息。</td>
+<td></td>
+</tr>
+<tr>
+<td>Flags</td>
+<td>表示处理Intent的方式。例如Intent.FLAG_ABILITY_CONTINUATION标记在本地的一个Ability是否可以迁移到远端设备继续运行。</td>
+<td></td>
+</tr>
+<tr>
+<td>BundleName</td>
+<td>表示包描述。如果在Intent中同时指定了BundleName和AbilityName，则Intent可以直接匹配到指定的Ability。</td>
+<td></td>
+</tr>
+<tr>
+<td>AbilityName</td>
+<td>表示待启动的Ability名称。如果在Intent中同时指定了BundleName和AbilityName，则Intent可以直接匹配到指定的Ability。</td>
+<td></td>
+</tr>
+<tr>
+<td>DeviceId</td>
+<td>表示运行指定Ability的设备ID。</td>
+<td></td>
+</tr>
+<tr>
+<td>Parameters</td>
+<td><strong>-</strong></td>
+<td>Parameters是一种支持自定义的数据结构，开发者可以通过Parameters传递某些请求所需的额外信息。</td>
+</tr>
+</tbody>
+</table>
+<p>当Intent用于发起请求时，根据指定元素的不同，分为两种类型：</p>
+<ul>
+<li>如果同时指定了BundleName与AbilityName，则根据Ability的全称（例如“com.demoapp.FooAbility”）来直接启动应用。</li>
+<li>如果未同时指定BundleName和AbilityName，则根据Operation中的其他属性来启动应用。</li>
+</ul>
+<p>说明</p>
+<p>Intent设置属性时，必须先使用Operation来设置属性。如果需要新增或修改属性，必须在设置Operation后再执行操作。</p>
+<p>关于Intent最简单的使用方法，可参见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/start-overview-0000000000029602" target="_blank">快速入门</a>的示例代码。其中“<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/start-page-redirection-0000001051242367" target="_blank">实现页面跳转</a>”重点描述了使用Intent实现两个页面跳转关系的操作。</p>
+<h2 id="根据ability的全称启动应用"><a name="根据ability的全称启动应用" class="plugin-anchor" href="#根据ability的全称启动应用"><i class="fa fa-link" aria-hidden="true"></i></a>根据Ability的全称启动应用</h2>
+<p>通过构造包含BundleName与AbilityName的Operation对象，可以启动一个Ability、并导航到该Ability。示例代码如下：</p>
+<pre><code>Intent intent = new Intent();
+// 通过Intent中的OperationBuilder类构造operation对象，指定设备标识（空串表示当前设备）、应用包名、Ability名称Operation operation = new Intent.OperationBuilder()        .withDeviceId(&quot;&quot;)        .withBundleName(&quot;com.demoapp&quot;)        .withAbilityName(&quot;com.demoapp.FooAbility&quot;)        .build();
+// 把operation设置到intent中intent.setOperation(operation);startAbility(intent);
+</code></pre><p>作为处理请求的对象，会在相应的回调方法中接收请求方传递的Intent对象。以导航到另一个Ability为例，导航的目标Ability可以在其onStart()回调的参数中获得Intent对象。</p>
+<h2 id="根据operation的其他属性启动应用"><a name="根据operation的其他属性启动应用" class="plugin-anchor" href="#根据operation的其他属性启动应用"><i class="fa fa-link" aria-hidden="true"></i></a>根据Operation的其他属性启动应用</h2>
+<p>有些场景下，开发者需要在应用中使用其他应用提供的某种能力，而不感知提供该能力的具体是哪一个应用。例如开发者需要通过浏览器打开一个链接，而不关心用户最终选择哪一个浏览器应用，则可以通过Operation的其他属性（除BundleName与AbilityName之外的属性）描述需要的能力。如果设备上存在多个应用提供同种能力，系统则弹出候选列表，由用户选择由哪个应用处理请求。以下示例展示使用Intent跨Ability查询天气信息。</p>
+<p><strong>请求方</strong></p>
+<p>在Ability中构造Intent以及包含Action的Operation对象，并调用startAbilityForResult()方法发起请求。然后重写onAbilityResult()回调方法，对请求结果进行处理。</p>
+<pre><code>private void queryWeather() {    Intent intent = new Intent();    Operation operation = new Intent.OperationBuilder()            .withAction(Intent.ACTION_QUERY_WEATHER)            .build();    intent.setOperation(operation);    startAbilityForResult(intent, REQ_CODE_QUERY_WEATHER);}
+@Overrideprotected void onAbilityResult(int requestCode, int resultCode, Intent resultData) {    switch (requestCode) {        case REQ_CODE_QUERY_WEATHER:            // Do something with result.            ...            return;        default:            ...    }}
+</code></pre><p><strong>处理方</strong></p>
+<ol>
+<li><p>作为处理请求的对象，首先需要在配置文件中声明对外提供的能力，以便系统据此找到自身并作为候选的请求处理者。</p>
+<pre><code>{    &quot;module&quot;: {        ...        &quot;abilities&quot;: [            {                ...                &quot;skills&quot;:[                    {                        &quot;actions&quot;:[                            &quot;ability.intent.QUERY_WEATHER&quot;                        ]                    }                ]                ...            }        ]        ...    }    ...}
+</code></pre></li>
+<li><p>在Ability中配置路由以便支持以此action导航到对应的AbilitySlice。</p>
+<pre><code>@Overrideprotected void onStart(Intent intent) {    ...    addActionRoute(Intent.ACTION_QUERY_WEATHER, DemoSlice.class.getName());    ...}
+</code></pre></li>
+<li><p>在Ability中处理请求，并调用setResult()方法暂存返回结果。</p>
+<pre><code>@Overrideprotected void onActive() {    ...    Intent resultIntent = new Intent();    setResult(0, resultIntent);   //0为当前Ability销毁后返回的resultCode。    ...}
+</code></pre></li>
+</ol>
+<h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对Intent开发，有以下示例工程可供参考：</p>
+<ul>
+<li><p>Intent</p>
+<p>本示例演示了如何根据Ability的全称启动应用和根据Operation的其他属性启动应用。</p>
+</li>
+<li><p>AbilityIntent</p>
+<p>本示例通过Ability的全称和Operation的其他属性两种方式实现界面跳转以及数据传递。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,7 +1592,7 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="data-accessing.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 访问Data">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -1508,7 +1604,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Intent","level":"3.2.1.5","depth":3,"next":{"title":"分布式任务调度","level":"3.2.2","depth":2,"ref":"","articles":[{"title":"分布式任务调度开发概述","level":"3.2.2.1","depth":3,"path":"distributed-overview.md","ref":"distributed-overview.md","articles":[]},{"title":"分布式任务调度开发指导","level":"3.2.2.2","depth":3,"path":"distributed-guidelines.md","ref":"distributed-guidelines.md","articles":[]}]},"previous":{"title":"访问Data","level":"3.2.1.4.3","depth":4,"path":"data-accessing.md","ref":"data-accessing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"intent.md","mtime":"2021-06-09T13:14:12.404Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

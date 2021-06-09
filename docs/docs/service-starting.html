@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>启动Service · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,8 +73,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="service-connecting" />
     
-    <link rel="prev" href="./" />
+    
+    <link rel="prev" href="service-creating.html" />
     
 
     </head>
@@ -132,7 +134,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -646,7 +648,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.1.3.3" data-path="service-starting.html">
+        <li class="chapter active" data-level="3.2.1.3.3" data-path="service-starting.html">
             
                 <a href="service-starting.html">
             
@@ -1454,7 +1456,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >启动Service</a>
     </h1>
 </div>
 
@@ -1469,7 +1471,33 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="启动service"><a name="启动service" class="plugin-anchor" href="#启动service"><i class="fa fa-link" aria-hidden="true"></i></a>启动Service</h1>
+<p>介绍通过startAbility()启动Service以及对应的停止方法。</p>
+<ul>
+<li><p>启动Service</p>
+<p>Ability为开发者提供了startAbility()方法来启动另外一个Ability。因为Service也是Ability的一种，开发者同样可以通过将<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-intent-0000000000038799" target="_blank">Intent</a>传递给该方法来启动Service。不仅支持启动本地Service，还支持启动远程Service。</p>
+<p>开发者可以通过构造包含DeviceId、BundleName与AbilityName的Operation对象来设置目标Service信息。这三个参数的含义如下：</p>
+<ul>
+<li>DeviceId：表示设备ID。如果是本地设备，则可以直接留空；如果是远程设备，可以通过ohos.distributedschedule.interwork.DeviceManager提供的getDeviceList获取设备列表，详见《API参考》。</li>
+<li>BundleName：表示包名称。</li>
+<li>AbilityName：表示待启动的Ability名称。</li>
+</ul>
+<p>启动本地设备Service的代码示例如下：</p>
+<pre><code>Intent intent = new Intent();Operation operation = new Intent.OperationBuilder()        .withDeviceId(&quot;&quot;)        .withBundleName(&quot;com.domainname.hiworld.himusic&quot;)        .withAbilityName(&quot;com.domainname.hiworld.himusic.ServiceAbility&quot;)        .build();intent.setOperation(operation);startAbility(intent);
+</code></pre><p>启动远程设备Service的代码示例如下：</p>
+<pre><code>Intent intent = new Intent();Operation operation = new Intent.OperationBuilder()        .withDeviceId(&quot;deviceId&quot;)        .withBundleName(&quot;com.domainname.hiworld.himusic&quot;)        .withAbilityName(&quot;com.domainname.hiworld.himusic.ServiceAbility&quot;)        .withFlags(Intent.FLAG_ABILITYSLICE_MULTI_DEVICE) // 设置支持分布式调度系统多设备启动的标识        .build();intent.setOperation(operation);startAbility(intent);
+</code></pre><p>执行上述代码后，Ability将通过startAbility() 方法来启动Service。</p>
+<ul>
+<li>如果Service尚未运行，则系统会先调用onStart()来初始化Service，再回调Service的onCommand()方法来启动Service。</li>
+<li>如果Service正在运行，则系统会直接回调Service的onCommand()方法来启动Service。</li>
+</ul>
+</li>
+<li><p>停止Service</p>
+<p>Service一旦创建就会一直保持在后台运行，除非必须回收内存资源，否则系统不会停止或销毁Service。开发者可以在Service中通过terminateAbility()停止本Service或在其他Ability调用stopAbility()来停止Service。</p>
+<p>停止Service同样支持停止本地设备Service和停止远程设备Service，使用方法与启动Service一样。一旦调用停止Service的方法，系统便会尽快销毁Service。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,10 +1524,14 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="service-creating.html" class="navigation navigation-prev " aria-label="Previous page: 创建Service">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="service-connecting" class="navigation navigation-next " aria-label="Next page: 连接Service">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -1508,7 +1540,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"启动Service","level":"3.2.1.3.3","depth":4,"next":{"title":"连接Service","level":"3.2.1.3.4","depth":4,"path":"service-connecting","ref":"service-connecting","articles":[]},"previous":{"title":"创建Service","level":"3.2.1.3.2","depth":4,"path":"service-creating.md","ref":"service-creating.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"service-starting.md","mtime":"2021-06-09T13:12:38.193Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

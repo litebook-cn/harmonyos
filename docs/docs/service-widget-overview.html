@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>概述 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -74,8 +74,6 @@
 
     
     
-    <link rel="prev" href="./" />
-    
 
     </head>
     <body>
@@ -132,7 +130,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -909,7 +907,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.2.4.1" data-path="service-widget-overview.html">
+        <li class="chapter active" data-level="3.2.4.1" data-path="service-widget-overview.html">
             
                 <a href="service-widget-overview.html">
             
@@ -1454,7 +1452,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >概述</a>
     </h1>
 </div>
 
@@ -1469,7 +1467,42 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="概述"><a name="概述" class="plugin-anchor" href="#概述"><i class="fa fa-link" aria-hidden="true"></i></a>概述</h1>
+<p>服务卡片（以下简称“卡片”）是<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/glossary-0000000000029587#ZH-CN_TOPIC_0000001050749051__section5406185415236" target="_blank">FA</a>的一种界面展示形式，将FA的重要信息或操作前置到卡片，以达到服务直达，减少体验层级目的。</p>
+<p>卡片常用于嵌入到其他应用（当前只支持系统应用）中作为其界面的一部分显示，并支持拉起页面，发送消息等基础的交互功能。卡片使用方负责显示卡片。</p>
+<p>示例如下图所示。</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193021.88100319780752457097516451007377:50520607130708:2800:5FDB86A804966362C1DE0547FE267CD25C1149CE8B7B3DD3839B8A782EC5486E.png?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<h2 id="基本概念"><a name="基本概念" class="plugin-anchor" href="#基本概念"><i class="fa fa-link" aria-hidden="true"></i></a>基本概念</h2>
+<ul>
+<li><p>卡片使用方</p>
+<p>显示卡片内容的宿主应用，控制卡片在宿主中展示的位置。</p>
+</li>
+<li><p>卡片管理服务</p>
+<p>用于管理系统中所添加卡片的常驻代理服务，包括卡片对象的管理与使用，以及卡片周期性刷新等。</p>
+</li>
+<li><p>卡片提供方</p>
+<p>提供卡片显示内容的HarmonyOS应用或原子化服务，控制卡片的显示内容、控件布局以及控件点击事件。</p>
+<p>说明</p>
+<p>卡片使用方和提供方不要求常驻运行，在需要添加/删除/请求更新卡片时，卡片管理服务会拉起卡片提供方获取卡片信息。</p>
+</li>
+</ul>
+<h2 id="运作机制"><a name="运作机制" class="plugin-anchor" href="#运作机制"><i class="fa fa-link" aria-hidden="true"></i></a>运作机制</h2>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193021.60067705110331796869508236088884:50520607130708:2800:2395392C9FA9026D481BF85ADB0D0BF17B0E6D1DC5815A45988EF90092AAFE65.png?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<p><strong>卡片管理服务包含以下模块：</strong></p>
+<ul>
+<li>周期性刷新：在卡片添加后，根据卡片的刷新策略启动定时任务周期性触发卡片的刷新。</li>
+<li>卡片缓存管理：在卡片添加到卡片管理服务后，对卡片的视图信息进行缓存，以便下次获取卡片时可以直接返回缓存数据，降低时延。</li>
+<li>卡片生命周期管理：对于卡片切换到后台或者被遮挡时，暂停卡片的刷新；以及卡片的升级/卸载场景下对卡片数据的更新和清理。</li>
+<li>卡片使用方对象管理：对卡片使用方的RPC对象进行管理，用于使用方请求进行校验以及对卡片更新后的回调处理。</li>
+<li>通信适配层：负责与卡片使用方和提供方进行RPC通信。</li>
+</ul>
+<p><strong>卡片提供方包含以下模块：</strong></p>
+<ul>
+<li>卡片服务：由卡片提供方开发者实现，开发者实现onCreateForm、onUpdateForm和onDeleteForm处理创建卡片、更新卡片以及删除卡片等请求，提供相应的卡片服务。</li>
+<li>卡片提供方实例管理模块：由卡片提供方开发者实现，负责对卡片管理服务分配的卡片实例进行持久化管理。</li>
+<li>通信适配层：由HarmonyOS SDK提供，负责与卡片管理服务通信，用于将卡片的更新数据主动推送到卡片管理服务。</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,10 +1529,6 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
-                    <i class="fa fa-angle-left"></i>
-                </a>
-                
                 
             
         
@@ -1508,7 +1537,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"概述","level":"3.2.4.1","depth":3,"next":{"title":"卡片提供方开发指导","level":"3.2.4.2","depth":3,"ref":"","articles":[{"title":"卡片开发说明","level":"3.2.4.2.1","depth":4,"path":"widget-provider-intro.md","ref":"widget-provider-intro.md","articles":[]},{"title":"JS卡片开发步骤","level":"3.2.4.2.2","depth":4,"path":"widget-provider-js.md","ref":"widget-provider-js.md","articles":[]},{"title":"Java卡片开发指导","level":"3.2.4.2.3","depth":4,"path":"widget-provider-java.md","ref":"widget-provider-java.md","articles":[]},{"title":"其他可选功能开发指引","level":"3.2.4.2.4","depth":4,"path":"widget-provider-optional.md","ref":"widget-provider-optional.md","articles":[]}]},"previous":{"title":"服务卡片","level":"3.2.4","depth":2,"ref":"","articles":[{"title":"概述","level":"3.2.4.1","depth":3,"path":"service-widget-overview.md","ref":"service-widget-overview.md","articles":[]},{"title":"卡片提供方开发指导","level":"3.2.4.2","depth":3,"ref":"","articles":[{"title":"卡片开发说明","level":"3.2.4.2.1","depth":4,"path":"widget-provider-intro.md","ref":"widget-provider-intro.md","articles":[]},{"title":"JS卡片开发步骤","level":"3.2.4.2.2","depth":4,"path":"widget-provider-js.md","ref":"widget-provider-js.md","articles":[]},{"title":"Java卡片开发指导","level":"3.2.4.2.3","depth":4,"path":"widget-provider-java.md","ref":"widget-provider-java.md","articles":[]},{"title":"其他可选功能开发指引","level":"3.2.4.2.4","depth":4,"path":"widget-provider-optional.md","ref":"widget-provider-optional.md","articles":[]}]}]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"service-widget-overview.md","mtime":"2021-06-09T13:15:32.572Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

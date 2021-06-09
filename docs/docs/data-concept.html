@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>Data Ability基本概念 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,8 +73,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="data-creating.html" />
     
-    <link rel="prev" href="./" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -717,7 +717,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.2.1.4.1" data-path="data-concept.html">
+        <li class="chapter active" data-level="3.2.1.4.1" data-path="data-concept.html">
             
                 <a href="data-concept.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >Data Ability基本概念</a>
     </h1>
 </div>
 
@@ -1469,7 +1469,25 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="data-ability基本概念"><a name="data-ability基本概念" class="plugin-anchor" href="#data-ability基本概念"><i class="fa fa-link" aria-hidden="true"></i></a>Data Ability基本概念</h1>
+<p>使用Data模板的Ability（以下简称“Data”）有助于应用管理其自身和其他应用存储数据的访问，并提供与其他应用共享数据的方法。Data既可用于同设备不同应用的数据共享，也支持跨设备不同应用的数据共享。</p>
+<p>数据的存放形式多样，可以是数据库，也可以是磁盘上的文件。Data对外提供对数据的增、删、改、查，以及打开文件等接口，这些接口的具体实现由开发者提供。</p>
+<h2 id="uri介绍"><a name="uri介绍" class="plugin-anchor" href="#uri介绍"><i class="fa fa-link" aria-hidden="true"></i></a>URI介绍</h2>
+<p>Data的提供方和使用方都通过URI（Uniform Resource Identifier）来标识一个具体的数据，例如数据库中的某个表或磁盘上的某个文件。HarmonyOS的URI仍基于URI通用标准，格式如下：</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193020.51455982509834554169551651036814:50520607130708:2800:94695488457F0E1E0BA94803EB7107912B7B594ADBDEC00FAE27880BFE504658.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<ul>
+<li>scheme：协议方案名，固定为“dataability”，代表Data Ability所使用的协议类型。</li>
+<li>authority：设备ID。如果为跨设备场景，则为目标设备的ID；如果为本地设备场景，则不需要填写。</li>
+<li>path：资源的路径信息，代表特定资源的位置信息。</li>
+<li>query：查询参数。</li>
+<li>fragment：可以用于指示要访问的子资源。</li>
+</ul>
+<p>URI示例：</p>
+<ul>
+<li>跨设备场景：dataability://<em>device_id</em>/<em>com.domainname.dataability.persondata</em>/<em>person</em>/<em>10</em></li>
+<li>本地设备：dataability:///<em>com.domainname.dataability.persondata</em>/<em>person</em>/<em>10</em></li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,10 +1514,10 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
-                    <i class="fa fa-angle-left"></i>
-                </a>
                 
+                <a href="data-creating.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 创建Data">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -1508,7 +1526,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Data Ability基本概念","level":"3.2.1.4.1","depth":4,"next":{"title":"创建Data","level":"3.2.1.4.2","depth":4,"path":"data-creating.md","ref":"data-creating.md","articles":[]},"previous":{"title":"Data Ability","level":"3.2.1.4","depth":3,"ref":"","articles":[{"title":"Data Ability基本概念","level":"3.2.1.4.1","depth":4,"path":"data-concept.md","ref":"data-concept.md","articles":[]},{"title":"创建Data","level":"3.2.1.4.2","depth":4,"path":"data-creating.md","ref":"data-creating.md","articles":[]},{"title":"访问Data","level":"3.2.1.4.3","depth":4,"path":"data-accessing.md","ref":"data-accessing.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"data-concept.md","mtime":"2021-06-09T13:13:25.951Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

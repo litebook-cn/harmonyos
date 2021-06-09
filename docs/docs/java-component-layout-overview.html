@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>开发说明 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,8 +73,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="java-component-layout-code.html" />
     
-    <link rel="prev" href="./" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -1212,7 +1212,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.4.1.2.1" data-path="java-component-layout-overview.html">
+        <li class="chapter active" data-level="3.4.1.2.1" data-path="java-component-layout-overview.html">
             
                 <a href="java-component-layout-overview.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >开发说明</a>
     </h1>
 </div>
 
@@ -1469,7 +1469,83 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="开发说明"><a name="开发说明" class="plugin-anchor" href="#开发说明"><i class="fa fa-link" aria-hidden="true"></i></a>开发说明</h1>
+<p>HarmonyOS提供了Ability和AbilitySlice两个基础类，一个有界面的Ability可以由一个或多个AbilitySlice构成，AbilitySlice主要用于承载单个页面的具体逻辑实现和界面UI，是应用显示、运行和跳转的最小单元。AbilitySlice通过setUIContent为界面设置布局。</p>
+<table>
+<thead>
+<tr>
+<th>接口声明</th>
+<th>接口描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>setUIContent(ComponentContainer root)</td>
+<td>设置界面入口，root为界面组件树根节点。</td>
+</tr>
+</tbody>
+</table>
+<p>组件需要进行组合，并添加到界面的布局中。在Java UI框架中，提供了两种编写布局的方式：</p>
+<ul>
+<li>在代码中创建布局：用代码创建Component和ComponentContainer对象，为这些对象设置合适的布局参数和属性值，并将Component添加到ComponentContainer中，从而创建出完整界面。</li>
+<li>在XML中声明UI布局：按层级结构来描述Component和ComponentContainer的关系，给组件节点设定合适的布局参数和属性值，代码中可直接加载生成此布局。</li>
+</ul>
+<p>这两种方式创建出的布局没有本质差别，在XML中声明布局，在加载后同样可在代码中对该布局进行修改。</p>
+<h2 id="组件分类"><a name="组件分类" class="plugin-anchor" href="#组件分类"><i class="fa fa-link" aria-hidden="true"></i></a>组件分类</h2>
+<p>根据组件的功能，可以将组件分为布局类、显示类、交互类三类：</p>
+<table>
+<thead>
+<tr>
+<th>组件类别</th>
+<th>组件名称</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>布局类</td>
+<td>PositionLayout、DirectionalLayout、StackLayout、DependentLayout、TableLayout、AdaptiveBoxLayout</td>
+<td>提供了不同布局规范的组件容器，例如以单一方向排列的DirectionalLayout、以相对位置排列的DependentLayout、以确切位置排列的PositionLayout等。</td>
+</tr>
+<tr>
+<td>显示类</td>
+<td>Text、Image、Clock、TickTimer、ProgressBar</td>
+<td>提供了单纯的内容显示，例如用于文本显示的Text，用于图像显示的Image等。</td>
+</tr>
+<tr>
+<td>交互类</td>
+<td>TextField、Button、Checkbox、RadioButton/RadioContainer、Switch、ToggleButton、Slider、Rating、ScrollView、TabList、ListContainer、PageSlider、PageFlipper、PageSliderIndicator、Picker、TimePicker、DatePicker、SurfaceProvider、ComponentProvider</td>
+<td>提供了具体场景下与用户交互响应的功能，例如Button提供了点击响应功能，Slider提供了进度选择功能等。</td>
+</tr>
+</tbody>
+</table>
+<p>框架提供的组件使应用界面开发更加便利，这些组件的具体功能说明及属性设置详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-references/overview-0000001054120033" target="_blank">API参考</a>。</p>
+<h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对常用组件和布局开发，有以下示例工程可供参考：</p>
+<ul>
+<li><p>Components</p>
+<p>本示例演示了Text和Button两种常用组件的基础使用方法。</p>
+</li>
+<li><p>CommonLayout</p>
+<p>本示例演示了DirectionalLayout和DependentLayout两种常用布局的基础使用方法。</p>
+</li>
+</ul>
+<p>针对Java UI框架的组件与布局开发，有以下Codelabs可供参考：</p>
+<ul>
+<li><p>常用组件和布局</p>
+<p>基于HarmonyOS Java UI，实现常见组件或者布局。</p>
+</li>
+<li><p>分布式新闻客户端</p>
+<p>基于HarmonyOS应用中Service Ability和Page Ability的使用，实现跨设备FA拉起。</p>
+</li>
+<li><p>跨设备视频播放</p>
+<p>基于分布式能力和IDL跨进程通信，实现视频跨设备播放、控制。</p>
+</li>
+<li><p>分布式游戏手柄</p>
+<p>基于分布式能力，将手机作为智慧屏的虚拟手柄终端，组成全新的多人娱乐场景。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,10 +1572,10 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
-                    <i class="fa fa-angle-left"></i>
-                </a>
                 
+                <a href="java-component-layout-code.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 代码创建布局">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -1508,7 +1584,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"开发说明","level":"3.4.1.2.1","depth":4,"next":{"title":"代码创建布局","level":"3.4.1.2.2","depth":4,"path":"java-component-layout-code.md","ref":"java-component-layout-code.md","articles":[]},"previous":{"title":"组件与布局开发指导","level":"3.4.1.2","depth":3,"ref":"","articles":[{"title":"开发说明","level":"3.4.1.2.1","depth":4,"path":"java-component-layout-overview.md","ref":"java-component-layout-overview.md","articles":[]},{"title":"代码创建布局","level":"3.4.1.2.2","depth":4,"path":"java-component-layout-code.md","ref":"java-component-layout-code.md","articles":[]},{"title":"XML创建布局","level":"3.4.1.2.3","depth":4,"path":"java-component-layout-xml.md","ref":"java-component-layout-xml.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"java-component-layout-overview.md","mtime":"2021-06-09T13:17:26.689Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

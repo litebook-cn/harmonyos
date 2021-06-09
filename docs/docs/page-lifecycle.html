@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>Page Ablity生命周期 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,8 +73,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="page-switching.html" />
     
-    <link rel="prev" href="./" />
+    
+    <link rel="prev" href="page-concept.html" />
     
 
     </head>
@@ -132,7 +134,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -562,7 +564,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.1.2.2" data-path="page-lifecycle.html">
+        <li class="chapter active" data-level="3.2.1.2.2" data-path="page-lifecycle.html">
             
                 <a href="page-lifecycle.html">
             
@@ -1454,7 +1456,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >Page Ablity生命周期</a>
     </h1>
 </div>
 
@@ -1469,7 +1471,56 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="page-ablity生命周期"><a name="page-ablity生命周期" class="plugin-anchor" href="#page-ablity生命周期"><i class="fa fa-link" aria-hidden="true"></i></a>Page Ablity生命周期</h1>
+<p>系统管理或用户操作等行为均会引起Page实例在其生命周期的不同状态之间进行转换。Ability类提供的回调机制能够让Page及时感知外界变化，从而正确地应对状态变化（比如释放资源），这有助于提升应用的性能和稳健性。</p>
+<h2 id="page生命周期回调"><a name="page生命周期回调" class="plugin-anchor" href="#page生命周期回调"><i class="fa fa-link" aria-hidden="true"></i></a>Page生命周期回调</h2>
+<p>Page生命周期的不同状态转换及其对应的回调，如<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-page-lifecycle-0000000000029840#ZH-CN_TOPIC_0000001083455837__fig3655123011010" target="_blank">图1</a>所示。</p>
+<p><strong>图1</strong> Page生命周期
+<img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193020.97471450150193711729349960088876:50520607130708:2800:57E14E704FBA7ED8CEEC563B309E4AF5386F368B77629FC8938FD544E7566F2B.png?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<ul>
+<li><p>onStart()</p>
+<p>当系统首次创建Page实例时，触发该回调。对于一个Page实例，该回调在其生命周期过程中仅触发一次，Page在该逻辑后将进入INACTIVE状态。开发者必须重写该方法，并在此配置默认展示的AbilitySlice。</p>
+<pre><code>    @Override    public void onStart(Intent intent) {        super.onStart(intent);        super.setMainRoute(FooSlice.class.getName());    }
+</code></pre></li>
+<li><p>onActive()</p>
+<p>Page会在进入INACTIVE状态后来到前台，然后系统调用此回调。Page在此之后进入ACTIVE状态，该状态是应用与用户交互的状态。Page将保持在此状态，除非某类事件发生导致Page失去焦点，比如用户点击返回键或导航到其他Page。当此类事件发生时，会触发Page回到INACTIVE状态，系统将调用onInactive()回调。此后，Page可能重新回到ACTIVE状态，系统将再次调用onActive()回调。因此，开发者通常需要成对实现onActive()和onInactive()，并在onActive()中获取在onInactive()中被释放的资源。</p>
+</li>
+<li><p>onInactive()</p>
+<p>当Page失去焦点时，系统将调用此回调，此后Page进入INACTIVE状态。开发者可以在此回调中实现Page失去焦点时应表现的恰当行为。</p>
+</li>
+<li><p>onBackground()</p>
+<p>如果Page不再对用户可见，系统将调用此回调通知开发者用户进行相应的资源释放，此后Page进入BACKGROUND状态。开发者应该在此回调中释放Page不可见时无用的资源，或在此回调中执行较为耗时的状态保存操作。</p>
+</li>
+<li><p>onForeground()</p>
+<p>处于BACKGROUND状态的Page仍然驻留在内存中，当重新回到前台时（比如用户重新导航到此Page），系统将先调用onForeground()回调通知开发者，而后Page的生命周期状态回到INACTIVE状态。开发者应当在此回调中重新申请在onBackground()中释放的资源，最后Page的生命周期状态进一步回到ACTIVE状态，系统将通过onActive()回调通知开发者用户。</p>
+</li>
+<li><p>onStop()</p>
+<p>系统将要销毁Page时，将会触发此回调函数，通知用户进行系统资源的释放。销毁Page的可能原因包括以下几个方面：</p>
+<ul>
+<li>用户通过系统管理能力关闭指定Page，例如使用任务管理器关闭Page。</li>
+<li>用户行为触发Page的terminateAbility()方法调用，例如使用应用的退出功能。</li>
+<li>配置变更导致系统暂时销毁Page并重建。</li>
+<li>系统出于资源管理目的，自动触发对处于BACKGROUND状态Page的销毁。</li>
+</ul>
+</li>
+</ul>
+<h2 id="abilityslice生命周期"><a name="abilityslice生命周期" class="plugin-anchor" href="#abilityslice生命周期"><i class="fa fa-link" aria-hidden="true"></i></a>AbilitySlice生命周期</h2>
+<p>AbilitySlice作为Page的组成单元，其生命周期是依托于其所属Page生命周期的。AbilitySlice和Page具有相同的生命周期状态和同名的回调，当Page生命周期发生变化时，它的AbilitySlice也会发生相同的生命周期变化。此外，AbilitySlice还具有独立于Page的生命周期变化，这发生在同一Page中的AbilitySlice之间导航时，此时Page的生命周期状态不会改变。</p>
+<p>AbilitySlice生命周期回调与Page的相应回调类似，因此不再赘述。由于AbilitySlice承载具体的页面，开发者必须重写AbilitySlice的onStart()回调，并在此方法中通过setUIContent()方法设置页面，如下所示：</p>
+<pre><code>    @Override    protected void onStart(Intent intent) {        super.onStart(intent);
+        setUIContent(ResourceTable.Layout_main_layout);    }
+</code></pre><p>AbilitySlice实例创建和管理通常由应用负责，系统仅在特定情况下会创建AbilitySlice实例。例如，通过导航启动某个AbilitySlice时，是由系统负责实例化；但是在同一个Page中不同的AbilitySlice间导航时则由应用负责实例化。</p>
+<h2 id="page与abilityslice生命周期关联"><a name="page与abilityslice生命周期关联" class="plugin-anchor" href="#page与abilityslice生命周期关联"><i class="fa fa-link" aria-hidden="true"></i></a>Page与AbilitySlice生命周期关联</h2>
+<p>当AbilitySlice处于前台且具有焦点时，其生命周期状态随着所属Page的生命周期状态的变化而变化。当一个Page拥有多个AbilitySlice时，例如：MyAbility下有FooAbilitySlice和BarAbilitySlice，当前FooAbilitySlice处于前台并获得焦点，并即将导航到BarAbilitySlice，在此期间的生命周期状态变化顺序为：</p>
+<ol>
+<li>FooAbilitySlice从ACTIVE状态变为INACTIVE状态。</li>
+<li>BarAbilitySlice则从INITIAL状态首先变为INACTIVE状态，然后变为ACTIVE状态（假定此前BarAbilitySlice未曾启动）。</li>
+<li>FooAbilitySlice从INACTIVE状态变为BACKGROUND状态。</li>
+</ol>
+<p>对应两个slice的生命周期方法回调顺序为：</p>
+<p>FooAbilitySlice.onInactive() --&gt; BarAbilitySlice.onStart() --&gt; BarAbilitySlice.onActive() --&gt; FooAbilitySlice.onBackground()</p>
+<p>在整个流程中，MyAbility始终处于ACTIVE状态。但是，当Page被系统销毁时，其所有已实例化的AbilitySlice将联动销毁，而不仅是处于前台的AbilitySlice。</p>
+
                                 
                                 </section>
                             
@@ -1496,10 +1547,14 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="page-concept.html" class="navigation navigation-prev " aria-label="Previous page: Page Ability基本概念">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="page-switching.html" class="navigation navigation-next " aria-label="Next page: AbilitySlice间导航">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -1508,7 +1563,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Page Ablity生命周期","level":"3.2.1.2.2","depth":4,"next":{"title":"AbilitySlice间导航","level":"3.2.1.2.3","depth":4,"path":"page-switching.md","ref":"page-switching.md","articles":[]},"previous":{"title":"Page Ability基本概念","level":"3.2.1.2.1","depth":4,"path":"page-concept.md","ref":"page-concept.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"page-lifecycle.md","mtime":"2021-06-09T13:11:25.576Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

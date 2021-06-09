@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>Button · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -74,7 +74,7 @@
 
     
     
-    <link rel="prev" href="./" />
+    <link rel="prev" href="java-component-text.html" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -1283,7 +1283,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4.1.3.2" data-path="java-component-button.html">
+        <li class="chapter active" data-level="3.4.1.3.2" data-path="java-component-button.html">
             
                 <a href="java-component-button.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >Button</a>
     </h1>
 </div>
 
@@ -1469,7 +1469,78 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="button"><a name="button" class="plugin-anchor" href="#button"><i class="fa fa-link" aria-hidden="true"></i></a>Button</h1>
+<p>Button是一种常见的组件，点击可以触发对应的操作，通常由文本或图标组成，也可以由图标和文本共同组成。</p>
+<p><strong>图1</strong> 文本按钮
+<img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193022.09882639010394481441465058134383:50520607130709:2800:D28E73DAC8219C9C2561A9F9AC46521F9BAE20C1D021B6FA55036AC33148393F.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<p><strong>图2</strong> 图标按钮
+<img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193022.26239377446279323319649999447897:50520607130709:2800:1F12B7664D48EE15CBE979F7F4E83285DFE13B764508CEC23398FFF2A1EBCCD7.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<p><strong>图3</strong> 图标和文本共同组成的按钮
+<img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193022.22850561130282691108823640350296:50520607130709:2800:BCA6E1F018D993A097FF4D733C9996948819CD8C920354C64F47B92B3A550044.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<h2 id="支持的xml属性"><a name="支持的xml属性" class="plugin-anchor" href="#支持的xml属性"><i class="fa fa-link" aria-hidden="true"></i></a>支持的XML属性</h2>
+<p>Button无自有的XML属性，共有XML属性继承自<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ui-java-component-text-0000001050729534#ZH-CN_TOPIC_0000001064278801__section198044208191" target="_blank">Text</a></p>
+<h2 id="创建button"><a name="创建button" class="plugin-anchor" href="#创建button"><i class="fa fa-link" aria-hidden="true"></i></a>创建Button</h2>
+<p>创建如下样式的按钮：</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193023.50832629573237381949263259269951:50520607130709:2800:CC6783B9480DB2129BD9DA14DD8A01B6153B75EC2C69AAC0FFCCEB15504DBC79.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<ol>
+<li><p>在layout目录下的xml文件中创建Button，并设置按钮的背景形状、颜色。</p>
+<p>常用的背景如文本背景、按钮背景，通常采用XML格式放置在<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-categories-0000001052066099#ZH-CN_TOPIC_0000001062847941__p523519228297" target="_blank">graphic</a>目录下。</p>
+<pre><code>&lt;Button    ohos:id=&quot;$+id:button&quot;    ohos:width=&quot;match_content&quot;    ohos:height=&quot;match_content&quot;    ohos:text_size=&quot;27fp&quot;    ohos:text=&quot;button&quot;    ohos:background_element=&quot;$graphic:background_button&quot;       ohos:left_margin=&quot;15vp&quot;    ohos:bottom_margin=&quot;15vp&quot;    ohos:right_padding=&quot;8vp&quot;    ohos:left_padding=&quot;8vp&quot;    ohos:element_left=&quot;$media:ic_btn_reload&quot;/&gt;
+</code></pre></li>
+<li><p>在“Project”窗口，打开“entry &gt; src &gt; main &gt; resources &gt; base”，右键点击“graphic”文件夹，选择“New &gt; File”，命名为“background_button.xml”，在该文件中定义按钮的背景形状、颜色。</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shape xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:shape=&quot;rectangle&quot;&gt;    &lt;corners        ohos:radius=&quot;10&quot;/&gt;    &lt;solid        ohos:color=&quot;#007CFD&quot;/&gt;&lt;/shape&gt;
+</code></pre></li>
+</ol>
+<h2 id="响应点击事件"><a name="响应点击事件" class="plugin-anchor" href="#响应点击事件"><i class="fa fa-link" aria-hidden="true"></i></a>响应点击事件</h2>
+<p>按钮的重要作用是当用户单击按钮时，会执行相应的操作或者界面出现相应的变化。实际上用户点击按钮时，Button对象将收到一个点击事件。开发者可以自定义响应点击事件的方法。例如，通过创建一个Component.ClickedListener对象，然后通过调用setClickedListener将其分配给按钮。</p>
+<pre><code>Button button = (Button) findComponentById(ResourceTable.Id_button);// 为按钮设置点击事件回调button.setClickedListener(new Component.ClickedListener() {    @Override    public void onClick(Component component) {        // 此处添加点击按钮后的事件处理逻辑    }});
+</code></pre><h2 id="不同类型的按钮"><a name="不同类型的按钮" class="plugin-anchor" href="#不同类型的按钮"><i class="fa fa-link" aria-hidden="true"></i></a>不同类型的按钮</h2>
+<p>按照按钮的形状，按钮可以分为：普通按钮，椭圆按钮，胶囊按钮，圆形按钮等。</p>
+<ul>
+<li><p>普通按钮</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193023.60996962946659717575149100162029:50520607130709:2800:D8D4DF86EEA1FBA85191016CCCC0853BB2DCB7F2A4006CEA4F3CB547F491DF24.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<p>普通按钮和其他按钮的区别在于不需要设置任何形状，只设置文本和背景颜色即可，例如：</p>
+<pre><code>&lt;Button    ohos:width=&quot;150vp&quot;    ohos:height=&quot;50vp&quot;    ohos:text_size=&quot;27fp&quot;    ohos:text=&quot;button&quot;    ohos:background_element=&quot;$graphic:color_blue_element&quot;    ohos:left_margin=&quot;15vp&quot;    ohos:bottom_margin=&quot;15vp&quot;    ohos:right_padding=&quot;8vp&quot;    ohos:left_padding=&quot;8vp&quot;/&gt;
+</code></pre><p>color_blue_element.xml：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shape xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:shape=&quot;rectangle&quot;&gt;    &lt;solid        ohos:color=&quot;#007CFD&quot;/&gt;&lt;/shape&gt;
+</code></pre></li>
+<li><p>椭圆按钮</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193023.05119117278498822772551468094656:50520607130709:2800:AF1D68CF464D21440EFE597A34045D773CBE68250272E512113A20D3A7A6E803.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<p>椭圆按钮是通过设置background_element的来实现的，background_element的shape设置为椭圆（oval），例如：</p>
+<pre><code>&lt;Button    ohos:width=&quot;150vp&quot;    ohos:height=&quot;50vp&quot;    ohos:text_size=&quot;27fp&quot;    ohos:text=&quot;button&quot;    ohos:background_element=&quot;$graphic:oval_button_element&quot;    ohos:left_margin=&quot;15vp&quot;    ohos:bottom_margin=&quot;15vp&quot;    ohos:right_padding=&quot;8vp&quot;    ohos:left_padding=&quot;8vp&quot;    ohos:element_left=&quot;$media:ic_btn_reload&quot;/&gt;
+</code></pre><p>oval_button_element.xml:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shape xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:shape=&quot;oval&quot;&gt;    &lt;solid        ohos:color=&quot;#007CFD&quot;/&gt;&lt;/shape&gt;
+</code></pre></li>
+<li><p>胶囊按钮</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193023.82343808131272746009457154253263:50520607130709:2800:FE3B3A44C1BE373044ACA2FA22B6DAF796B1D6B9FF46C8B95A56B3612BE36EFD.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<p>胶囊按钮是一种常见的按钮，设置按钮背景时将背景设置为矩形形状，并且设置ShapeElement的radius的半径，例如：</p>
+<pre><code>&lt;Button    ohos:id=&quot;$+id:button&quot;    ohos:width=&quot;match_content&quot;    ohos:height=&quot;match_content&quot;    ohos:text_size=&quot;27fp&quot;    ohos:text=&quot;button&quot;    ohos:background_element=&quot;$graphic:capsule_button_element&quot;    ohos:left_margin=&quot;15vp&quot;    ohos:bottom_margin=&quot;15vp&quot;    ohos:right_padding=&quot;15vp&quot;    ohos:left_padding=&quot;15vp&quot;/&gt;
+</code></pre><p>capsule_button_element.xml:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shape xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:shape=&quot;rectangle&quot;&gt;    &lt;corners        ohos:radius=&quot;100&quot;/&gt;    &lt;solid        ohos:color=&quot;#007CFD&quot;/&gt;&lt;/shape&gt;
+</code></pre></li>
+<li><p>圆形按钮</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193023.21467351625238168348785212055304:50520607130709:2800:483F29CE906C72CF9E4B6E4531C2C8E37F62BBA2983C6E12085910ECE26A3537.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<p>圆形按钮和椭圆按钮的区别在于组件本身的宽度和高度需要相同，例如：</p>
+<pre><code>&lt;Button    ohos:id=&quot;$+id:button&quot;    ohos:width=&quot;50vp&quot;    ohos:height=&quot;50vp&quot;    ohos:text_size=&quot;27fp&quot;    ohos:background_element=&quot;$graphic:circle_button_element&quot;    ohos:text=&quot;+&quot;    ohos:left_margin=&quot;15vp&quot;    ohos:bottom_margin=&quot;15vp&quot;    ohos:right_padding=&quot;15vp&quot;    ohos:left_padding=&quot;15vp&quot;/&gt;
+</code></pre><p>circle_button_element.xml:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shape xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:shape=&quot;oval&quot;&gt;    &lt;solid        ohos:color=&quot;#007CFD&quot;/&gt;&lt;/shape&gt;
+</code></pre></li>
+</ul>
+<h2 id="场景示例"><a name="场景示例" class="plugin-anchor" href="#场景示例"><i class="fa fa-link" aria-hidden="true"></i></a>场景示例</h2>
+<p>利用圆形按钮，胶囊按钮，文本组件可以绘制出如下拨号盘的UI界面。</p>
+<p><strong>图4</strong> 界面效果</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193023.40531161083234857414783362913881:50520607130709:2800:D92100EC6118DF51876964C9924B6B6C7C6988B2F8F9488DBCD87A12CECB847E.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<p>源码示例：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;DirectionalLayout    xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:width=&quot;match_parent&quot;    ohos:height=&quot;match_parent&quot;    ohos:background_element=&quot;$graphic:color_light_gray_element&quot;    ohos:orientation=&quot;vertical&quot;&gt;    &lt;Text        ohos:width=&quot;match_content&quot;        ohos:height=&quot;match_content&quot;        ohos:text_size=&quot;20fp&quot;        ohos:text=&quot;0123456789&quot;        ohos:background_element=&quot;$graphic:green_text_element&quot;        ohos:text_alignment=&quot;center&quot;        ohos:layout_alignment=&quot;horizontal_center&quot;    /&gt;    &lt;DirectionalLayout        ohos:width=&quot;match_parent&quot;        ohos:height=&quot;match_content&quot;        ohos:alignment=&quot;horizontal_center&quot;        ohos:orientation=&quot;horizontal&quot;        ohos:top_margin=&quot;5vp&quot;        ohos:bottom_margin=&quot;5vp&quot;&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;1&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;2&quot;            ohos:left_margin=&quot;5vp&quot;            ohos:right_margin=&quot;5vp&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;3&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;    &lt;/DirectionalLayout&gt;    &lt;DirectionalLayout        ohos:width=&quot;match_parent&quot;        ohos:height=&quot;match_content&quot;        ohos:alignment=&quot;horizontal_center&quot;        ohos:orientation=&quot;horizontal&quot;        ohos:bottom_margin=&quot;5vp&quot;&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;4&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:left_margin=&quot;5vp&quot;            ohos:right_margin=&quot;5vp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;5&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;6&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;    &lt;/DirectionalLayout&gt;    &lt;DirectionalLayout        ohos:width=&quot;match_parent&quot;        ohos:height=&quot;match_content&quot;        ohos:alignment=&quot;horizontal_center&quot;        ohos:orientation=&quot;horizontal&quot;        ohos:bottom_margin=&quot;5vp&quot;&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;7&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:left_margin=&quot;5vp&quot;            ohos:right_margin=&quot;5vp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;8&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;9&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;    &lt;/DirectionalLayout&gt;    &lt;DirectionalLayout        ohos:width=&quot;match_parent&quot;        ohos:height=&quot;match_content&quot;        ohos:alignment=&quot;horizontal_center&quot;        ohos:orientation=&quot;horizontal&quot;        ohos:bottom_margin=&quot;5vp&quot;&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;*&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:left_margin=&quot;5vp&quot;            ohos:right_margin=&quot;5vp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;0&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;        &lt;Button            ohos:width=&quot;40vp&quot;            ohos:height=&quot;40vp&quot;            ohos:text_size=&quot;15fp&quot;            ohos:background_element=&quot;$graphic:green_circle_button_element&quot;            ohos:text=&quot;#&quot;            ohos:text_alignment=&quot;center&quot;        /&gt;    &lt;/DirectionalLayout&gt;    &lt;Button        ohos:width=&quot;match_content&quot;        ohos:height=&quot;match_content&quot;        ohos:text_size=&quot;15fp&quot;        ohos:text=&quot;CALL&quot;        ohos:background_element=&quot;$graphic:green_capsule_button_element&quot;        ohos:bottom_margin=&quot;5vp&quot;        ohos:text_alignment=&quot;center&quot;        ohos:layout_alignment=&quot;horizontal_center&quot;        ohos:left_padding=&quot;10vp&quot;        ohos:right_padding=&quot;10vp&quot;        ohos:top_padding=&quot;2vp&quot;        ohos:bottom_padding=&quot;2vp&quot;    /&gt;&lt;/DirectionalLayout&gt;
+</code></pre><p>color_light_gray_element.xml：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shape xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:shape=&quot;rectangle&quot;&gt;    &lt;solid        ohos:color=&quot;#EDEDED&quot;/&gt;&lt;/shape&gt;
+</code></pre><p>green_text_element.xml：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shape xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:shape=&quot;rectangle&quot;&gt;    &lt;corners        ohos:radius=&quot;20&quot;/&gt;    &lt;stroke        ohos:width=&quot;2&quot;        ohos:color=&quot;#006E00&quot;/&gt;    &lt;solid        ohos:color=&quot;#EDEDED&quot;/&gt;&lt;/shape&gt;
+</code></pre><p>green_circle_button_element.xml：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shape xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:shape=&quot;oval&quot;&gt;    &lt;stroke        ohos:width=&quot;5&quot;        ohos:color=&quot;#006E00&quot;/&gt;    &lt;solid        ohos:color=&quot;#EDEDED&quot;/&gt;&lt;/shape&gt;
+</code></pre><p>green_capsule_button_element.xml：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;shape xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:shape=&quot;rectangle&quot;&gt;    &lt;corners        ohos:radius=&quot;100&quot;/&gt;    &lt;solid        ohos:color=&quot;#006E00&quot;/&gt;&lt;/shape&gt;
+</code></pre>
                                 
                                 </section>
                             
@@ -1496,7 +1567,7 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="java-component-text.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Text">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -1508,7 +1579,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Button","level":"3.4.1.3.2","depth":4,"next":{"title":"常用布局开发指导","level":"3.4.1.4","depth":3,"ref":"","articles":[]},"previous":{"title":"Text","level":"3.4.1.3.1","depth":4,"path":"java-component-text.md","ref":"java-component-text.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"java-component-button.md","mtime":"2021-06-09T13:18:09.767Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>访问Data · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,8 +73,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="intent.html" />
     
-    <link rel="prev" href="./" />
+    
+    <link rel="prev" href="data-creating.html" />
     
 
     </head>
@@ -132,7 +134,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -743,7 +745,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.1.4.3" data-path="data-accessing.html">
+        <li class="chapter active" data-level="3.2.1.4.3" data-path="data-accessing.html">
             
                 <a href="data-accessing.html">
             
@@ -1454,7 +1456,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >访问Data</a>
     </h1>
 </div>
 
@@ -1469,7 +1471,90 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="访问data"><a name="访问data" class="plugin-anchor" href="#访问data"><i class="fa fa-link" aria-hidden="true"></i></a>访问Data</h1>
+<p>开发者可以通过DataAbilityHelper类来访问当前应用或其他应用提供的共享数据。DataAbilityHelper作为客户端，与提供方的Data进行通信。Data接收到请求后，执行相应的处理，并返回结果。DataAbilityHelper提供了一系列与Data Ability对应的方法。</p>
+<p>下面介绍DataAbilityHelper具体的使用步骤。</p>
+<h2 id="声明使用权限"><a name="声明使用权限" class="plugin-anchor" href="#声明使用权限"><i class="fa fa-link" aria-hidden="true"></i></a>声明使用权限</h2>
+<p>如果待访问的Data声明了访问需要权限，则访问此Data需要在配置文件中声明需要此权限。声明请参考<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__table73291742539" target="_blank">权限申请字段说明</a>。</p>
+<pre><code>&quot;reqPermissions&quot;: [    {        &quot;name&quot;: &quot;com.example.myapplication5.DataAbility.DATA&quot;    },    // 访问文件还需要添加访问存储读写权限    {        &quot;name&quot;: &quot;ohos.permission.READ_USER_STORAGE&quot;    },    {        &quot;name&quot;: &quot;ohos.permission.WRITE_USER_STORAGE&quot;    }]
+</code></pre><h2 id="创建dataabilityhelper"><a name="创建dataabilityhelper" class="plugin-anchor" href="#创建dataabilityhelper"><i class="fa fa-link" aria-hidden="true"></i></a>创建DataAbilityHelper</h2>
+<p>DataAbilityHelper为开发者提供了creator()方法来创建DataAbilityHelper实例。该方法为静态方法，有多个重载。最常见的方法是通过传入一个context对象来创建DataAbilityHelper对象。</p>
+<p>获取helper对象示例：</p>
+<pre><code>DataAbilityHelper helper = DataAbilityHelper.creator(this);
+</code></pre><h2 id="访问data-ability"><a name="访问data-ability" class="plugin-anchor" href="#访问data-ability"><i class="fa fa-link" aria-hidden="true"></i></a>访问Data Ability</h2>
+<p>DataAbilityHelper为开发者提供了一系列的接口来访问不同类型的数据（文件、数据库等）。</p>
+<ul>
+<li><p>访问文件</p>
+<p>DataAbilityHelper为开发者提供了FileDescriptor openFile(Uri uri, String mode)方法来操作文件。此方法需要传入两个参数，其中uri用来确定目标资源路径，mode用来指定打开文件的方式，可选方式包含“r”(读), “w”(写), “rw”(读写)，“wt”(覆盖写)，“wa”(追加写)，“rwt”(覆盖写且可读)。</p>
+<p>该方法返回一个目标文件的FD（文件描述符），把文件描述符封装成流，开发者就可以对文件流进行自定义处理。</p>
+<p>访问文件示例：</p>
+<pre><code>// 读取文件描述符FileDescriptor fd = helper.openFile(uri, &quot;r&quot;);FileInputStream fis = new FileInputStream(fd);
+// 使用文件描述符封装成的文件流，进行文件操作
+</code></pre></li>
+<li><p>访问数据库</p>
+<p>DataAbilityHelper为开发者提供了增、删、改、查以及批量处理等方法来操作数据库。</p>
+<p>说明</p>
+<p>对数据库的操作方法，详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-relational-overview-0000000000030046" target="_blank">数据管理</a>中各数据库类型的开发指南。</p>
+<p>| 方法                                                         | 描述                   |
+| ------------------------------------------------------------ | ---------------------- |
+| ResultSet query(Uri uri, String[] columns, DataAbilityPredicates predicates) | 查询数据库             |
+| int insert(Uri uri, ValuesBucket value)                      | 向数据库中插入单条数据 |
+| int batchInsert(Uri uri, ValuesBucket[] values)              | 向数据库中插入多条数据 |
+| int delete(Uri uri, DataAbilityPredicates predicates)        | 删除一条或多条数据     |
+| int update(Uri uri, ValuesBucket value, DataAbilityPredicates predicates) | 更新数据库             |
+| DataAbilityResult[] executeBatch(ArrayList<dataabilityoperation> operations) | 批量操作数据库         |</dataabilityoperation></p>
+<p>这些方法的使用说明如下：</p>
+<ul>
+<li><p>query()</p>
+<p>查询方法，其中uri为目标资源路径，columns为想要查询的字段。开发者的查询条件可以通过DataAbilityPredicates来构建。查询用户表中id在101-103之间的用户，并把结果打印出来，代码示例如下：</p>
+<pre><code>DataAbilityHelper helper = DataAbilityHelper.creator(this);
+// 构造查询条件DataAbilityPredicates predicates = new DataAbilityPredicates();predicates.between(&quot;userId&quot;, 101, 103);
+// 进行查询ResultSet resultSet = helper.query(uri, columns, predicates);
+// 处理结果resultSet.goToFirstRow();do {    // 在此处理ResultSet中的记录;} while(resultSet.goToNextRow());
+</code></pre></li>
+<li><p>insert()</p>
+<p>新增方法，其中uri为目标资源路径，ValuesBucket为要新增的对象。插入一条用户信息的代码示例如下：</p>
+<pre><code>DataAbilityHelper helper = DataAbilityHelper.creator(this);
+// 构造插入数据ValuesBucket valuesBucket = new ValuesBucket();valuesBucket.putString(&quot;name&quot;, &quot;Tom&quot;);valuesBucket.putInteger(&quot;age&quot;, 12);helper.insert(uri, valuesBucket);
+</code></pre></li>
+<li><p>batchInsert(）</p>
+<p>批量插入方法，和insert()类似。批量插入用户信息的代码示例如下：</p>
+<pre><code>DataAbilityHelper helper = DataAbilityHelper.creator(this);
+// 构造插入数据ValuesBucket[] values = new ValuesBucket[2];values[0] = new ValuesBucket();values[0].putString(&quot;name&quot;, &quot;Tom&quot;);values[0].putInteger(&quot;age&quot;, 12);values[1] = new ValuesBucket();values[1].putString(&quot;name&quot;, &quot;Tom1&quot;);values[1].putInteger(&quot;age&quot;, 16);helper.batchInsert(uri, values);
+</code></pre></li>
+<li><p>delete()</p>
+<p>删除方法，其中删除条件可以通过DataAbilityPredicates来构建。删除用户表中id在101-103之间的用户，代码示例如下：</p>
+<pre><code>DataAbilityHelper helper = DataAbilityHelper.creator(this);
+// 构造删除条件DataAbilityPredicates predicates = new DataAbilityPredicates();predicates.between(&quot;userId&quot;, 101, 103);helper.delete(uri, predicates);
+</code></pre></li>
+<li><p>update()</p>
+<p>更新方法，更新数据由ValuesBucket传入，更新条件由DataAbilityPredicates来构建。更新id为102的用户，代码示例如下：</p>
+<pre><code>DataAbilityHelper helper = DataAbilityHelper.creator(this);
+// 构造更新条件DataAbilityPredicates predicates = new DataAbilityPredicates();predicates.equalTo(&quot;userId&quot;, 102);
+// 构造更新数据ValuesBucket valuesBucket = new ValuesBucket();valuesBucket.putString(&quot;name&quot;, &quot;Tom&quot;);valuesBucket.putInteger(&quot;age&quot;, 12);helper.update(uri, valuesBucket, predicates);
+</code></pre></li>
+<li><p>executeBatch()</p>
+<p>此方法用来执行批量操作。DataAbilityOperation中提供了设置操作类型、数据和操作条件的方法，开发者可自行设置自己要执行的数据库操作。插入多条数据的代码示例如下：</p>
+<pre><code>DataAbilityHelper helper = DataAbilityHelper.creator(abilityObj, insertUri);
+// 构造批量操作ValuesBucket value1 = initSingleValue();DataAbilityOperation opt1 = DataAbilityOperation.newInsertBuilder(insertUri).withValuesBucket(value1).build();ValuesBucket value2 = initSingleValue2();DataAbilityOperation opt2 = DataAbilityOperation.newInsertBuilder(insertUri).withValuesBucket(value2).build();ArrayList&lt;DataAbilityOperation&gt; operations = new ArrayList&lt;DataAbilityOperation&gt;();operations.add(opt1);operations.add(opt2);DataAbilityResult[] result = helper.executeBatch(insertUri, operations);
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对Data Ability开发，有以下示例工程可供参考：</p>
+<ul>
+<li><p>DataAbility</p>
+<p>本示例演示了如何使用Data Ability对数据库进行增、删、改、查，以及读取文本文件。</p>
+</li>
+</ul>
+<p>针对Data Ability开发，有以下Codelabs可供参考：</p>
+<ul>
+<li><p>关系型数据库</p>
+<p>基于Data Ability的关系型数据库和数据管理能力，实现数据库相关应用服务的快速开发。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,10 +1581,14 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="data-creating.html" class="navigation navigation-prev " aria-label="Previous page: 创建Data">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="intent.html" class="navigation navigation-next " aria-label="Next page: Intent">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -1508,7 +1597,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"访问Data","level":"3.2.1.4.3","depth":4,"next":{"title":"Intent","level":"3.2.1.5","depth":3,"path":"intent.md","ref":"intent.md","articles":[]},"previous":{"title":"创建Data","level":"3.2.1.4.2","depth":4,"path":"data-creating.md","ref":"data-creating.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"data-accessing.md","mtime":"2021-06-09T13:13:57.943Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

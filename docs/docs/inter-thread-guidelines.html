@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>线程间通信开发指导 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -74,7 +74,7 @@
 
     
     
-    <link rel="prev" href="./" />
+    <link rel="prev" href="inter-thread-overview.html" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -1134,7 +1134,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.3.2.2" data-path="inter-thread-guidelines.html">
+        <li class="chapter active" data-level="3.3.2.2" data-path="inter-thread-guidelines.html">
             
                 <a href="inter-thread-guidelines.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >线程间通信开发指导</a>
     </h1>
 </div>
 
@@ -1469,7 +1469,129 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="线程间通信开发指导"><a name="线程间通信开发指导" class="plugin-anchor" href="#线程间通信开发指导"><i class="fa fa-link" aria-hidden="true"></i></a>线程间通信开发指导</h1>
+<h2 id="场景介绍"><a name="场景介绍" class="plugin-anchor" href="#场景介绍"><i class="fa fa-link" aria-hidden="true"></i></a>场景介绍</h2>
+<p>如果应用的业务逻辑比较复杂，可能需要创建多个线程来执行多个任务。这种情况下，代码复杂难以维护，任务与线程的交互也会更加繁杂。要解决此问题，开发者可以使用“TaskDispatcher”来分发不同的任务。</p>
+<h2 id="接口说明"><a name="接口说明" class="plugin-anchor" href="#接口说明"><i class="fa fa-link" aria-hidden="true"></i></a>接口说明</h2>
+<p>TaskDispatcher是一个任务分发器，它是Ability分发任务的基本接口，隐藏任务所在线程的实现细节。</p>
+<p>为保证应用有更好的响应性，我们需要设计任务的优先级。在UI线程上运行的任务默认以高优先级运行，如果某个任务无需等待结果，则可以用低优先级。</p>
+<table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>详细描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HIGH</td>
+<td>最高任务优先级，比默认优先级、低优先级的任务有更高的几率得到执行。</td>
+</tr>
+<tr>
+<td>DEFAULT</td>
+<td>默认任务优先级， 比低优先级的任务有更高的几率得到执行。</td>
+</tr>
+<tr>
+<td>LOW</td>
+<td>低任务优先级，比高优先级、默认优先级的任务有更低的几率得到执行。</td>
+</tr>
+</tbody>
+</table>
+<p>TaskDispatcher具有多种实现，每种实现对应不同的任务分发器。在分发任务时可以指定任务的优先级，由同一个任务分发器分发出的任务具有相同的优先级。系统提供的任务分发器有GlobalTaskDispatcher、ParallelTaskDispatcher、SerialTaskDispatcher 、SpecTaskDispatcher。</p>
+<ul>
+<li><p>GlobalTaskDispatcher</p>
+<p>全局并发任务分发器，由Ability执行getGlobalTaskDispatcher()获取。适用于任务之间没有联系的情况。一个应用只有一个GlobalTaskDispatcher，它在程序结束时才被销毁。</p>
+<pre><code>TaskDispatcher globalTaskDispatcher = getGlobalTaskDispatcher(TaskPriority.DEFAULT);
+</code></pre></li>
+<li><p>ParallelTaskDispatcher</p>
+<p>并发任务分发器，由Ability执行createParallelTaskDispatcher()创建并返回。与GlobalTaskDispatcher不同的是，ParallelTaskDispatcher不具有全局唯一性，可以创建多个。开发者在创建或销毁dispatcher时，需要持有对应的对象引用 。</p>
+<pre><code>String dispatcherName = &quot;parallelTaskDispatcher&quot;;TaskDispatcher parallelTaskDispatcher = createParallelTaskDispatcher(dispatcherName, TaskPriority.DEFAULT);
+</code></pre></li>
+<li><p>SerialTaskDispatcher</p>
+<p>串行任务分发器，由Ability执行createSerialTaskDispatcher()创建并返回。由该分发器分发的所有的任务都是按顺序执行，但是执行这些任务的线程并不是固定的。如果要执行并行任务，应使用ParallelTaskDispatcher或者GlobalTaskDispatcher，而不是创建多个SerialTaskDispatcher。如果任务之间没有依赖，应使用GlobalTaskDispatcher来实现。它的创建和销毁由开发者自己管理，开发者在使用期间需要持有该对象引用。</p>
+<pre><code>String dispatcherName = &quot;serialTaskDispatcher&quot;;TaskDispatcher serialTaskDispatcher = createSerialTaskDispatcher(dispatcherName, TaskPriority.DEFAULT);
+</code></pre></li>
+<li><p>SpecTaskDispatcher</p>
+<p>专有任务分发器，绑定到专有线程上的任务分发器。目前已有的专有线程为UI线程，通过UITaskDispatcher进行任务分发。</p>
+<p>UITaskDispatcher：绑定到应用主线程的专有任务分发器， 由Ability执行getUITaskDispatcher()创建并返回。 由该分发器分发的所有的任务都是在主线程上按顺序执行，它在应用程序结束时被销毁。</p>
+<pre><code>TaskDispatcher uiTaskDispatcher = getUITaskDispatcher();
+</code></pre></li>
+</ul>
+<h2 id="开发步骤"><a name="开发步骤" class="plugin-anchor" href="#开发步骤"><i class="fa fa-link" aria-hidden="true"></i></a>开发步骤</h2>
+<ul>
+<li><p>syncDispatch</p>
+<p>同步派发任务：派发任务并在当前线程等待任务执行完成。在返回前，当前线程会被阻塞。</p>
+<p>如下代码示例展示了如何使用GlobalTaskDispatcher派发同步任务：</p>
+<pre><code>TaskDispatcher globalTaskDispatcher = getGlobalTaskDispatcher(TaskPriority.DEFAULT);globalTaskDispatcher.syncDispatch(new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;sync task1 run&quot;);    }});HiLog.info(LABEL_LOG, &quot;after sync task1&quot;);
+globalTaskDispatcher.syncDispatch(new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;sync task2 run&quot;);    }});HiLog.info(LABEL_LOG, &quot;after sync task2&quot;);
+globalTaskDispatcher.syncDispatch(new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;sync task3 run&quot;);    }});HiLog.info(LABEL_LOG, &quot;after sync task3&quot;);
+// 执行结果如下：// sync task1 run// after sync task1// sync task2 run// after sync task2// sync task3 run// after sync task3
+</code></pre><p>说明</p>
+<p>如果对syncDispatch使用不当, 将会导致死锁。如下情形可能导致死锁发生：</p>
+<ul>
+<li>在专有线程上，利用该专有任务分发器进行syncDispatch。</li>
+<li>在被某个串行任务分发器（dispatcher_a）派发的任务中，再次利用同一个串行任务分发器（dispatcher_a）对象派发任务。</li>
+<li>在被某个串行任务分发器（dispatcher_a）派发的任务中，经过数次派发任务，最终又利用该（dispatcher_a）串行任务分发器派发任务。例如：dispatcher_a派发的任务使用dispatcher_b进行任务的派发，在dispatcher_b派发的任务中又利用dispatcher_a进行派发任务。</li>
+<li>串行任务分发器（dispatcher_a）派发的任务中利用串行任务分发器（dispatcher_b）进行同步派发任务，同时dispatcher_b派发的任务中利用串行任务分发器（dispatcher_a）进行同步派发任务。在特定的线程执行顺序下将导致死锁。</li>
+</ul>
+</li>
+<li><p>asyncDispatch</p>
+<p>异步派发任务：派发任务，并立即返回，返回值是一个可用于<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/thread-mgmt-guidelines-0000000000032130#ZH-CN_TOPIC_0000001050988905__li36366481530" target="_blank">取消任务</a>的接口。</p>
+<p>如下代码示例展示了如何使用GlobalTaskDispatcher派发异步任务：</p>
+<pre><code>TaskDispatcher globalTaskDispatcher = getGlobalTaskDispatcher(TaskPriority.DEFAULT);Revocable revocable = globalTaskDispatcher.asyncDispatch(new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;async task1 run&quot;);    }});HiLog.info(LABEL_LOG, &quot;after async task1&quot;);
+// 执行结果可能如下：// after async task1// async task1 run
+</code></pre></li>
+<li><p>delayDispatch</p>
+<p>异步延迟派发任务：异步执行，函数立即返回，内部会在延时指定时间后将任务派发到相应队列中。延时时间参数仅代表在这段时间以后任务分发器会将任务加入到队列中，任务的实际执行时间可能晚于这个时间。具体比这个数值晚多久，取决于队列及内部线程池的繁忙情况。</p>
+<p>如下代码示例展示了如何使用GlobalTaskDispatcher延迟派发任务：</p>
+<pre><code>final long callTime = System.currentTimeMillis();final long delayTime = 50L;TaskDispatcher globalTaskDispatcher = getGlobalTaskDispatcher(TaskPriority.DEFAULT); Revocable revocable = globalTaskDispatcher.delayDispatch(new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;delayDispatch task1 run&quot;);        final long actualDelay = System.currentTimeMillis() - callTime;        HiLog.info(LABEL_LOG, &quot;actualDelayTime &gt;= delayTime: %{public}b&quot;, (actualDelay &gt;= delayTime));    }}, delayTime);HiLog.info(LABEL_LOG, &quot;after delayDispatch task1&quot;);
+// 执行结果可能如下：// after delayDispatch task1// delayDispatch task1 run// actualDelayTime &gt;= delayTime : true
+</code></pre></li>
+<li><p>Group</p>
+<p>任务组：表示一组任务，且该组任务之间有一定的联系，由TaskDispatcher执行createDispatchGroup创建并返回。将任务加入任务组，返回一个用于取消任务的接口。</p>
+<p>如下代码示例展示了任务组的使用方式：将一系列相关联的下载任务放入一个任务组，执行完下载任务后关闭应用。</p>
+<pre><code>String dispatcherName = &quot;parallelTaskDispatcher&quot;;TaskDispatcher dispatcher = createParallelTaskDispatcher(dispatcherName, TaskPriority.DEFAULT);// 创建任务组。Group group = dispatcher.createDispatchGroup();// 将任务1加入任务组，返回一个用于取消任务的接口。dispatcher.asyncGroupDispatch(group, new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;download task1 is running&quot;);    }});// 将与任务1相关联的任务2加入任务组。dispatcher.asyncGroupDispatch(group, new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;download task2 is running&quot;);    }});// 在任务组中的所有任务执行完成后执行指定任务。dispatcher.groupDispatchNotify(group, new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;the close task is running after all tasks in the group are completed&quot;);    }});// 可能的执行结果:// download task1 is running// download task2 is running// the close task is running after all tasks in the group are completed
+// 另外一种可能的执行结果：// download task2 is running// download task1 is running// the close task is running after all tasks in the group are completed
+</code></pre></li>
+<li></li>
+</ul>
+<p>  Revocable</p>
+<p>  取消任务：Revocable是取消一个异步任务的接口。异步任务包括通过 asyncDispatch、delayDispatch、asyncGroupDispatch 派发的任务。如果任务已经在执行中或执行完成，则会返回取消失败。</p>
+<p>  如下代码示例展示了如何取消一个异步延时任务：</p>
+<pre><code>  TaskDispatcher dispatcher = getUITaskDispatcher();Revocable revocable = dispatcher.delayDispatch(new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;delay dispatch&quot;);    }}, 10);boolean revoked = revocable.revoke();HiLog.info(LABEL_LOG, &quot;%{public}b&quot;, revoked);// 一种可能的结果如下 :// true
+</code></pre><ul>
+<li><p>syncDispatchBarrier</p>
+<p>同步设置屏障任务：在任务组上设立任务执行屏障，同步等待任务组中的所有任务执行完成，再执行指定任务。</p>
+<p>说明</p>
+<p>在全局并发任务分发器（GlobalTaskDispatcher）上同步设置任务屏障，将不会起到屏障作用。</p>
+<p>如下代码示例展示了如何同步设置屏障：</p>
+<pre><code>String dispatcherName = &quot;parallelTaskDispatcher&quot;;TaskDispatcher dispatcher = createParallelTaskDispatcher(dispatcherName, TaskPriority.DEFAULT);// 创建任务组。Group group = dispatcher.createDispatchGroup();// 将任务加入任务组，返回一个用于取消任务的接口。dispatcher.asyncGroupDispatch(group, new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;task1 is running&quot;);  // 1    }});dispatcher.asyncGroupDispatch(group, new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;task2 is running&quot;);  // 2    }});    dispatcher.syncDispatchBarrier(new Runnable() {    @Override    public void run() {          HiLog.info(LABEL_LOG, &quot;barrier&quot;);  // 3    }});  HiLog.info(LABEL_LOG, &quot;after syncDispatchBarrier&quot;);  // 4// 1和2的执行顺序不定；3和4总是在1和2之后按顺序执行。
+// 可能的执行结果:// task1 is running// task2 is running// barrier// after syncDispatchBarrier
+// 另外一种执行结果：// task2 is running// task1 is running// barrier// after syncDispatchBarrier
+</code></pre></li>
+<li><p>asyncDispatchBarrier</p>
+<p>异步设置屏障任务：在任务组上设立任务执行屏障后直接返回，指定任务将在任务组中的所有任务执行完成后再执行。</p>
+<p>说明</p>
+<p>在全局并发任务分发器（GlobalTaskDispatcher）上异步设置任务屏障，将不会起到屏障作用。可以使用并发任务分发器（ParallelTaskDispatcher）分离不同的任务组，达到微观并行、宏观串行的行为。</p>
+<p>如下代码示例展示了如何异步设置屏障：</p>
+<pre><code>TaskDispatcher dispatcher = createParallelTaskDispatcher(&quot;dispatcherName&quot;, TaskPriority.DEFAULT);// 创建任务组。Group group = dispatcher.createDispatchGroup();// 将任务加入任务组，返回一个用于取消任务的接口。dispatcher.asyncGroupDispatch(group, new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;task1 is running&quot;);  // 1    }});dispatcher.asyncGroupDispatch(group, new Runnable() {    @Override    public void run() {        HiLog.info(LABEL_LOG, &quot;task2 is running&quot;);  // 2    }});    dispatcher.asyncDispatchBarrier(new Runnable() {    @Override    public void run() {          HiLog.info(LABEL_LOG, &quot;barrier&quot;);  // 3    }});  HiLog.info(LABEL_LOG, &quot;after asyncDispatchBarrier&quot;);  // 4// 1和2的执行顺序不定，但总在3之前执行；4不需要等待1、2、3执行完成。
+// 可能的执行结果:// task1 is running// task2 is running// after asyncDispatchBarrier// barrier
+</code></pre></li>
+<li><p>applyDispatch</p>
+<p>执行多次任务：对指定任务执行多次。</p>
+<p>如下代码示例展示了如何执行多次任务：</p>
+<pre><code>final int total = 10;final CountDownLatch latch = new CountDownLatch(total);final List&lt;Long&gt; indexList = new ArrayList&lt;&gt;(total);TaskDispatcher dispatcher = getGlobalTaskDispatcher(TaskPriority.DEFAULT); 
+// 执行任务 total 次。dispatcher.applyDispatch((index) -&gt; {    indexList.add(index);    latch.countDown();}, total);// 设置任务超时。try {        latch.await();} catch (InterruptedException exception) {   HiLog.error(LABEL_LOG, &quot;latch exception&quot;);}HiLog.info(LABEL_LOG, &quot;list size matches, %{public}b&quot;, (total == indexList.size()));// 执行结果：// list size matches, true
+</code></pre></li>
+</ul>
+<h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对线程管理，有以下示例工程可供参考：</p>
+<ul>
+<li><p>TaskDispatcher</p>
+<p>如果应用的业务逻辑比较复杂，可能需要创建多个线程来执行多个任务。本示例演示了如何使用“TaskDispatcher”来分发不同的任务，例如：同步派发、异步派发、异步延迟派发等。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,7 +1618,7 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="inter-thread-overview.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 线程间通信开发概述">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -1508,7 +1630,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"线程间通信开发指导","level":"3.3.2.2","depth":3,"next":{"title":"UI","level":"3.4","depth":1,"ref":"","articles":[{"title":"Java UI框架","level":"3.4.1","depth":2,"ref":"","articles":[{"title":"Java UI框架概述","level":"3.4.1.1","depth":3,"path":"java-overview.md","ref":"java-overview.md","articles":[]},{"title":"组件与布局开发指导","level":"3.4.1.2","depth":3,"ref":"","articles":[{"title":"开发说明","level":"3.4.1.2.1","depth":4,"path":"java-component-layout-overview.md","ref":"java-component-layout-overview.md","articles":[]},{"title":"代码创建布局","level":"3.4.1.2.2","depth":4,"path":"java-component-layout-code.md","ref":"java-component-layout-code.md","articles":[]},{"title":"XML创建布局","level":"3.4.1.2.3","depth":4,"path":"java-component-layout-xml.md","ref":"java-component-layout-xml.md","articles":[]}]},{"title":"常用组件开发指导","level":"3.4.1.3","depth":3,"ref":"","articles":[{"title":"Text","level":"3.4.1.3.1","depth":4,"path":"java-component-text.md","ref":"java-component-text.md","articles":[]},{"title":"Button","level":"3.4.1.3.2","depth":4,"path":"java-component-button.md","ref":"java-component-button.md","articles":[]}]},{"title":"常用布局开发指导","level":"3.4.1.4","depth":3,"ref":"","articles":[]},{"title":"自定义组件与布局","level":"3.4.1.5","depth":3,"ref":"","articles":[]},{"title":"动画开发指导","level":"3.4.1.6","depth":3,"ref":"","articles":[]},{"title":"可见即可说开发指导","level":"3.4.1.7","depth":3,"ref":"","articles":[]}]},{"title":"JS UI框架","level":"3.4.2","depth":2,"ref":"","articles":[]},{"title":"多模输入","level":"3.4.3","depth":2,"ref":"","articles":[]}]},"previous":{"title":"线程间通信开发概述","level":"3.3.2.1","depth":3,"path":"inter-thread-overview.md","ref":"inter-thread-overview.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"inter-thread-guidelines.md","mtime":"2021-06-09T13:16:56.523Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

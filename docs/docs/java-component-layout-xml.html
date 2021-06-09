@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>XML创建布局 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -74,7 +74,7 @@
 
     
     
-    <link rel="prev" href="./" />
+    <link rel="prev" href="java-component-layout-code.html" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -1238,7 +1238,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4.1.2.3" data-path="java-component-layout-xml.html">
+        <li class="chapter active" data-level="3.4.1.2.3" data-path="java-component-layout-xml.html">
             
                 <a href="java-component-layout-xml.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >XML创建布局</a>
     </h1>
 </div>
 
@@ -1469,7 +1469,36 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="xml创建布局"><a name="xml创建布局" class="plugin-anchor" href="#xml创建布局"><i class="fa fa-link" aria-hidden="true"></i></a>XML创建布局</h1>
+<p>XML声明布局的方式更加简便直观。每一个Component和ComponentContainer对象大部分属性都支持在XML中进行设置，它们都有各自的XML属性列表。某些属性仅适用于特定的组件，例如：只有Text支持“text_color”属性，但不支持该属性的组件如果添加了该属性，该属性则会被忽略。具有继承关系的组件子类将继承父类的属性列表，Component作为组件的基类，拥有各个组件常用的属性，比如：ID、布局参数等。</p>
+<p><strong>ID</strong></p>
+<pre><code>ohos:id=&quot;$+id:text&quot;
+</code></pre><p>在XML中使用此格式声明一个对开发者友好的ID，它会在编译过程中转换成一个常量。尤其在DependentLayout布局中，组件之间需要描述相对位置关系，描述时要通过ID来指定对应组件。</p>
+<p>布局中的组件通常要设置独立的ID，以便在程序中查找该组件。如果布局中有不同组件设置了相同的ID，在通过ID查找组件时会返回查找到的第一个组件，因此尽量保证在所要查找的布局中为组件设置独立的ID值，避免出现与预期不符合的问题。</p>
+<p><strong>布局参数</strong></p>
+<pre><code>ohos:width=&quot;20vp&quot;ohos:height=&quot;10vp&quot;
+</code></pre><p>与代码中设置组件的宽度和高度类似，在XML中它们的取值可以是：</p>
+<ul>
+<li>具体的数值：10（以像素为单位）、10vp（以屏幕相对像素为单位）。</li>
+<li>match_parent：表示组件大小将扩展为父组件允许的最大值，它将占据父组件方向上的剩余大小。</li>
+<li>match_content：表示组件大小与它的内容占据的大小范围相适应。</li>
+</ul>
+<h2 id="创建xml布局文件"><a name="创建xml布局文件" class="plugin-anchor" href="#创建xml布局文件"><i class="fa fa-link" aria-hidden="true"></i></a>创建XML布局文件</h2>
+<ol>
+<li><p>在DevEco Studio的“Project”窗口，打开“entry &gt; src &gt; main &gt; resources &gt; base”，右键点击“layout”文件夹，选择“New &gt; Layout Resource File”，命名为“first_layout”。</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193022.25457178872781785106027895023666:50520607130709:2800:345739519B59EA2A009754FC0BD45074C2E5537948BD4E51C341DAEC9F9D7B5B.png?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+</li>
+<li><p>打开新创建的first_layout.xml布局文件，修改其中的内容，对布局和组件的属性和层级进行描述。</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;DirectionalLayout    xmlns:ohos=&quot;http://schemas.huawei.com/res/ohos&quot;    ohos:width=&quot;match_parent&quot;    ohos:height=&quot;match_parent&quot;    ohos:orientation=&quot;vertical&quot;    ohos:padding=&quot;32&quot;&gt;    &lt;Text        ohos:id=&quot;$+id:text&quot;        ohos:width=&quot;match_content&quot;        ohos:height=&quot;match_content&quot;        ohos:layout_alignment=&quot;horizontal_center&quot;        ohos:text=&quot;My name is Text.&quot;        ohos:text_size=&quot;25fp&quot;/&gt;    &lt;Button        ohos:id=&quot;$+id:button&quot;        ohos:margin=&quot;50&quot;        ohos:width=&quot;match_content&quot;        ohos:height=&quot;match_content&quot;        ohos:layout_alignment=&quot;horizontal_center&quot;        ohos:text=&quot;My name is Button.&quot;        ohos:text_size=&quot;50&quot;/&gt;&lt;/DirectionalLayout&gt;
+</code></pre></li>
+</ol>
+<h2 id="加载xml布局"><a name="加载xml布局" class="plugin-anchor" href="#加载xml布局"><i class="fa fa-link" aria-hidden="true"></i></a>加载XML布局</h2>
+<p>在代码中需要加载XML布局，并添加为根布局或作为其他布局的子Component。</p>
+<pre><code>package com.example.myapplication.slice;
+import com.example.myapplication.ResourceTable;import ohos.aafwk.ability.AbilitySlice;import ohos.aafwk.content.Intent;import ohos.agp.colors.RgbColor;import ohos.agp.components.*;import ohos.agp.components.element.ShapeElement;
+public class ExampleAbilitySlice extends AbilitySlice {    @Override    public void onStart(Intent intent) {        super.onStart(intent);        // 加载XML布局作为根布局        super.setUIContent(ResourceTable.Layout_first_layout);        Button button = (Button) findComponentById(ResourceTable.Id_button);        if (button != null) {            // 设置组件的属性            ShapeElement background = new ShapeElement();            background.setRgbColor(new RgbColor(0, 125, 255));            background.setCornerRadius(25);            button.setBackground(background);
+            button.setClickedListener(new Component.ClickedListener() {                @Override                // 在组件中增加对点击事件的检测                public void onClick(Component component) {                    // 此处添加按钮被点击需要执行的操作                }            });        }    }}
+</code></pre>
                                 
                                 </section>
                             
@@ -1496,7 +1525,7 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="java-component-layout-code.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 代码创建布局">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -1508,7 +1537,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"XML创建布局","level":"3.4.1.2.3","depth":4,"next":{"title":"常用组件开发指导","level":"3.4.1.3","depth":3,"ref":"","articles":[{"title":"Text","level":"3.4.1.3.1","depth":4,"path":"java-component-text.md","ref":"java-component-text.md","articles":[]},{"title":"Button","level":"3.4.1.3.2","depth":4,"path":"java-component-button.md","ref":"java-component-button.md","articles":[]}]},"previous":{"title":"代码创建布局","level":"3.4.1.2.2","depth":4,"path":"java-component-layout-code.md","ref":"java-component-layout-code.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"java-component-layout-xml.md","mtime":"2021-06-09T13:17:40.453Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

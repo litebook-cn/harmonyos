@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>剪贴板开发指导 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -74,7 +74,7 @@
 
     
     
-    <link rel="prev" href="./" />
+    <link rel="prev" href="pasteboard-overview.html" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -1025,7 +1025,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.5.2" data-path="pasteboard-guidelines.html">
+        <li class="chapter active" data-level="3.2.5.2" data-path="pasteboard-guidelines.html">
             
                 <a href="pasteboard-guidelines.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >剪贴板开发指导</a>
     </h1>
 </div>
 
@@ -1469,7 +1469,289 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="剪贴板开发指导"><a name="剪贴板开发指导" class="plugin-anchor" href="#剪贴板开发指导"><i class="fa fa-link" aria-hidden="true"></i></a>剪贴板开发指导</h1>
+<h2 id="场景介绍"><a name="场景介绍" class="plugin-anchor" href="#场景介绍"><i class="fa fa-link" aria-hidden="true"></i></a>场景介绍</h2>
+<p>同一设备的应用程序A、B之间可以借助系统剪贴板服务完成简单数据的传递，即应用程序A向剪贴板服务写入数据后，应用程序B可以从中读取出数据。</p>
+<p><strong>图1</strong> 剪贴板服务示意图
+<img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193021.52230461610107875481235613281153:50520607130708:2800:809EB919CA36B78F58B5FE7ACA6EE084402D04B68F0D1C0AA847243B3F349564.jpg?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<p>在使用剪贴板服务时，需要注意以下几点：</p>
+<ul>
+<li>只有在前台获取到焦点的应用才有读取系统剪贴板的权限（系统默认输入法应用除外）。</li>
+<li>写入到剪贴板服务中的剪贴板数据不会随应用程序结束而销毁。</li>
+<li>对同一用户而言，写入剪贴板服务的数据会被下一次写入的剪贴板数据所覆盖。</li>
+<li>在同一设备内，剪贴板单次传递内容不应超过500KB。</li>
+</ul>
+<h2 id="接口说明"><a name="接口说明" class="plugin-anchor" href="#接口说明"><i class="fa fa-link" aria-hidden="true"></i></a>接口说明</h2>
+<p>SystemPasteboard提供系统剪贴板操作的相关接口，比如复制、粘贴、配置回调等。PasteData是剪贴板服务操作的数据对象，一个PasteData由若干个内容节点（PasteData.Record）和一个属性集合对象（PasteData.DataProperty）组成。Record是存放剪贴板数据内容信息的最小单位，每个Record都有其特定的MIME类型，如纯文本、HTML、URI、Intent。剪贴板数据的属性信息存在放PasteData.DataProperty中，包括标签、时间戳等。</p>
+<p><strong>SystemPasteboard</strong></p>
+<p>SystemPasteboard提供系统剪贴板服务的操作接口，比如复制、粘贴、配置回调等。</p>
+<table>
+<thead>
+<tr>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getSystemPasteboard(Context context)</td>
+<td>获取系统剪切板服务的对象实例。</td>
+</tr>
+<tr>
+<td>getPasteData()</td>
+<td>读取当前系统剪贴板中的数据。</td>
+</tr>
+<tr>
+<td>hasPasteData()</td>
+<td>判断当前系统剪贴板中是否有内容。</td>
+</tr>
+<tr>
+<td>setPasteData(PasteData data)</td>
+<td>将剪贴板数据写入到系统剪贴板。</td>
+</tr>
+<tr>
+<td>clear()</td>
+<td>清空系统剪贴板数据。</td>
+</tr>
+<tr>
+<td>addPasteDataChangedListener(IPasteDataChangedListener listener)</td>
+<td>用户程序添加系统剪贴板数据变化的回调，当系统剪贴板数据发生变化时，会触发用户程序的回调实现。</td>
+</tr>
+<tr>
+<td>removePasteDataChangedListener(IPasteDataChangedListener listener)</td>
+<td>用户程序移除系统剪贴板数据变化的回调。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>PasteData</strong></p>
+<p>PasteData是剪贴板服务操作的数据对象，其中内容节点定义为PasteData.Record，属性集合定义为PasteData.DataProperty。</p>
+<table>
+<thead>
+<tr>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PasteData()</td>
+<td>构造器，创建一个空内容数据对象。</td>
+</tr>
+<tr>
+<td>creatPlainTextData(CharSequence text)</td>
+<td>构建一个包含纯文本内容节点的数据对象。</td>
+</tr>
+<tr>
+<td>creatHtmlData(String htmlText)</td>
+<td>构建一个包含HTML内容节点的数据对象。</td>
+</tr>
+<tr>
+<td>creatUriData(Uri uri)</td>
+<td>构建一个包含URI内容节点的数据对象。</td>
+</tr>
+<tr>
+<td>creatIntentData(Intent intent)</td>
+<td>构建一个包含Intent内容节点的数据对象。</td>
+</tr>
+<tr>
+<td>getPrimaryMimeType()</td>
+<td>获取数据对象中首个内容节点的MIME类型，如果没有查询到内容，将返回一个空字符串。</td>
+</tr>
+<tr>
+<td>getPrimaryText()</td>
+<td>获取数据对象中首个内容节点的纯文本内容，如果没有查询到内容，将返回一个空对象。</td>
+</tr>
+<tr>
+<td>addTextRecord(CharSequence text)</td>
+<td>向数据对象中添加一个纯文本内容节点，该方法会自动更新数据属性中的MIME类型集合，最多只能添加128个内容节点。</td>
+</tr>
+<tr>
+<td>addRecord(Record record)</td>
+<td>向数据对象中添加一个内容节点，该方法会自动更新数据属性中的MIME类型集合，最多只能添加128个内容节点。</td>
+</tr>
+<tr>
+<td>getRecordCount()</td>
+<td>获取数据对象中内容节点的数量。</td>
+</tr>
+<tr>
+<td>getRecordAt(int index)</td>
+<td>获取数据对象在指定下标处的内容节点，如果操作失败会返回空对象。</td>
+</tr>
+<tr>
+<td>removeRecordAt(int index)</td>
+<td>移除数据对象在指定下标处的内容节点，如果操作成功会返回true，操作失败会返回false。</td>
+</tr>
+<tr>
+<td>getMimeTypes()</td>
+<td>获取数据对象中上所有内容节点的MIME类型列表，当内容节点为空时，返回列表为空对象。</td>
+</tr>
+<tr>
+<td>getProperty()</td>
+<td>获取该数据对象的属性集合成员。</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>常量名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MIMETYPE_TEXT_PLAIN= &quot;text/plain&quot;</td>
+<td>纯文本的MIME类型定义。</td>
+</tr>
+<tr>
+<td>MIMETYPE_TEXT_HTML= &quot;text/html&quot;</td>
+<td>HTML的MIME类型定义。</td>
+</tr>
+<tr>
+<td>MIMETYPE_TEXT_URI= &quot;text/uri&quot;</td>
+<td>URI的MIME类型定义。</td>
+</tr>
+<tr>
+<td>MIMETYPE_TEXT_INTENT= &quot;text/ohos.intent&quot;</td>
+<td>Intent的MIME类型定义。</td>
+</tr>
+<tr>
+<td>MAX_RECORD_NUM=128</td>
+<td>单个PasteData中所能包含的Record的数量上限。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>PasteData.Record</strong></p>
+<p>一个PasteData中包含若干个特定MIME类型的PasteData.Record，每个Record是存放剪贴板数据内容信息的最小单位。</p>
+<table>
+<thead>
+<tr>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>createPlainTextRecord(CharSequence text)</td>
+<td>构造一个MIME类型为纯文本的内容节点。</td>
+</tr>
+<tr>
+<td>createHtmlTextRecord(String htmlText)</td>
+<td>构造一个MIME类型为HTML的内容节点。</td>
+</tr>
+<tr>
+<td>createUriRecord(Uri uri)</td>
+<td>构造一个MIME类型为URI的内容节点。</td>
+</tr>
+<tr>
+<td>createIntentRecord(Intent intent)</td>
+<td>构造一个MIME类型为Intent的内容节点。</td>
+</tr>
+<tr>
+<td>getPlainText()</td>
+<td>获取该内容节点中的文本内容，如果没有内容将返回空对象。</td>
+</tr>
+<tr>
+<td>getHtmlText()</td>
+<td>获取该内容节点中的HTML内容，如果没有内容将返回空对象。</td>
+</tr>
+<tr>
+<td>getUri()</td>
+<td>获取该内容节点中的URI内容，如果没有内容将返回空对象。</td>
+</tr>
+<tr>
+<td>getIntent()</td>
+<td>获取该内容节点中的Intent内容，如果没有内容将返回空对象。</td>
+</tr>
+<tr>
+<td>getMimeType()</td>
+<td>获取该内容节点的MIME类型。</td>
+</tr>
+<tr>
+<td>convertToText(Context context)</td>
+<td>将该内容节点的内容转为文本形式。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>PasteData.DataProperty</strong></p>
+<p>每个PasteData中都有一个PasteData.DataProperty成员，其中存放着该数据对象的属性集合，例如自定义标签、MIME类型集合列表等。</p>
+<table>
+<thead>
+<tr>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getMimeTypes()</td>
+<td>获取所属数据对象的MIME类型集合列表，当内容节点为空时，返回列表为空对象。</td>
+</tr>
+<tr>
+<td>hasMimeType(String mimeType)</td>
+<td>判断所属数据对象中是否包含特定MIME类型的内容。</td>
+</tr>
+<tr>
+<td>getTimestamp()</td>
+<td>获取所属数据对象被写入系统剪贴板时的时间戳，如果该数据对象尚未被写入，则返回0。</td>
+</tr>
+<tr>
+<td>setTag(CharSequence tag)</td>
+<td>设置自定义标签。</td>
+</tr>
+<tr>
+<td>getTag()</td>
+<td>获取自定义标签。</td>
+</tr>
+<tr>
+<td>setAdditions(PacMap extraProps)</td>
+<td>设置一些附加键值对信息。</td>
+</tr>
+<tr>
+<td>getAdditions()</td>
+<td>获取附加键值对信息。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPasteDataChangedListener</strong></p>
+<p>IPasteDataChangedListener是定义剪贴板数据变化回调的接口类，开发者需要实现此接口来编码触发回调时的处理逻辑。</p>
+<table>
+<thead>
+<tr>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onChanged()</td>
+<td>当系统剪贴板数据发生变化时的回调接口。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="开发步骤"><a name="开发步骤" class="plugin-anchor" href="#开发步骤"><i class="fa fa-link" aria-hidden="true"></i></a>开发步骤</h2>
+<ol>
+<li><p>应用A获取系统剪贴板服务。</p>
+<pre><code>SystemPasteboard pasteboard = SystemPasteboard.getSystemPasteboard(appContext);
+</code></pre></li>
+<li><p>应用A向系统剪贴板中写入一条纯文本数据。</p>
+<pre><code>if (pasteboard != null) {    pasteboard.setPasteData(PasteData.creatPlainTextData(&quot;Hello, world!&quot;));}
+</code></pre></li>
+<li><p>应用B从系统剪贴板读取数据，将数据对象中的首个文本类型（纯文本/HTML）内容信息在控件中显示，忽略其他类型内容。</p>
+<pre><code>PasteData pasteData = pasteboard.getPasteData();if (pasteData == null) {    return;}DataProperty dataProperty = pasteData.getProperty();boolean hasHtml = dataProperty.hasMimeType(PasteData.MIMETYPE_TEXT_HTML);boolean hasText = dataProperty.hasMimeType(PasteData.MIMETYPE_TEXT_PLAIN);if (hasHtml || hasText) {    Text text = (Text) findComponentById(ResourceTable.Id_text);    for (int i = 0; i &lt; pasteData.getRecordCount(); i++) {        PasteData.Record record = pasteData.getRecordAt(i);        String mimeType = record.getMimeType();        if (mimeType.equals(PasteData.MIMETYPE_TEXT_HTML)) {            text.setText(record.getHtmlText());            break;        } else if (mimeType.equals(PasteData.MIMETYPE_TEXT_PLAIN)) {            text.setText(record.getPlainText().toString());            break;        } else {            // skip records of other Mime type         }    }}
+</code></pre></li>
+<li><p>应用C注册添加系统剪贴板数据变化回调，当系统剪贴板数据发生变化时触发处理逻辑。</p>
+<pre><code>IPasteDataChangedListener listener = new IPasteDataChangedListener() {    @Override    public void onChanged() {        PasteData pasteData = pasteboard.getPasteData();        if (pasteData == null) {            return;        }        // Operations to handle data change on the system pasteboard    }};pasteboard.addPasteDataChangedListener(listener);
+</code></pre></li>
+</ol>
+<h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对剪贴板开发指导，有以下示例工程可供参考：</p>
+<ul>
+<li><p>Pasteboard</p>
+<p>本示例演示了应用之间的数据剪贴。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,7 +1778,7 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="pasteboard-overview.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 剪贴板开发概述">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -1508,7 +1790,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"剪贴板开发指导","level":"3.2.5.2","depth":3,"next":{"title":"线程","level":"3.3","depth":1,"ref":"","articles":[{"title":"线程管理","level":"3.3.1","depth":2,"ref":"","articles":[{"title":"线程管理开发概述","level":"3.3.1.1","depth":3,"path":"thread-mgmt-overview.md","ref":"thread-mgmt-overview.md","articles":[]},{"title":"线程管理开发指导","level":"3.3.1.2","depth":3,"path":"thread-mgmt-guidelines.md","ref":"thread-mgmt-guidelines.md","articles":[]}]},{"title":"线程间通信","level":"3.3.2","depth":2,"ref":"","articles":[{"title":"线程间通信开发概述","level":"3.3.2.1","depth":3,"path":"inter-thread-overview.md","ref":"inter-thread-overview.md","articles":[]},{"title":"线程间通信开发指导","level":"3.3.2.2","depth":3,"path":"inter-thread-guidelines.md","ref":"inter-thread-guidelines.md","articles":[]}]}]},"previous":{"title":"剪贴板开发概述","level":"3.2.5.1","depth":3,"path":"pasteboard-overview.md","ref":"pasteboard-overview.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"pasteboard-guidelines.md","mtime":"2021-06-09T13:16:35.185Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

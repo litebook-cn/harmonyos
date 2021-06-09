@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>Ability概述 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -74,8 +74,6 @@
 
     
     
-    <link rel="prev" href="./" />
-    
 
     </head>
     <body>
@@ -132,7 +130,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -522,7 +520,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.2.1.1" data-path="ability-overview.html">
+        <li class="chapter active" data-level="3.2.1.1" data-path="ability-overview.html">
             
                 <a href="ability-overview.html">
             
@@ -1454,7 +1452,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >Ability概述</a>
     </h1>
 </div>
 
@@ -1469,7 +1467,48 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="ability概述"><a name="ability概述" class="plugin-anchor" href="#ability概述"><i class="fa fa-link" aria-hidden="true"></i></a>Ability概述</h1>
+<p>Ability是应用所具备能力的抽象，也是应用程序的重要组成部分。一个应用可以具备多种能力（即可以包含多个Ability），HarmonyOS支持应用以Ability为单位进行部署。Ability可以分为FA（Feature Ability）和PA（Particle Ability）两种类型，每种类型为开发者提供了不同的模板，以便实现不同的业务功能。</p>
+<ul>
+<li><p>FA支持</p>
+<p>Page Ability</p>
+<p>：</p>
+<p>Page模板是FA唯一支持的模板，用于提供与用户交互的能力。一个Page实例可以包含一组相关页面，每个页面用一个AbilitySlice实例表示。</p>
+</li>
+<li><p>PA支持</p>
+<p>Service Ability</p>
+<p>和</p>
+<p>Data Ability</p>
+<p>：</p>
+<ul>
+<li>Service模板：用于提供后台运行任务的能力。</li>
+<li>Data模板：用于对外部提供统一的数据访问抽象。</li>
+</ul>
+</li>
+</ul>
+<p>在<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-config-file-overview-0000000000011951" target="_blank">配置文件</a>（config.json）中注册Ability时，可以通过配置Ability元素中的“type”属性来指定Ability模板类型，示例如下。</p>
+<p>其中，“type”的取值可以为“page”、“service”或“data”，分别代表Page模板、Service模板、Data模板。为了便于表述，后文中我们将基于Page模板、Service模板、Data模板实现的Ability分别简称为Page、Service、Data。</p>
+<pre><code>{    &quot;module&quot;: {        ...        &quot;abilities&quot;: [            {                ...                &quot;type&quot;: &quot;page&quot;                ...            }        ]        ...    }    ...}
+</code></pre><h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对Ability开发，有以下Codelabs可供参考：</p>
+<ul>
+<li><p>分布式亲子早教系统</p>
+<p>基于分布式能力，实现一个多屏互动、跨设备协同的亲子早教系统。</p>
+</li>
+<li><p>分布式新闻客户端</p>
+<p>基于HarmonyOS应用中Service Ability和Page Ability的使用，实现跨设备FA拉起。</p>
+</li>
+<li><p>跨设备视频播放</p>
+<p>基于分布式能力和IDL跨进程通信，实现视频跨设备播放、控制。</p>
+</li>
+<li><p>分布式输入法</p>
+<p>基于分布式能力，将手机作为智慧屏的虚拟控制器，控制文字输入和遥控播放。</p>
+</li>
+<li><p>分布式游戏手柄</p>
+<p>基于分布式能力，将手机作为智慧屏的虚拟手柄终端，组成全新的多人娱乐场景。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,10 +1535,6 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
-                    <i class="fa fa-angle-left"></i>
-                </a>
-                
                 
             
         
@@ -1508,7 +1543,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Ability概述","level":"3.2.1.1","depth":3,"next":{"title":"Page Ability","level":"3.2.1.2","depth":3,"ref":"","articles":[{"title":"Page Ability基本概念","level":"3.2.1.2.1","depth":4,"path":"page-concept.md","ref":"page-concept.md","articles":[]},{"title":"Page Ablity生命周期","level":"3.2.1.2.2","depth":4,"path":"page-lifecycle.md","ref":"page-lifecycle.md","articles":[]},{"title":"AbilitySlice间导航","level":"3.2.1.2.3","depth":4,"path":"page-switching.md","ref":"page-switching.md","articles":[]},{"title":"跨设备迁移","level":"3.2.1.2.4","depth":4,"path":"cross-device.md","ref":"cross-device.md","articles":[]}]},"previous":{"title":"Ability","level":"3.2.1","depth":2,"ref":"","articles":[{"title":"Ability概述","level":"3.2.1.1","depth":3,"path":"ability-overview.md","ref":"ability-overview.md","articles":[]},{"title":"Page Ability","level":"3.2.1.2","depth":3,"ref":"","articles":[{"title":"Page Ability基本概念","level":"3.2.1.2.1","depth":4,"path":"page-concept.md","ref":"page-concept.md","articles":[]},{"title":"Page Ablity生命周期","level":"3.2.1.2.2","depth":4,"path":"page-lifecycle.md","ref":"page-lifecycle.md","articles":[]},{"title":"AbilitySlice间导航","level":"3.2.1.2.3","depth":4,"path":"page-switching.md","ref":"page-switching.md","articles":[]},{"title":"跨设备迁移","level":"3.2.1.2.4","depth":4,"path":"cross-device.md","ref":"cross-device.md","articles":[]}]},{"title":"Service Ability","level":"3.2.1.3","depth":3,"ref":"","articles":[{"title":"Service Ability基本概念","level":"3.2.1.3.1","depth":4,"path":"service-concept.md","ref":"service-concept.md","articles":[]},{"title":"创建Service","level":"3.2.1.3.2","depth":4,"path":"service-creating.md","ref":"service-creating.md","articles":[]},{"title":"启动Service","level":"3.2.1.3.3","depth":4,"path":"service-starting.md","ref":"service-starting.md","articles":[]},{"title":"连接Service","level":"3.2.1.3.4","depth":4,"path":"service-connecting","ref":"service-connecting","articles":[]},{"title":"Service Ability生命周期","level":"3.2.1.3.5","depth":4,"path":"service-lifecycle.md","ref":"service-lifecycle.md","articles":[]},{"title":"前台Service","level":"3.2.1.3.6","depth":4,"path":"service-foreground.md","ref":"service-foreground.md","articles":[]}]},{"title":"Data Ability","level":"3.2.1.4","depth":3,"ref":"","articles":[{"title":"Data Ability基本概念","level":"3.2.1.4.1","depth":4,"path":"data-concept.md","ref":"data-concept.md","articles":[]},{"title":"创建Data","level":"3.2.1.4.2","depth":4,"path":"data-creating.md","ref":"data-creating.md","articles":[]},{"title":"访问Data","level":"3.2.1.4.3","depth":4,"path":"data-accessing.md","ref":"data-accessing.md","articles":[]}]},{"title":"Intent","level":"3.2.1.5","depth":3,"path":"intent.md","ref":"intent.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"ability-overview.md","mtime":"2021-06-09T13:10:57.586Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

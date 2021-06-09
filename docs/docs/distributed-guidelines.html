@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>资源文件的分类 · 鸿蒙OS开发文档</title>
+        <title>分布式任务调度开发指导 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,8 +73,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="zi-yuan-wen-jian-de-shi-yong.html" />
     
+    <link rel="prev" href="distributed-overview.html" />
     
 
     </head>
@@ -302,7 +302,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="2.3.3.1" data-path="zi-yuan-wen-jian-de-fen-lei.html">
+        <li class="chapter " data-level="2.3.3.1" data-path="zi-yuan-wen-jian-de-fen-lei.html">
             
                 <a href="zi-yuan-wen-jian-de-fen-lei.html">
             
@@ -806,7 +806,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.2.2" data-path="distributed-guidelines.html">
+        <li class="chapter active" data-level="3.2.2.2" data-path="distributed-guidelines.html">
             
                 <a href="distributed-guidelines.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >资源文件的分类</a>
+        <a href="." >分布式任务调度开发指导</a>
     </h1>
 </div>
 
@@ -1469,160 +1469,183 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="资源文件的分类"><a name="资源文件的分类" class="plugin-anchor" href="#资源文件的分类"><i class="fa fa-link" aria-hidden="true"></i></a>资源文件的分类</h1>
-<p>更新时间: 2021-06-02 21:03</p>
-<h2 id="resources目录"><a name="resources目录" class="plugin-anchor" href="#resources目录"><i class="fa fa-link" aria-hidden="true"></i></a>resources目录</h2>
-<p>应用的资源文件（字符串、图片、音频等）统一存放于resources目录下，便于开发者使用和维护。resources目录包括两大类目录，一类为base目录与限定词目录，另一类为rawfile目录，详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-categories-0000001052066099#ZH-CN_TOPIC_0000001062847941__table1324121514614" target="_blank">表1</a>。</p>
-<p>资源目录示例：</p>
-<pre><code>resources|---base  // 默认存在的目录|   |---element|   |   |---string.json|   |---media|   |   |---icon.png|---en_GB-vertical-car-mdpi // 限定词目录示例，需要开发者自行创建   |   |---element|   |   |---string.json|   |---media|   |   |---icon.png|---rawfile  // 默认存在的目录
-</code></pre><table>
-<thead>
-<tr>
-<th>分类</th>
-<th>base目录与限定词目录</th>
-<th>rawfile目录</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>组织形式</td>
-<td>按照两级目录形式来组织，目录命名必须符合规范，以便根据设备状态去匹配相应目录下的资源文件。一级子目录为<strong>base目录</strong>和<strong>限定词目录</strong>。base目录是默认存在的目录。当应用的resources资源目录中没有与设备状态匹配的限定词目录时，会自动引用该目录中的资源文件。限定词目录需要开发者自行创建。目录名称由一个或多个表征应用场景或设备特征的限定词组合而成，具体要求参见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-categories-0000001052066099#ZH-CN_TOPIC_0000001062847941__section1661512209620" target="_blank">限定词目录</a>。二级子目录为<strong>资源目录</strong>，用于存放字符串、颜色、布尔值等基础元素，以及媒体、动画、布局等资源文件，具体要求参见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-categories-0000001052066099#ZH-CN_TOPIC_0000001062847941__section3909427134317" target="_blank">资源组目录</a>。</td>
-<td>支持创建多层子目录，目录名称可以自定义，文件夹内可以自由放置各类资源文件。rawfile目录的文件不会根据设备状态去匹配不同的资源。</td>
-</tr>
-<tr>
-<td>编译方式</td>
-<td>目录中的资源文件会被编译成二进制文件，并赋予资源文件ID。</td>
-<td>目录中的资源文件会被直接打包进应用，不经过编译，也不会被赋予资源文件ID。</td>
-</tr>
-<tr>
-<td>引用方式</td>
-<td>通过指定资源类型（type）和资源名称（name）来引用，详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-example-0000001051733014#ZH-CN_TOPIC_0000001063096195__section126348226453" target="_blank">资源文件的引用方法</a>。</td>
-<td>通过指定文件路径和文件名来引用，详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-example-0000001051733014#ZH-CN_TOPIC_0000001063096195__section126348226453" target="_blank">资源文件的引用方法</a>。</td>
-</tr>
-</tbody>
-</table>
-<h2 id="限定词目录"><a name="限定词目录" class="plugin-anchor" href="#限定词目录"><i class="fa fa-link" aria-hidden="true"></i></a>限定词目录</h2>
-<p>限定词目录可以由一个或多个表征应用场景或设备特征的限定词组合而成，包括移动国家码和移动网络码、语言、文字、国家或地区、横竖屏、设备类型、颜色模式和屏幕密度等维度，限定词之间通过下划线（_）或者中划线（-）连接。开发者在创建限定词目录时，需要掌握限定词目录的命名要求以及与限定词目录与设备状态的匹配规则。</p>
-<p><strong>限定词目录的命名**</strong>要求**</p>
-<ul>
-<li><p>限定词的组合顺序：<em>移动国家码<em>移动网络码-语言</em>文字_国家或地区-横竖屏-设备类型-深色模式-屏幕密度</em>。开发者可以根据应用的使用场景和设备特征，选择其中的一类或几类限定词组成目录名称。</p>
-</li>
-<li><p>限定词的连接方式：语言、文字、国家或地区之间采用下划线（<em>）连接，移动国家码和移动网络码之间也采用下划线（</em>）连接，除此之外的其他限定词之间均采用中划线（-）连接。例如：<strong>zh_Hant_CN</strong>、<strong>zh_CN-car-ldpi</strong>。</p>
-</li>
-<li><p>限定词的取值范围：每类限定词的取值必须符合</p>
-<p>表2</p>
-<p>中的条件，否则，将无法匹配目录中的资源文件。</p>
-</li>
-</ul>
+                                <h1 id="分布式任务调度开发指导"><a name="分布式任务调度开发指导" class="plugin-anchor" href="#分布式任务调度开发指导"><i class="fa fa-link" aria-hidden="true"></i></a>分布式任务调度开发指导</h1>
+<h2 id="场景介绍"><a name="场景介绍" class="plugin-anchor" href="#场景介绍"><i class="fa fa-link" aria-hidden="true"></i></a>场景介绍</h2>
+<p>开发者在应用中集成分布式调度能力，通过调用指定能力的分布式接口，实现跨设备能力调度。根据Ability模板及意图的不同，分布式任务调度向开发者提供以下六种能力：启动远程FA、启动远程PA、关闭远程PA、连接远程PA、断开连接远程PA和FA跨设备迁移。下面以设备A（本地设备）和设备B（远端设备）为例，进行场景介绍：</p>
+<ol>
+<li>设备A启动设备B的FA：在设备A上通过本地应用提供的启动按钮，启动设备B上对应的FA。例如：设备A控制设备B打开相册，只需开发者在启动FA时指定打开相册的意图即可。</li>
+<li>设备A启动设备B的PA：在设备A上通过本地应用提供的启动按钮，启动设备B上指定的PA。例如：开发者在启动远程服务时通过意图指定音乐播放服务，即可实现设备A启动设备B音乐播放的能力。</li>
+<li>设备A关闭设备B的PA：在设备A上通过本地应用提供的关闭按钮，关闭设备B上指定的PA。类似启动的过程，开发者在关闭远程服务时通过意图指定音乐播放服务，即可实现关闭设备B上该服务的能力。</li>
+<li>设备A连接设备B的PA：在设备A上通过本地应用提供的连接按钮，连接设备B上指定的PA。连接后，通过其他功能相关按钮实现控制对端PA的能力。通过连接关系，开发者可以实现跨设备的同步服务调度，实现如大型计算任务互助等价值场景。</li>
+<li>设备A与设备B的PA断开连接：在设备A上通过本地应用提供断开连接的按钮，将之前已连接的PA断开连接。</li>
+<li>设备A的FA迁移至设备B：设备A上通过本地应用提供的迁移按钮，将设备A的业务无缝迁移到设备B中。通过业务迁移能力，打通设备A和设备B间的壁垒，实现如文档跨设备编辑、视频从客厅到房间跨设备接续播放等场景。</li>
+</ol>
+<h2 id="接口说明"><a name="接口说明" class="plugin-anchor" href="#接口说明"><i class="fa fa-link" aria-hidden="true"></i></a>接口说明</h2>
+<p>分布式调度平台提供的连接和断开连接PA、启动远程FA、启动和关闭PA以及迁移FA的能力，是实现更多价值性场景的基础。</p>
+<p><strong>连接远程PA</strong></p>
+<p>connectAbility(Intent intent, IAbilityConnection conn)接口提供连接指定设备上PA的能力，Intent中指定待连接PA的设备deviceId、bundleName和abilityName。当连接成功后，通过在conn定义的onAbilityConnectDone回调中获取对端PA的服务代理，两者的连接关系则由conn维护。具体的参数定义如下表所示：</p>
 <table>
 <thead>
 <tr>
-<th>限定词类型</th>
-<th>含义与取值说明</th>
+<th>参数名</th>
+<th>类型</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>移动国家码和移动网络码</td>
-<td>移动国家码（MCC）和移动网络码（MNC）的值取自设备注册的网络。MCC后面可以跟随MNC，使用下划线（<em>）连接，也可以单独使用。例如：mcc460表示中国，mcc460_mnc00表示中国</em>中国移动。详细取值范围，请查阅<strong>ITU-T E.212</strong>（国际电联相关标准）。</td>
+<td>intent</td>
+<td>ohos.aafwk.content.Intent</td>
+<td>开发者需在intent对应的Operation中指定待连接PA的设备deviceId、bundleName和abilityName。</td>
 </tr>
 <tr>
-<td>语言</td>
-<td>表示设备使用的语言类型，由2~3个小写字母组成。例如：zh表示中文，en表示英语，mai表示迈蒂利语。详细取值范围，请查阅<strong>ISO 639</strong>（ISO制定的语言编码标准）。</td>
-</tr>
-<tr>
-<td>文字</td>
-<td>表示设备使用的文字类型，由1个大写字母（首字母）和3个小写字母组成。例如：Hans表示简体中文，Hant表示繁体中文。详细取值范围，请查阅<strong>ISO 15924</strong>（ISO制定的文字编码标准）。</td>
-</tr>
-<tr>
-<td>国家或地区</td>
-<td>表示用户所在的国家或地区，由2~3个大写字母或者3个数字组成。例如：CN表示中国，GB表示英国。详细取值范围，请查阅<strong>ISO 3166-1</strong>（ISO制定的国家和地区编码标准）。</td>
-</tr>
-<tr>
-<td>横竖屏</td>
-<td>表示设备的屏幕方向，取值如下：vertical：竖屏horizontal：横屏</td>
-</tr>
-<tr>
-<td>设备类型</td>
-<td>表示设备的类型，取值如下：phone：手机tablet：平板car：车机tv：智慧屏wearable：智能穿戴</td>
-</tr>
-<tr>
-<td>颜色模式</td>
-<td>表示设备的颜色模式，取值如下：dark：深色模式light：浅色模式</td>
-</tr>
-<tr>
-<td>屏幕密度</td>
-<td>表示设备的屏幕密度（单位为dpi），取值如下：sdpi：表示小规模的屏幕密度（Small-scale Dots Per Inch），适用于dpi取值为(0, 120]的设备。mdpi：表示中规模的屏幕密度（Medium-scale Dots Per Inch），适用于dpi取值为(120, 160]的设备。ldpi：表示大规模的屏幕密度（Large-scale Dots Per Inch），适用于dpi取值为(160, 240]的设备。xldpi：表示特大规模的屏幕密度（Extra Large-scale Dots Per Inch），适用于dpi取值为(240, 320]的设备。xxldpi：表示超大规模的屏幕密度（Extra Extra Large-scale Dots Per Inch），适用于dpi取值为(320, 480]的设备。xxxldpi：表示超特大规模的屏幕密度（Extra Extra Extra Large-scale Dots Per Inch），适用于dpi取值为(480, 640]的设备。</td>
+<td>conn</td>
+<td>ohos.aafwk.ability.IAbilityConnection</td>
+<td>当连接成功或失败时，作为连接关系的回调接口。该接口提供连接完成和断开连接完成时的处理逻辑，开发者可根据具体的场景进行定义。</td>
 </tr>
 </tbody>
 </table>
-<p><strong>限定词目录与设备状态的匹配规则</strong></p>
-<ul>
-<li>在为设备匹配对应的资源文件时，限定词目录匹配的优先级从高到低依次为：移动国家码和移动网络码 &gt; 区域（语言<em>文字</em>国家或地区）&gt; 横竖屏 &gt; 设备类型 &gt; 颜色模式 &gt; 屏幕密度。</li>
-<li>如果限定词目录中包含<strong>移动国家码和移动网络码、语言、文字、横竖屏、设备类型、颜色模式</strong>限定词，则对应限定词的取值必须与当前的设备状态完全一致，该目录才能够参与设备的资源匹配。例如，限定词目录“zh_CN-car-ldpi”不能参与“en_US”设备的资源匹配。</li>
-</ul>
-<h2 id="资源组目录"><a name="资源组目录" class="plugin-anchor" href="#资源组目录"><i class="fa fa-link" aria-hidden="true"></i></a>资源组目录</h2>
-<p>base目录与限定词目录下面可以创建资源组目录（包括element、media、animation、layout、graphic、profile），用于存放特定类型的资源文件，详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/basic-resource-file-categories-0000001052066099#ZH-CN_TOPIC_0000001062847941__table88482216295" target="_blank">表3</a>。</p>
+<p><strong>启动远程FA/PA</strong></p>
+<p>startAbility(Intent intent)接口提供启动指定设备上FA和PA的能力，Intent中指定待启动FA/PA的设备deviceId、bundleName和abilityName。具体参数定义如下表所示：</p>
 <table>
 <thead>
 <tr>
-<th>资源组目录</th>
-<th>目录说明</th>
-<th>资源文件</th>
+<th>参数名</th>
+<th>类型</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>element</td>
-<td>表示元素资源，以下每一类数据都采用相应的JSON文件来表征。boolean，布尔型color，颜色float，浮点型intarray，整型数组integer，整型pattern，样式plural，复数形式strarray，字符串数组string，字符串</td>
-<td>element目录中的文件名称建议与下面的文件名保持一致。每个文件中只能包含同一类型的数据。boolean.jsoncolor.jsonfloat.jsonintarray.jsoninteger.jsonpattern.jsonplural.jsonstrarray.jsonstring.json</td>
-</tr>
-<tr>
-<td>media</td>
-<td>表示媒体资源，包括图片、音频、视频等非文本格式的文件。</td>
-<td>文件名可自定义，例如：icon.png。</td>
-</tr>
-<tr>
-<td>animation</td>
-<td>表示动画资源，采用XML文件格式。</td>
-<td>文件名可自定义，例如：zoom_in.xml。</td>
-</tr>
-<tr>
-<td>layout</td>
-<td>表示布局资源，采用XML文件格式。</td>
-<td>文件名可自定义，例如：home_layout.xml。</td>
-</tr>
-<tr>
-<td>graphic</td>
-<td>表示可绘制资源，采用XML文件格式。</td>
-<td>文件名可自定义，例如：notifications_dark.xml。</td>
-</tr>
-<tr>
-<td>profile</td>
-<td>表示其他类型文件，以原始文件形式保存。</td>
-<td>文件名可自定义。</td>
+<td>intent</td>
+<td>ohos.aafwk.content.Intent</td>
+<td>当开发者需要调用该接口启动远程PA时，需要指定待启动PA的设备deviceId、bundleName和abilityName。若不指定设备deviceId，则无法跨设备调用PA。类似地，在启动FA时，也需要开发者指定启动FA的设备deviceId、bundleName和abilityName。</td>
 </tr>
 </tbody>
 </table>
-<h2 id="创建资源文件"><a name="创建资源文件" class="plugin-anchor" href="#创建资源文件"><i class="fa fa-link" aria-hidden="true"></i></a>创建资源文件</h2>
-<p>在resources目录下，可按照限定词目录和资源组目录的说明创建子目录和目录内的文件。</p>
-<p>同时，DevEco Studio也提供了创建资源目录和资源文件的界面。</p>
+<p>分布式调度平台还会提供与上述功能相对应的断开远程PA的连接和关闭远程PA的接口，相关的参数与连接、启动的接口类似。</p>
 <ul>
-<li><p>创建资源目录及资源文件</p>
-<p>在resources目录右键菜单选择“New &gt; Harmony Resource File”，此时可同时创建目录和文件。</p>
-<p>文件默认创建在base目录的对应资源组下。如果选择了限定词，则会按照命名规范自动生成限定词+资源组目录，并将文件创建在目录中。</p>
-<p>目录名自动生成，格式固定为“限定词.资源组”，例如创建一个限定词为横竖屏类别下的竖屏，资源组为绘制资源的目录，自动生成的目录名称为“vertical.graphic”。</p>
-<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210602180908.10658543700417797204763393322409:50520601130328:2800:8BCF829688C6E4DC6C8EC1C271AB3D43694EB306C87B5359107EC34596E5C5ED.png?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<li>断开远程PA连接：disconnectAbility(IAbilityConnection conn)。</li>
+<li>关闭远程PA：stopAbility(Intent intent)。</li>
+</ul>
+<p><strong>迁移FA</strong></p>
+<p>continueAbility(String deviceId)接口提供将本地FA迁移到指定设备上的能力，需要开发者在调用时指定目标设备的deviceId。具体参数定义如下表所示：</p>
+<p>说明</p>
+<p>Ability和AbilitySlice类均需要实现IAbilityContinuation及其方法，才可以实现FA迁移。</p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>deviceId</td>
+<td>String</td>
+<td>当开发者需要调用该接口将本地FA迁移时，需要指定目标设备的deviceId。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="开发步骤"><a name="开发步骤" class="plugin-anchor" href="#开发步骤"><i class="fa fa-link" aria-hidden="true"></i></a>开发步骤</h2>
+<ol>
+<li><p>导入功能依赖的包。</p>
+<pre><code>// 以下依赖包含分布式调度平台开放的接口// 用于：连接/断开连接远程PA、启动远程FA、通过连接关系实现对PA的控制import ohos.aafwk.ability.AbilitySlice;import ohos.aafwk.ability.IAbilityConnection;import ohos.aafwk.content.Intent;import ohos.aafwk.content.Operation;import ohos.bundle.ElementName;// 为了实现迁移能力，需要引入传递迁移所需数据的包以及实现迁移能力的接口import ohos.aafwk.ability.IAbilityContinuation;import ohos.aafwk.content.IntentParams;// 为了实现跨设备指令及数据通信，需要使用RPC接口import ohos.rpc.IRemoteObject;import ohos.rpc.IRemoteBroker;import ohos.rpc.MessageParcel;import ohos.rpc.MessageOption;import ohos.rpc.RemoteException;import ohos.rpc.RemoteObject;//（可选）多设备场景下涉及设备选择，为此需要引入组网设备发现的能力import ohos.distributedschedule.interwork.DeviceInfo;import ohos.distributedschedule.interwork.DeviceManager;// (可选）设计界面相关的包函数，对FA界面及按钮进行绘制import ohos.agp.components.Button;import ohos.agp.components.Component;import ohos.agp.components.Component.ClickedListener;import ohos.agp.components.ComponentContainer.LayoutConfig;import ohos.agp.components.element.ShapeElement;import ohos.agp.components.PositionLayout;
+</code></pre></li>
+<li><p>（可选）编写一个基本的FA用于使用分布式能力。</p>
+<pre><code>// 调用AbilitySlice模板实现一个用于控制基础功能的FA，AbilitySlice的代码示例如下：public class SampleSlice extends AbilitySlice {    @Override    public void onStart(Intent intent) {        super.onStart(intent);        // 开发者可以自行进行界面设计        // 为按钮设置统一的背景色        // 例如通过PositionLayout可以实现简单界面        PositionLayout layout = new PositionLayout(this);        LayoutConfig config = new LayoutConfig(LayoutConfig.MATCH_PARENT, LayoutConfig.MATCH_PARENT);        layout.setLayoutConfig(config);        ShapeElement buttonBg = new ShapeElement();        buttonBg.setRgbColor(new RgbColor(0, 125, 255));        addComponents(layout, buttonBg, config);        super.setUIContent(layout);    }
+    @Override    public void onInactive() {        super.onInactive();    }
+    @Override    public void onActive() {        super.onActive();    }
+    @Override    public void onBackground() {        super.onBackground();    }
+    @Override    public void onForeground(Intent intent) {        super.onForeground(intent);    }
+    @Override    public void onStop() {        super.onStop();    }}
+</code></pre><p>说明</p>
+<p>此步骤展示了一个简单FA的实现过程，实际开发中请开发者根据需要进行设计。</p>
 </li>
-<li><p>创建资源目录</p>
-<p>在resources目录右键菜单选择“New &gt; Harmony Resource Directory”，此时可创建资源目录。</p>
-<p>选择资源组类型，设置限定词，创建后自动生成目录名称。目录名称格式固定为“限定词.资源组”，例如创建一个限定词为横竖屏类别下的竖屏，资源组为绘制资源的目录，自动生成的目录名称为“vertical.graphic”。</p>
-<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210602180908.52198286878003243715433628453295:50520601130328:2800:FACFCB5593F9E8712E0C4C4CF1877C7A1BEBC918C5D59064E8E075A21F9230B7.png?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<li><p>使用分布式能力要求开发者在Ability对应的config.json中声明多设备协同访问的权限：三方应用使用{&quot;name&quot;: &quot;ohos.permission.DISTRIBUTED_DATASYNC&quot;}。</p>
+<p>一个三方应用部署的示例如下：</p>
+<pre><code>{    &quot;reqPermissions&quot;: [        {            &quot;name&quot;: &quot;ohos.permission.DISTRIBUTED_DATASYNC&quot;        }    ]}
+</code></pre><p>此外，对于三方应用还要求在实现Ability的代码中显式声明需要使用的权限，如下所示：</p>
+<pre><code>public class SampleSlice extends AbilitySlice {    @Override    public void onStart(Intent intent) {        // 开发者显示声明需要使用的权限        requestPermissionsFromUser(new String[]{&quot;ohos.permission.DISTRIBUTED_DATASYNC&quot;}, 0);        super.onStart(intent);            }}
+</code></pre></li>
+<li><p>（可选）为不同的能力设置相应的控制按钮。</p>
+<pre><code>// 建议开发者按照自己的界面进行按钮设计
+// 开发者可以自行实现如下createButton的方法，新建一个显示文字text，背景色为buttonBg以及大小尺寸位置符合config设置的按钮，用来与用户交互// private Button createButton(String text, ShapeElement buttonBg, LayoutConfig config)// 按照顺序在PositionLayout中依次添加按钮的示例private void addComponents(PositionLayout linear, ShapeElement buttonBg, LayoutConfig config) {    // 构建远程启动FA的按钮    btnStartRemoteFA = createButton(&quot;StartRemoteFA&quot;, buttonBg, config);    btnStartRemoteFA.setClickedListener(mStartRemoteFAListener);    linear.addComponent(btnStartRemoteFA);    // 构建远程启动PA的按钮    btnStartRemotePA = createButton(&quot;StartRemotePA&quot;, buttonBg, config);    btnStartRemotePA.setClickedListener(mStartRemotePAListener);    linear.addComponent(btnStartRemotePA);    // 构建远程关闭PA的按钮    btnStopRemotePA = createButton(&quot;StopRemotePA&quot;, buttonBg, config);    btnStopRemotePA.setClickedListener(mStopRemotePAListener);    linear.addComponent(btnStopRemotePA);    // 构建连接远程PA的按钮    btnConnectRemotePA = createButton(&quot;ConnectRemotePA&quot;, buttonBg, config);    btnConnectRemotePA.setClickedListener(mConnectRemotePAListener);    linear.addComponent(btnConnectRemotePA);    // 构建控制连接PA的按钮    btnControlRemotePA = createButton(&quot;ControlRemotePA&quot;, buttonBg, config);    btnControlRemotePA.setClickedListener(mControlPAListener);    linear.addComponent(btnControlRemotePA);    // 构建与远程PA断开连接的按钮    btnDisconnectRemotePA = createButton(&quot;DisconnectRemotePA&quot;, buttonBg, config);    btnDisconnectRemotePA.setClickedListener(mDisconnectRemotePAListener);    linear.addComponent(btnDisconnectRemotePA);    // 构建迁移FA的按钮    btnContinueRemoteFA = createButton(&quot;ContinueRemoteFA&quot;, buttonBg, config);    btnContinueRemoteFA.setClickedListener(mContinueAbilityListener);    linear.addComponent(btnContinueRemoteFA);}
+</code></pre><p>说明</p>
+<p>此处只展示了基于按钮控制的能力调度方法，实际开发中请开发者根据需要选择能力调度方式。代码示例中未体现按钮如位置、样式等具体的设置方法，详请参考<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ui-java-overview-0000000000500404" target="_blank">JAVA UI框架</a>。</p>
 </li>
-<li><p>创建资源文件</p>
-<p>在资源目录的右键菜单选择“New &gt; XXX Resource File”，即可创建对应资源组目录的资源文件。</p>
-<p>例如，在element目录下可新建Element Resource File。</p>
-<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210602180908.04253884200316190739070519221455:50520601130328:2800:10A71496893DE2AF5B9E088335DB1C406D4D86572BD0AA82FF0C74A9A4BB38F0.png?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<li><p>通过设备管理DeviceManager提供的getDeviceList接口获取设备列表，用于指定目标设备。</p>
+<pre><code>// ISelectResult是一个自定义接口，用来处理指定设备deviceId后执行的行为 interface ISelectResult {     void onSelectResult(String deviceId); }
+// 获得设备列表，开发者可在得到的在线设备列表中选择目标设备执行操作private void scheduleRemoteAbility(ISelectResult listener) {    // 调用DeviceManager的getDeviceList接口，通过FLAG_GET_ONLINE_DEVICE标记获得在线设备列表    List&lt;DeviceInfo&gt; onlineDevices = DeviceManager.getDeviceList(DeviceInfo.FLAG_GET_ONLINE_DEVICE);    // 判断组网设备是否为空    if (onlineDevices.isEmpty()) {        listener.onSelectResult(null);        return;    }    int numDevices = onlineDevices.size();    List&lt;String&gt; deviceIds = new ArrayList&lt;&gt;(numDevices);    onlineDevices.forEach((device) -&gt; {        deviceIds.add(device.getDeviceId());    });    // 以选择首个设备作为目标设备为例    // 开发者也可按照具体场景，通过别的方式进行设备选择    String selectDeviceId = deviceIds.get(0);    listener.onSelectResult(selectDeviceId);    }
+</code></pre><p>上述实例中涉及对在线组网设备的查询，该项能力需要开发者在对应的config.json中声明获取设备列表及设备信息的权限，如下所示：</p>
+<pre><code>{    &quot;reqPermissions&quot;: [        {            &quot;name&quot;: &quot;ohos.permission.DISTRIBUTED_DEVICE_STATE_CHANGE&quot;        },         {            &quot;name&quot;: &quot;ohos.permission.GET_DISTRIBUTED_DEVICE_INFO&quot;        },         {            &quot;name&quot;: &quot;ohos.permission.GET_BUNDLE_INFO&quot;        }    ]}
+</code></pre></li>
+<li><p>为启动远程FA的按钮设置点击回调，实现启动远程FA的能力。</p>
+<pre><code>// 启动一个指定bundleName和abilityName的FAprivate ClickedListener mStartRemoteFAListener = new ClickedListener() {    @Override    public void onClick(Component arg0) {        // 启动远程PA        scheduleRemoteAbility(new ISelectResult() {            @Override            void onSelectResult(String deviceId) {                if (deviceId != null) {                    // 通过scheduleRemoteAbility指定目标设备deviceId                    // 指定待启动FA的bundleName和abilityName                    // 例如：bundleName = &quot;com.helloworld&quot;                    //       abilityName = &quot;com.helloworld.SampleFeatureAbility&quot;                    // 设置分布式标记，表明当前涉及分布式能力                    Operation operation = new Intent.OperationBuilder()                            .withDeviceId(deviceId)                            .withBundleName(bundleName)                            .withAbilityName(abilityName)                            .withFlags(Intent.FLAG_ABILITYSLICE_MULTI_DEVICE)                            .build();                    Intent intent = new Intent();                    intent.setOperation(operation);                    // 通过AbilitySlice包含的startAbility接口实现跨设备启动FA                    startAbility(intent);                }            }        });    }};
+</code></pre></li>
+<li><p>为启动和关闭PA定义回调，实现启动和关闭PA的能力。</p>
+<p>对于PA的启动、关闭、连接等操作都需要开发者提供目标设备的deviceId。开发者可以通过DeviceManager相关接口得到当前组网下的设备列表，并以弹窗的形式供用户选择，也可以按照实际需要实现其他个性化的处理方式。在点击事件回调函数中，需要开发者指定得到deviceId后的处理逻辑，即实现类似上例中listener.onSelectResult(String deviceId)的方法，代码示例如下：</p>
+<pre><code>// 启动远程PAprivate ClickedListener mStartRemotePAListener = new ClickedListener() {    @Override    public void onClick(Component arg0) {        // 启动远程PA        scheduleRemoteAbility(new ISelectResult() {            @Override            void onSelectResult(String deviceId) {                if (deviceId != null) {                    // bundleName和abilityName与待启动PA对应                    // 例如：bundleName = &quot;com.helloworld&quot;                    //       abilityName = &quot;com.helloworld.SampleParticleAbility&quot;                    Operation operation = new Intent.OperationBuilder()                            .withDeviceId(deviceId)                            .withBundleName(bundleName)                            .withAbilityName(abilityName)                            .withFlags(Intent.FLAG_ABILITYSLICE_MULTI_DEVICE)                            .build();                    Intent intentToStartPA = new Intent();                    intentToStartPA.setOperation(operation);                    startAbility(intentToStartPA);                }            }        });    }};
+// 关闭远程PA，和启动类似开发者需要指定待关闭PA对应的bundleName和abilityNameprivate ClickedListener mStopRemotePAListener = new ClickedListener() {    @Override    public void onClick(Component arg0) {        scheduleRemoteAbility(new ISelectResult() {            @Override            void onSelectResult(String deviceId) {                if (deviceId != null) {                    // bundleName和abilityName与待关闭PA对应                    // 例如：bundleName = &quot;com.helloworld&quot;                    //       abilityName = &quot;com.helloworld.SampleParticleAbility&quot;                    Operation operation = new Intent.OperationBuilder()                            .withDeviceId(deviceId)                            .withBundleName(bundleName)                            .withAbilityName(abilityName)                            .withFlags(Intent.FLAG_ABILITYSLICE_MULTI_DEVICE)                            .build();                    Intent intentToStopPA = new Intent();                    intentToStopPA.setOperation(operation);                    stopAbility(intentToStopPA);                }            }        });    }};
+</code></pre><p>说明</p>
+<p>启动和关闭的行为类似，开发者只需在Intent中指定待调度PA的deviceId、bundleName和abilityName，并以operation的形式封装到Intent内。通过AbilitySlice（Ability）包含的startAbility()和stopAbility()接口即可实现相应功能。</p>
+</li>
+<li><p>设备A连接设备B侧的PA，利用连接关系调用该PA执行特定任务，以及断开连接。</p>
+<pre><code>// 当连接完成时，用来提供管理已连接PA的能力private MyRemoteProxy mProxy = null;// 用于管理连接关系private IAbilityConnection mConn = new IAbilityConnection() {    @Override    public void onAbilityConnectDone(ElementName element, IRemoteObject remote, int resultCode) {        // 跨设备PA连接完成后，会返回一个序列化的IRemoteObject对象        // 通过该对象得到控制远端服务的代理        mProxy = new MyRemoteProxy(remote);        btnConnectRemotePA.setText(&quot;connectRemoteAbility done&quot;);    }
+    @Override    public void onAbilityDisconnectDone(ElementName element, int resultCode) {        // 当已连接的远端PA关闭时，会触发该回调        // 支持开发者按照返回的错误信息进行PA生命周期管理        disconnectAbility(mConn);    }};
+</code></pre><p>仅通过启动/关闭两种方式对PA进行调度无法应对需长期交互的场景，因此，分布式任务调度平台向开发者提供了跨设备PA连接及断开连接的能力。为了对已连接PA进行管理，开发者需要实现一个满足IAbilityConnection接口的连接状态检测实例，通过该实例可以对连接及断开连接完成时设置具体的处理逻辑，例如：获取控制对端PA的代理等。进一步为了使用该代理跨设备调度PA，开发者需要在本地及对端分别实现对外接口一致的代理。一个具备加法能力的代理示例如下：</p>
+<pre><code>// 以连接提供加法计算能力的PA为例。为了提供跨设备连接能力，需要在本地发起连接侧和对端被连接侧分别实现代理// 发起连接侧的代理示例如下：public class MyRemoteProxy implements IRemoteBroker {    private static final int ERR_OK = 0;    private static final int COMMAND_PLUS = IRemoteObject.MIN_TRANSACTION_ID;    private final IRemoteObject remote;
+    public MyRemoteProxy(IRemoteObject remote) {        this.remote = remote;    }
+    @Override    public IRemoteObject asObject() {        return remote;    }
+    public int plus(int a, int b) throws RemoteException {        MessageParcel data = MessageParcel.obtain();        MessageParcel reply = MessageParcel.obtain();        // option不同的取值，决定采用同步或异步方式跨设备控制PA        // 本例需要同步获取对端PA执行加法的结果，因此采用同步的方式，即MessageOption.TF_SYNC        // 具体MessageOption的设置，可参考相关API文档        MessageOption option = new MessageOption(MessageOption.TF_SYNC);        data.writeInt(a);        data.writeInt(b);
+        try {            remote.sendRequest(COMMAND_PLUS, data, reply, option);            int errCode = reply.readInt();            if (errCode != ERR_OK) {                throw new RemoteException();            }            int result = reply.readInt();            return result;        }finally {            data.reclaim();            reply.reclaim();        }    }}
+</code></pre><p>此外，对端待连接的PA需要实现对应的客户端，代码示例如下所示：</p>
+<pre><code>// 以计算加法为例，对端实现的客户端如下public class MyRemote extends RemoteObject implements IRemoteBroker{    private static final int ERR_OK = 0;    private static final int ERROR = -1;    private static final int COMMAND_PLUS = IRemoteObject.MIN_TRANSACTION_ID;
+    public MyRemote() {        super(&quot;MyService_Remote&quot;);    }
+    @Override    public IRemoteObject asObject() {        return this;    }
+    @Override    public boolean onRemoteRequest(int code, MessageParcel data, MessageParcel reply, MessageOption option) {        if (code != COMMAND_PLUS) {            reply.writeInt(ERROR);            return false;        }        int value1 = data.readInt();        int value2 = data.readInt();        int sum = value1 + value2;        reply.writeInt(ERR_OK);        reply.writeInt(sum);        return true;    }}
+</code></pre><p>对端除了要实现如上所述的客户端外，待连接的PA还需要作如下修改：</p>
+<pre><code>// 为了返回给连接方可调用的代理，需要在该PA中实例化客户端，例如作为该PA的成员变量private MyRemote remote = new MyRemote();// 当该PA接收到连接请求时，即将该客户端转化为代理返回给连接发起侧@Overrideprotected IRemoteObject onConnect(Intent intent) {    super.onConnect(intent);    return remote.asObject();}
+</code></pre><p>完成上述步骤后，可以通过点击事件实现连接、利用连接关系控制PA以及断开连接等行为，代码示例如下：</p>
+<pre><code>// 连接远程PAprivate ClickedListener mConnectRemotePAListener = new ClickedListener() {    @Override    public void onClick(Component arg0) {        scheduleRemoteAbility(new ISelectResult() {            @Override            void onSelectResult(String deviceId) {                if (deviceId != null) {                    Intent connectPAIntent = new Intent();                    // bundleName和abilityName与待连接的PA一一对应                    // 例如：bundleName = &quot;com.helloworld&quot;                    //       abilityName = &quot;com.helloworld.SampleParticleAbility&quot;                    Operation operation = new Intent.OperationBuilder()                            .withDeviceId(deviceId)                            .withBundleName(bundleName)                            .withAbilityName(abilityName)                            .withFlags(Intent.FLAG_ABILITYSLICE_MULTI_DEVICE)                            .build();                    connectPAIntent.setOperation(operation);                    connectAbility(connectPAIntent, mConn);                }            }        });    }};// 控制已连接PA执行加法private ClickedListener mControlPAListener = new ClickedListener() {    @Override    public void onClick(Component arg0) {        if (mProxy != null) {            int ret = -1;            try {                ret = mProxy.plus(10, 20);            } catch (RemoteException e) {                HiLog.error(LABEL, &quot;ControlRemotePA error&quot;);            }            btnControlRemotePA.setText(&quot;ControlRemotePA result = &quot; + ret);        }    }};// 与远程PA断开连接private ClickedListener mDisconnectRemotePAListener = new ClickedListener() {    @Override    public void onClick(Component arg0) {        // 按钮复位        btnConnectRemotePA.setText(&quot;ConnectRemotePA&quot;);        btnControlRemotePA.setText(&quot;ControlRemotePA&quot;);        disconnectAbility(mConn);    }};
+</code></pre><p>说明</p>
+<p>通过连接/断开连接远程PA，与跨设备PA建立长期的管理关系。例如在本例中，通过连接关系得到远程PA的控制代理后，实现跨设备计算加法并将结果返回到本地显示。在实际开发中，开发者可以根据需要实现多种分布式场景，例如：跨设备位置/电量等信息的采集、跨设备计算资源互助等。</p>
+</li>
+<li><p>设备A将运行时的FA迁移到设备B，实现业务在设备间无缝迁移。</p>
+<pre><code>// 跨设备迁移FA// 本地FA设置当前运行任务private ClickedListener mContinueAbilityListener = new ClickedListener() {    @Override    public void onClick(Component arg0) {        // 用户选择设备后实现业务迁移        scheduleRemoteAbility(new ISelectResult() {            @Override            public void onSelectResult(String deviceId) {                continueAbility(deviceId);            }        });    }};
+</code></pre><p>FA的迁移还涉及到状态数据的传递，需要继承IAbilityContinuation接口，供开发者实现迁移过程中特定事件的管理能力，代码示例如下：</p>
+<pre><code>public class SampleSlice extends AbilitySlice implements IAbilityContinuation {    @Override    public boolean onSaveData(IntentParams saveData) {        String exampleData = String.valueOf(System.currentTimeMillis());        saveData.setParam(&quot;continueParam&quot;, exampleData);        return true;    }
+    @Override    public boolean onRestoreData(IntentParams restoreData) {        // 远端FA迁移传来的状态数据，开发者可以按照特定的场景对这些数据进行处理        Object data = restoreData.getParam(&quot;continueParam&quot;);        return true;    }
+    @Override    public void onCompleteContinuation(int result) {        btnContinueRemoteFA.setText(&quot;ContinueAbility Done&quot;);    }}
+</code></pre><p>通过自定义迁移事件相关的行为，最终实现对Ability的迁移。具体的定义可以参考相关的API文档，此处主要以较为常用的两个事件，包括迁移发起端完成迁移的回调onCompleteContinuation(int result)以及接收到远端迁移行为传递数据的回调onRestoreData(IntentParams restoreData)。其他还包括迁移到远端设备的FA关闭的回调onRemoteTerminated()、用于本地迁移发起时保存状态数据的回调onSaveData(IntentParams saveData)和本地发起迁移的回调onStartContinuation()。按照实际应用自定义特定场景对应的回调，可以完成多种场景下FA的迁移任务。</p>
+<p>说明</p>
+<ul>
+<li>FA迁移可以打通设备间的壁垒，有助于不同能力的设备进行互助。前文以一个简单的例子介绍如何通过分布式任务调度提供的能力，实现FA跨设备的迁移（包括FA启动及状态数据的同步）。</li>
+<li>FA迁移过程中，远端FA首先接收到发起端FA传输的数据，再执行启动，即onRestoreData()发生在onStart()之前，详见API参考。</li>
+</ul>
+</li>
+</ol>
+<h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对分布式任务调度，有以下示例工程可供参考：</p>
+<ul>
+<li><p>DistributedScheduler</p>
+<p>本示例演示了分布式任务调度的六种场景：启动远程FA，启动远程PA，关闭远程PA，连接远程PA，断开连接远程PA， 和FA跨端迁移。</p>
+</li>
+</ul>
+<p>针对分布式任务调度，有以下Codelabs可供参考：</p>
+<ul>
+<li><p>分布式调度启动远程FA</p>
+<p>基于分布式调度的能力，实现远程FA的启动。</p>
+</li>
+<li><p>分布式亲子早教系统</p>
+<p>基于分布式能力，实现一个多屏互动、跨设备协同的亲子早教系统。</p>
+</li>
+<li><p>分布式输入法</p>
+<p>基于分布式能力，将手机作为智慧屏的虚拟控制器，控制文字输入和遥控播放。</p>
+</li>
+<li><p>分布式地图导航</p>
+<p>基于分布式能力，实现地图导航信息在手机-车机-智能穿戴设备之间流转。</p>
 </li>
 </ul>
 
@@ -1652,10 +1675,10 @@
 
             
                 
-                
-                <a href="zi-yuan-wen-jian-de-shi-yong.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 资源文件的使用">
-                    <i class="fa fa-angle-right"></i>
+                <a href="distributed-overview.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 分布式任务调度开发概述">
+                    <i class="fa fa-angle-left"></i>
                 </a>
+                
                 
             
         
@@ -1664,7 +1687,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"资源文件的分类","level":"2.3.3.1","depth":3,"next":{"title":"资源文件的使用","level":"2.3.3.2","depth":3,"path":"zi-yuan-wen-jian-de-shi-yong.md","ref":"zi-yuan-wen-jian-de-shi-yong.md","articles":[]},"previous":{"title":"资源文件","level":"2.3.3","depth":2,"ref":"","articles":[{"title":"资源文件的分类","level":"2.3.3.1","depth":3,"path":"zi-yuan-wen-jian-de-fen-lei.md","ref":"zi-yuan-wen-jian-de-fen-lei.md","articles":[]},{"title":"资源文件的使用","level":"2.3.3.2","depth":3,"path":"zi-yuan-wen-jian-de-shi-yong.md","ref":"zi-yuan-wen-jian-de-shi-yong.md","articles":[]},{"title":"国际化","level":"2.3.3.3","depth":3,"path":"guo-ji-hua.md","ref":"guo-ji-hua.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"zi-yuan-wen-jian-de-fen-lei.md","mtime":"2021-06-08T13:20:08.363Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"分布式任务调度开发指导","level":"3.2.2.2","depth":3,"next":{"title":"公共事件与通知","level":"3.2.3","depth":2,"ref":"","articles":[{"title":"公共事件与通知概述","level":"3.2.3.1","depth":3,"path":"notification-fwk-overview.md","ref":"notification-fwk-overview.md","articles":[]},{"title":"公共事件开发指导","level":"3.2.3.2","depth":3,"path":"notification-fwk-common-event.md","ref":"notification-fwk-common-event.md","articles":[]},{"title":"通知开发指导","level":"3.2.3.3","depth":3,"path":"notification-fwk-notification.md","ref":"notification-fwk-notification.md","articles":[]},{"title":"IntentAgent开发指导","level":"3.2.3.4","depth":3,"path":"notification-fwk-intentagent.md","ref":"notification-fwk-intentagent.md","articles":[]}]},"previous":{"title":"分布式任务调度开发概述","level":"3.2.2.1","depth":3,"path":"distributed-overview.md","ref":"distributed-overview.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"distributed-guidelines.md","mtime":"2021-06-09T13:14:35.324Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

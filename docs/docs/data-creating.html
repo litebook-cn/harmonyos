@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>创建Data · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,8 +73,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="data-accessing.html" />
     
-    <link rel="prev" href="./" />
+    
+    <link rel="prev" href="data-concept.html" />
     
 
     </head>
@@ -132,7 +134,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -730,7 +732,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.1.4.2" data-path="data-creating.html">
+        <li class="chapter active" data-level="3.2.1.4.2" data-path="data-creating.html">
             
                 <a href="data-creating.html">
             
@@ -1454,7 +1456,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >创建Data</a>
     </h1>
 </div>
 
@@ -1469,7 +1471,96 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="创建data"><a name="创建data" class="plugin-anchor" href="#创建data"><i class="fa fa-link" aria-hidden="true"></i></a>创建Data</h1>
+<p>使用Data模板的Ability形式仍然是Ability，因此，开发者需要为应用添加一个或多个Ability的子类，来提供程序与其他应用之间的接口。Data为结构化数据和文件提供了不同API接口供用户使用，因此，开发者需要首先确定好使用何种类型的数据。本章节主要讲述了创建Data的基本步骤和需要使用的接口。</p>
+<p><strong>Data提供方可以自定义数据的增、删、改、查，以及文件打开等功能，并对外提供这些接口。</strong></p>
+<h2 id="确定数据存储方式"><a name="确定数据存储方式" class="plugin-anchor" href="#确定数据存储方式"><i class="fa fa-link" aria-hidden="true"></i></a>确定数据存储方式</h2>
+<p>确定数据的存储方式，Data支持以下两种数据形式：</p>
+<ul>
+<li>文件数据：如文本、图片、音乐等。</li>
+<li>结构化数据：如数据库等。</li>
+</ul>
+<h2 id="实现userdataability"><a name="实现userdataability" class="plugin-anchor" href="#实现userdataability"><i class="fa fa-link" aria-hidden="true"></i></a>实现UserDataAbility</h2>
+<p>UserDataAbility用于接收其他应用发送的请求，提供外部程序访问的入口，从而实现应用间的数据访问。</p>
+<p>实现UserDataAbility，需要在“Project”窗口当前工程的主目录（“entry &gt; src &gt; main &gt; java &gt; com.xxx.xxx”）选择“File &gt; New &gt; Ability &gt; Empty Data Ability”，设置“Data Name”后完成UserDataAbility的创建。</p>
+<p>Data提供了文件存储和数据库存储两组接口供用户使用。</p>
+<p><strong>文件存储</strong></p>
+<p>开发者需要在Data中重写FileDescriptor openFile(Uri uri, String mode)方法来操作文件：uri为客户端传入的请求目标路径；mode为开发者对文件的操作选项，可选方式包含“r”(读), “w”(写), “rw”(读写)等。</p>
+<p>ohos.rpc.MessageParcel类提供了一个静态方法，用于获取MessageParcel实例。开发者可通过获取到的MessageParcel实例，使用dupFileDescriptor()函数复制待操作文件流的文件描述符，并将其返回，供远端应用访问文件。</p>
+<p>示例：根据传入的uri打开对应的文件</p>
+<pre><code>private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0xD00201, &quot;Data_Log&quot;);
+@Overridepublic FileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {    // 创建messageParcel    MessageParcel messageParcel = MessageParcel.obtain();    File file = new File(uri.getDecodedPathList().get(0)); //get(0)是获取URI完整字段中查询参数字段。    if (mode == null || !&quot;rw&quot;.equals(mode)) {        file.setReadOnly();    }    FileInputStream fileIs = new FileInputStream(file);    FileDescriptor fd = null;    try {        fd = fileIs.getFD();    } catch (IOException e) {        HiLog.info(LABEL_LOG, &quot;failed to getFD&quot;);    }
+    // 绑定文件描述符    return messageParcel.dupFileDescriptor(fd);}
+</code></pre><p><strong>数据库存储</strong></p>
+<ol>
+<li><p>初始化数据库连接。</p>
+<p>系统会在应用启动时调用onStart()方法创建Data实例。在此方法中，开发者应该创建数据库连接，并获取连接对象，以便后续和数据库进行操作。为了避免影响应用启动速度，开发者应当尽可能将非必要的耗时任务推迟到使用时执行，而不是在此方法中执行所有初始化。</p>
+<p>示例：初始化的时候连接数据库</p>
+<pre><code>private static final String DATABASE_NAME = &quot;UserDataAbility.db&quot;;private static final String DATABASE_NAME_ALIAS = &quot;UserDataAbility&quot;;private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, 0xD00201, &quot;Data_Log&quot;);private OrmContext ormContext = null;
+@Overridepublic void onStart(Intent intent) {    super.onStart(intent);    DatabaseHelper manager = new DatabaseHelper(this);    ormContext = manager.getOrmContext(DATABASE_NAME_ALIAS, DATABASE_NAME, BookStore.class);}
+</code></pre></li>
+<li><p>编写数据库操作方法。</p>
+<p>Ability定义了6个方法供用户处理对数据库表数据的增删改查。这6个方法在Ability中已默认实现，开发者可按需重写。</p>
+<p>| 方法                                                         | 描述                   |
+| ------------------------------------------------------------ | ---------------------- |
+| ResultSet query(Uri uri, String[] columns, DataAbilityPredicates predicates) | 查询数据库             |
+| int insert(Uri uri, ValuesBucket value)                      | 向数据库中插入单条数据 |
+| int batchInsert(Uri uri, ValuesBucket[] values)              | 向数据库中插入多条数据 |
+| int delete(Uri uri, DataAbilityPredicates predicates)        | 删除一条或多条数据     |
+| int update(Uri uri, ValuesBucket value, DataAbilityPredicates predicates) | 更新数据库             |
+| DataAbilityResult[] executeBatch(ArrayList<dataabilityoperation> operations) | 批量操作数据库         |</dataabilityoperation></p>
+<p>这些方法的使用说明如下：</p>
+<ul>
+<li><p>query()</p>
+<p>该方法接收三个参数，分别是查询的目标路径，查询的列名，以及查询条件，查询条件由类DataAbilityPredicates构建。根据传入的列名和查询条件查询用户表的代码示例如下：</p>
+<pre><code>public ResultSet query(Uri uri, String[] columns, DataAbilityPredicates predicates) {    if (ormContext == null) {        HiLog.error(LABEL_LOG, &quot;failed to query, ormContext is null&quot;);        return null;    }
+    // 查询数据库    OrmPredicates ormPredicates = DataAbilityUtils.createOrmPredicates(predicates,User.class);    ResultSet resultSet = ormContext.query(ormPredicates, columns);    if (resultSet == null) {        HiLog.info(LABEL_LOG, &quot;resultSet is null&quot;);    }
+    // 返回结果    return resultSet;}
+</code></pre></li>
+<li><p>insert()</p>
+<p>该方法接收两个参数，分别是插入的目标路径和插入的数据值。其中，插入的数据由ValuesBucket封装，服务端可以从该参数中解析出对应的属性，然后插入到数据库中。此方法返回一个int类型的值用于标识结果。接收到传过来的用户信息并把它保存到数据库中的代码示例如下：</p>
+<pre><code>public int insert(Uri uri, ValuesBucket value) {    // 参数校验    if (ormContext == null) {        HiLog.error(LABEL_LOG, &quot;failed to insert, ormContext is null&quot;);        return -1;    }
+    // 构造插入数据    User user = new User();    user.setUserId(value.getInteger(&quot;userId&quot;));    user.setFirstName(value.getString(&quot;firstName&quot;));    user.setLastName(value.getString(&quot;lastName&quot;));    user.setAge(value.getInteger(&quot;age&quot;));    user.setBalance(value.getDouble(&quot;balance&quot;));
+    // 插入数据库    boolean isSuccessful = ormContext.insert(user);    if (!isSuccessful) {        HiLog.error(LABEL_LOG, &quot;failed to insert&quot;);        return -1;    }    isSuccessful = ormContext.flush();    if (!isSuccessful) {        HiLog.error(LABEL_LOG, &quot;failed to insert flush&quot;);        return -1;    }    DataAbilityHelper.creator(this, uri).notifyChange(uri);    int id = Math.toIntExact(user.getRowId());    return id;}
+</code></pre></li>
+<li><p>batchInsert()</p>
+<p>该方法为批量插入方法，接收一个ValuesBucket数组用于单次插入一组对象。它的作用是提高插入多条重复数据的效率。该方法系统已实现，开发者可以直接调用。</p>
+</li>
+<li><p>delete()</p>
+<p>该方法用来执行删除操作。删除条件由类DataAbilityPredicates构建，服务端在接收到该参数之后可以从中解析出要删除的数据，然后到数据库中执行。根据传入的条件删除用户表数据的代码示例如下：</p>
+<pre><code>public int delete(Uri uri, DataAbilityPredicates predicates) {    if (ormContext == null) {        HiLog.error(LABEL_LOG, &quot;failed to delete, ormContext is null&quot;);        return -1;    }
+    OrmPredicates ormPredicates = DataAbilityUtils.createOrmPredicates(predicates,User.class);    int value = ormContext.delete(ormPredicates);    DataAbilityHelper.creator(this, uri).notifyChange(uri);    return value;}
+</code></pre></li>
+<li><p>update()</p>
+<p>此方法用来执行更新操作。用户可以在ValuesBucket参数中指定要更新的数据，在DataAbilityPredicates中构建更新的条件等。更新用户表的数据的代码示例如下：</p>
+<pre><code>public int update(Uri uri, ValuesBucket value, DataAbilityPredicates predicates) {    if (ormContext == null) {       HiLog.error(LABEL_LOG, &quot;failed to update, ormContext is null&quot;);       return -1;   }
+   OrmPredicates ormPredicates = DataAbilityUtils.createOrmPredicates(predicates,User.class);   int index = ormContext.update(ormPredicates, value);   HiLog.info(LABEL_LOG, &quot;UserDataAbility update value:&quot; + index);   DataAbilityHelper.creator(this, uri).notifyChange(uri);   return index;}
+</code></pre></li>
+<li><p>executeBatch()</p>
+<p>此方法用来批量执行操作。DataAbilityOperation中提供了设置操作类型、数据和操作条件的方法，用户可自行设置自己要执行的数据库操作。该方法系统已实现，开发者可以直接调用。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>说明</p>
+<p>上述代码示例中，初始化了数据库类BookStore.class，并通过实体类User.class对该数据库的表User进行增删改查操作。</p>
+<p>关于对象关系映射数据库的具体逻辑，以及示例中BookStore.class与User.class的逻辑关系，可参考“<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/database-orm-guidelines-0000000000030063" target="_blank">对象关系映射数据库开发指导</a>”。</p>
+<h2 id="注册userdataability"><a name="注册userdataability" class="plugin-anchor" href="#注册userdataability"><i class="fa fa-link" aria-hidden="true"></i></a>注册UserDataAbility</h2>
+<p>和Service类似，开发者必须在配置文件中注册Data。</p>
+<p>配置文件中该字段在创建Data Ability时会自动创建，name与创建的Data Ability一致。</p>
+<p>需要关注以下属性：</p>
+<ul>
+<li><p>type: 类型设置为data</p>
+</li>
+<li><p>uri: 对外提供的访问路径，全局唯一</p>
+</li>
+<li><p>permissions: 访问该data ability时需要申请的访问权限</p>
+<p>说明</p>
+<p>如果权限非系统权限，需要在配置文件中进行自定义。请参考<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886" target="_blank">权限开发指导</a>中关于“自定义权限”的相关说明。</p>
+</li>
+</ul>
+<pre><code>{    &quot;name&quot;: &quot;.UserDataAbility&quot;,     &quot;type&quot;: &quot;data&quot;,     &quot;visible&quot;: true,     &quot;uri&quot;: &quot;dataability://com.example.myapplication5.DataAbilityTest&quot;,     &quot;permissions&quot;: [        &quot;com.example.myapplication5.DataAbility.DATA&quot;     ]}
+</code></pre>
                                 
                                 </section>
                             
@@ -1496,10 +1587,14 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="data-concept.html" class="navigation navigation-prev " aria-label="Previous page: Data Ability基本概念">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="data-accessing.html" class="navigation navigation-next " aria-label="Next page: 访问Data">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -1508,7 +1603,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"创建Data","level":"3.2.1.4.2","depth":4,"next":{"title":"访问Data","level":"3.2.1.4.3","depth":4,"path":"data-accessing.md","ref":"data-accessing.md","articles":[]},"previous":{"title":"Data Ability基本概念","level":"3.2.1.4.1","depth":4,"path":"data-concept.md","ref":"data-concept.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"data-creating.md","mtime":"2021-06-09T13:13:43.585Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

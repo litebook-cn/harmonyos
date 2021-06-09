@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>Java UI框架概述 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -74,8 +74,6 @@
 
     
     
-    <link rel="prev" href="./" />
-    
 
     </head>
     <body>
@@ -132,7 +130,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -1185,7 +1183,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.4.1.1" data-path="java-overview.html">
+        <li class="chapter active" data-level="3.4.1.1" data-path="java-overview.html">
             
                 <a href="java-overview.html">
             
@@ -1454,7 +1452,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >Java UI框架概述</a>
     </h1>
 </div>
 
@@ -1469,7 +1467,27 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="java-ui框架概述"><a name="java-ui框架概述" class="plugin-anchor" href="#java-ui框架概述"><i class="fa fa-link" aria-hidden="true"></i></a>Java UI框架概述</h1>
+<p>应用的Ability在屏幕上将显示一个用户界面，该界面用来显示所有可被用户查看和交互的内容。</p>
+<p>应用中所有的用户界面元素都是由Component和ComponentContainer对象构成。Component是绘制在屏幕上的一个对象，用户能与之交互。ComponentContainer是一个用于容纳其他Component和ComponentContainer对象的容器。</p>
+<p>Java UI框架提供了一部分Component和ComponentContainer的具体子类，即创建用户界面（UI）的各类组件，包括一些常用的组件（比如：文本、按钮、图片、列表等）和常用的布局（比如：DirectionalLayout和DependentLayout）。用户可通过组件进行交互操作，并获得响应。</p>
+<p>所有的UI操作都应该在主线程进行设置。</p>
+<h2 id="组件和布局"><a name="组件和布局" class="plugin-anchor" href="#组件和布局"><i class="fa fa-link" aria-hidden="true"></i></a>组件和布局</h2>
+<p>用户界面元素统称为组件，组件根据一定的层级结构进行组合形成布局。组件在未被添加到布局中时，既无法显示也无法交互，因此一个用户界面至少包含一个布局。在UI框架中，具体的布局类通常以XXLayout命名，完整的用户界面是一个布局，用户界面中的一部分也可以是一个布局。布局中容纳Component与ComponentContainer对象。</p>
+<h2 id="component和componentcontainer"><a name="component和componentcontainer" class="plugin-anchor" href="#component和componentcontainer"><i class="fa fa-link" aria-hidden="true"></i></a>Component和ComponentContainer</h2>
+<ul>
+<li>Component：提供内容显示，是界面中所有组件的基类，开发者可以给Component设置事件处理回调来创建一个可交互的组件。Java UI框架提供了一些常用的界面元素，也可称之为组件，组件一般直接继承Component或它的子类，如Text、Image等。</li>
+<li>ComponentContainer：作为容器容纳Component或ComponentContainer对象，并对它们进行布局。Java UI框架提供了一些标准布局功能的容器，它们继承自ComponentContainer，一般以“Layout”结尾，如DirectionalLayout、DependentLayout等。</li>
+</ul>
+<p><strong>图1</strong> Component结构</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193022.86634719489942993810090598158101:50520607130708:2800:CA453567D46F329D34DCA6EA9EE365F40518E6D00337171B9B8AD6BAE33B39CA.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<h2 id="layoutconfig"><a name="layoutconfig" class="plugin-anchor" href="#layoutconfig"><i class="fa fa-link" aria-hidden="true"></i></a>LayoutConfig</h2>
+<p>每种布局都根据自身特点提供LayoutConfig供子Component设定布局属性和参数，通过指定布局属性可以对子Component在布局中的显示效果进行约束。例如：“width”、“height”是最基本的布局属性，它们指定了组件的大小。</p>
+<p><strong>图2</strong> LayoutConfig</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193022.54553897632452319271288346903178:50520607130708:2800:DF31F79755407C51CCACDE1750F7F624AFD908DBA7AAEB9E38EFCD648E5B2E87.png?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<h2 id="组件树"><a name="组件树" class="plugin-anchor" href="#组件树"><i class="fa fa-link" aria-hidden="true"></i></a>组件树</h2>
+<p>布局把Component和ComponentContainer以树状的层级结构进行组织，这样的一个布局就称为组件树。组件树的特点是仅有一个根组件，其他组件有且仅有一个父节点，组件之间的关系受到父节点的规则约束。</p>
+
                                 
                                 </section>
                             
@@ -1496,10 +1514,6 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
-                    <i class="fa fa-angle-left"></i>
-                </a>
-                
                 
             
         
@@ -1508,7 +1522,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Java UI框架概述","level":"3.4.1.1","depth":3,"next":{"title":"组件与布局开发指导","level":"3.4.1.2","depth":3,"ref":"","articles":[{"title":"开发说明","level":"3.4.1.2.1","depth":4,"path":"java-component-layout-overview.md","ref":"java-component-layout-overview.md","articles":[]},{"title":"代码创建布局","level":"3.4.1.2.2","depth":4,"path":"java-component-layout-code.md","ref":"java-component-layout-code.md","articles":[]},{"title":"XML创建布局","level":"3.4.1.2.3","depth":4,"path":"java-component-layout-xml.md","ref":"java-component-layout-xml.md","articles":[]}]},"previous":{"title":"Java UI框架","level":"3.4.1","depth":2,"ref":"","articles":[{"title":"Java UI框架概述","level":"3.4.1.1","depth":3,"path":"java-overview.md","ref":"java-overview.md","articles":[]},{"title":"组件与布局开发指导","level":"3.4.1.2","depth":3,"ref":"","articles":[{"title":"开发说明","level":"3.4.1.2.1","depth":4,"path":"java-component-layout-overview.md","ref":"java-component-layout-overview.md","articles":[]},{"title":"代码创建布局","level":"3.4.1.2.2","depth":4,"path":"java-component-layout-code.md","ref":"java-component-layout-code.md","articles":[]},{"title":"XML创建布局","level":"3.4.1.2.3","depth":4,"path":"java-component-layout-xml.md","ref":"java-component-layout-xml.md","articles":[]}]},{"title":"常用组件开发指导","level":"3.4.1.3","depth":3,"ref":"","articles":[{"title":"Text","level":"3.4.1.3.1","depth":4,"path":"java-component-text.md","ref":"java-component-text.md","articles":[]},{"title":"Button","level":"3.4.1.3.2","depth":4,"path":"java-component-button.md","ref":"java-component-button.md","articles":[]}]},{"title":"常用布局开发指导","level":"3.4.1.4","depth":3,"ref":"","articles":[]},{"title":"自定义组件与布局","level":"3.4.1.5","depth":3,"ref":"","articles":[]},{"title":"动画开发指导","level":"3.4.1.6","depth":3,"ref":"","articles":[]},{"title":"可见即可说开发指导","level":"3.4.1.7","depth":3,"ref":"","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"java-overview.md","mtime":"2021-06-09T13:17:08.930Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

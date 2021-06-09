@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>卡片开发说明 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,8 +73,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="widget-provider-js.html" />
     
-    <link rel="prev" href="./" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -936,7 +936,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.2.4.2.1" data-path="widget-provider-intro.html">
+        <li class="chapter active" data-level="3.2.4.2.1" data-path="widget-provider-intro.html">
             
                 <a href="widget-provider-intro.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >卡片开发说明</a>
     </h1>
 </div>
 
@@ -1469,7 +1469,147 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="卡片开发说明"><a name="卡片开发说明" class="plugin-anchor" href="#卡片开发说明"><i class="fa fa-link" aria-hidden="true"></i></a>卡片开发说明</h1>
+<h2 id="场景介绍"><a name="场景介绍" class="plugin-anchor" href="#场景介绍"><i class="fa fa-link" aria-hidden="true"></i></a>场景介绍</h2>
+<p>卡片提供方控制卡片实际显示的内容、控件布局以及控件点击事件。开发者可以通过集成以下接口来提供卡片服务。</p>
+<h2 id="接口说明"><a name="接口说明" class="plugin-anchor" href="#接口说明"><i class="fa fa-link" aria-hidden="true"></i></a>接口说明</h2>
+<p>HarmonyOS中的服务卡片为卡片提供方开发者提供以下接口能力。</p>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ability</td>
+<td>ProviderFormInfo onCreateForm(Intent intent)</td>
+<td>卡片提供方接收创建卡片通知接口。</td>
+</tr>
+<tr>
+<td>void onUpdateForm(long formId)</td>
+<td>卡片提供方接收更新卡片通知接口。</td>
+<td></td>
+</tr>
+<tr>
+<td>void onDeleteForm(long formId)</td>
+<td>卡片提供方接收删除卡片通知接口。</td>
+<td></td>
+</tr>
+<tr>
+<td>void onTriggerFormEvent(long formId, String message)</td>
+<td>卡片提供方处理卡片事件接口（JS卡片使用）。</td>
+<td></td>
+</tr>
+<tr>
+<td>boolean updateForm(long formId, ComponentProvider component)</td>
+<td>卡片提供方主动更新卡片（Java卡片使用）。</td>
+<td></td>
+</tr>
+<tr>
+<td>boolean updateForm(long formId, FormBindingData formBindingData)</td>
+<td>卡片提供方主动更新卡片（JS卡片使用），仅更新formBindingData中携带的信息，卡片中其余信息保持不变。</td>
+<td></td>
+</tr>
+<tr>
+<td>void onCastTempForm(long formId)</td>
+<td>卡片提供方接收临时卡片转常态卡片通知。</td>
+<td></td>
+</tr>
+<tr>
+<td>void onEventNotify(Map<long, integer=""> formEvents)</long,></td>
+<td>卡片提供方接收到事件通知，其中Ability.FORM_VISIBLE表示卡片可见通知，Ability.FORM_INVISIBLE表示卡片不可见通知。</td>
+<td></td>
+</tr>
+<tr>
+<td>ProviderFormInfo</td>
+<td>ProviderFormInfo(int resId, Context context)</td>
+<td>Java卡片返回对象构造函数。</td>
+</tr>
+<tr>
+<td>ProviderFormInfo()</td>
+<td>JS卡片返回对象构造函数。</td>
+<td></td>
+</tr>
+<tr>
+<td>void mergeActions(ComponentProvider componentProviderActions)</td>
+<td>在提供方侧调用该接口，将开发者在ComponentProvider中设置的actions配置数据合并到当前对象中。</td>
+<td></td>
+</tr>
+<tr>
+<td>void setJsBindingData(FormBindingData data)</td>
+<td>设置JS卡片的内容信息(JS卡片使用)。</td>
+</tr>
+</tbody>
+</table>
+<p>其中，onEventNotify仅系统应用才会回调，其他接口回调时机如下图：</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193021.22720721164481465196856638334799:50520607130708:2800:40832064D3CA27201C8A2C7A3BAEC0F0E7EA55C6835B7BFCD01D5C92F17FF549.png?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<p>说明</p>
+<p>卡片管理服务不负责保持卡片的活跃状态（设置了定时更新的除外），当使用方作出相应的请求时，管理服务会拉起提供方并回调相应接口。</p>
+<h2 id="java卡片与js卡片选型指导"><a name="java卡片与js卡片选型指导" class="plugin-anchor" href="#java卡片与js卡片选型指导"><i class="fa fa-link" aria-hidden="true"></i></a>Java卡片与JS卡片选型指导</h2>
+<p>Java/JS卡片场景能力差异如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>Java卡片</th>
+<th>JS卡片</th>
+<th>支持的版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>实时刷新（类似时钟）</td>
+<td>Java使用ComponentProvider做实时刷新代价比较大</td>
+<td>JS可以做到端侧刷新，但是需要定制化组件</td>
+<td>HarmonyOS 2.0及以上</td>
+</tr>
+<tr>
+<td>开发方式</td>
+<td>Java UI在卡片提供方需要同时对数据和组件进行处理，生成ComponentProvider远端渲染</td>
+<td>JS卡片在使用方加载渲染，提供方只要处理数据、组件和逻辑分离</td>
+<td>HarmonyOS 2.0及以上</td>
+</tr>
+<tr>
+<td>组件支持</td>
+<td>Text、Image、DirectionalLayout、PositionLayout、DependentLayout</td>
+<td>div、list、list-item、swiper、stack、image、text、span、progress、button（定制：chart 、clock、calendar）</td>
+<td>HarmonyOS 2.0及以上</td>
+</tr>
+<tr>
+<td>卡片内动效</td>
+<td>不支持</td>
+<td>暂不开放</td>
+<td>HarmonyOS 2.0及以上</td>
+</tr>
+<tr>
+<td>阴影模糊</td>
+<td>不支持</td>
+<td>支持</td>
+<td>HarmonyOS 2.0及以上</td>
+</tr>
+<tr>
+<td>动态适应布局</td>
+<td>不支持</td>
+<td>支持</td>
+<td>HarmonyOS 2.0及以上</td>
+</tr>
+<tr>
+<td>自定义卡片跳转页面</td>
+<td>不支持</td>
+<td>支持</td>
+<td>HarmonyOS 2.0及以上</td>
+</tr>
+</tbody>
+</table>
+<p>综上所述，JS卡片比JAVA卡片支持的控件和能力都更丰富：</p>
+<p>Java卡片：适合作为一个直达入口，没有复杂的页面和事件。</p>
+<p>JS卡片：适合有复杂界面的卡片。</p>
+<h2 id="约束与限制"><a name="约束与限制" class="plugin-anchor" href="#约束与限制"><i class="fa fa-link" aria-hidden="true"></i></a>约束与限制</h2>
+<p>对于同一个Page ability，在config.json中最多支持配置16张卡片。</p>
+
                                 
                                 </section>
                             
@@ -1496,10 +1636,10 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
-                    <i class="fa fa-angle-left"></i>
-                </a>
                 
+                <a href="widget-provider-js.html" class="navigation navigation-next navigation-unique" aria-label="Next page: JS卡片开发步骤">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -1508,7 +1648,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"卡片开发说明","level":"3.2.4.2.1","depth":4,"next":{"title":"JS卡片开发步骤","level":"3.2.4.2.2","depth":4,"path":"widget-provider-js.md","ref":"widget-provider-js.md","articles":[]},"previous":{"title":"卡片提供方开发指导","level":"3.2.4.2","depth":3,"ref":"","articles":[{"title":"卡片开发说明","level":"3.2.4.2.1","depth":4,"path":"widget-provider-intro.md","ref":"widget-provider-intro.md","articles":[]},{"title":"JS卡片开发步骤","level":"3.2.4.2.2","depth":4,"path":"widget-provider-js.md","ref":"widget-provider-js.md","articles":[]},{"title":"Java卡片开发指导","level":"3.2.4.2.3","depth":4,"path":"widget-provider-java.md","ref":"widget-provider-java.md","articles":[]},{"title":"其他可选功能开发指引","level":"3.2.4.2.4","depth":4,"path":"widget-provider-optional.md","ref":"widget-provider-optional.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"widget-provider-intro.md","mtime":"2021-06-09T13:15:42.809Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

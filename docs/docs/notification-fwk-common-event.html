@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>公共事件开发指导 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,8 +73,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="notification-fwk-notification.html" />
     
-    <link rel="prev" href="./" />
+    
+    <link rel="prev" href="notification-fwk-overview.html" />
     
 
     </head>
@@ -132,7 +134,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -851,7 +853,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.3.2" data-path="notification-fwk-common-event.html">
+        <li class="chapter active" data-level="3.2.3.2" data-path="notification-fwk-common-event.html">
             
                 <a href="notification-fwk-common-event.html">
             
@@ -1454,7 +1456,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >公共事件开发指导</a>
     </h1>
 </div>
 
@@ -1469,7 +1471,206 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="公共事件开发指导"><a name="公共事件开发指导" class="plugin-anchor" href="#公共事件开发指导"><i class="fa fa-link" aria-hidden="true"></i></a>公共事件开发指导</h1>
+<h2 id="场景介绍"><a name="场景介绍" class="plugin-anchor" href="#场景介绍"><i class="fa fa-link" aria-hidden="true"></i></a>场景介绍</h2>
+<p>每个应用都可以订阅自己感兴趣的公共事件，订阅成功后且公共事件发布后，系统会把其发送给应用。这些公共事件可能来自系统、其他应用和应用自身。HarmonyOS提供了一套完整的API，支持用户订阅、发布和接收公共事件。发布公共事件需要借助CommonEventData对象，接收公共事件需要继承CommonEventSubscriber类并实现onReceiveEvent回调函数。</p>
+<h2 id="接口说明"><a name="接口说明" class="plugin-anchor" href="#接口说明"><i class="fa fa-link" aria-hidden="true"></i></a>接口说明</h2>
+<p>公共事件相关基础类包含<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-common-event-0000000000029871#ZH-CN_TOPIC_0000001050988893__li14451163813234" target="_blank">CommonEventData</a>、<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-common-event-0000000000029871#ZH-CN_TOPIC_0000001050988893__li29381475233" target="_blank">CommonEventPublishInfo</a>、<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-common-event-0000000000029871#ZH-CN_TOPIC_0000001050988893__li1490625910238" target="_blank">CommonEventSubscribeInfo</a>、<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-common-event-0000000000029871#ZH-CN_TOPIC_0000001050988893__li75811198246" target="_blank">CommonEventSubscriber</a>和<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-common-event-0000000000029871#ZH-CN_TOPIC_0000001050988893__li18241142552416" target="_blank">CommonEventManager</a>。基础类之间的关系如下图所示：</p>
+<p><strong>图1</strong> 公共事件基础类关系图
+<img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193020.96317754544249006134579997191279:50520607130708:2800:D50FC05E0D676CDF189E678A6697E9728461A4FE57DB13501B3A51616697B332.jpg?needInitFileName=true?needInitFileName=true" alt="点击放大"></p>
+<ul>
+<li></li>
+</ul>
+<p>  CommonEventData</p>
+<p>  CommonEventData封装公共事件相关信息。用于在发布、分发和接收时处理数据。在构造CommonEventData对象时，相关参数需要注意以下事项：</p>
+<ul>
+<li>code为有序公共事件的结果码，data为有序公共事件的结果数据，仅用于<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-common-event-0000000000029871#ZH-CN_TOPIC_0000001050988893__li1559091484011" target="_blank">有序公共事件</a>场景。</li>
+<li><p>intent不允许为空，否则发布公共事件失败。</p>
+<p>| 接口名                                                | 描述                                       |
+| ----------------------------------------------------- | ------------------------------------------ |
+| CommonEventData()                                     | 创建公共事件数据。                         |
+| CommonEventData(Intent intent)                        | 创建公共事件数据指定Intent。               |
+| CommonEventData(Intent intent, int code, String data) | 创建公共事件数据，指定Intent、code和data。 |
+| getIntent()                                           | 获取公共事件Intent。                       |
+| setCode(int code)                                     | 设置有序公共事件的结果码。                 |
+| getCode()                                             | 获取有序公共事件的结果码。                 |
+| setData(String data)                                  | 设置有序公共事件的详细结果数据。           |
+| getData()                                             | 获取有序公共事件的详细结果数据。           |</p>
+</li>
+</ul>
+<ul>
+<li></li>
+</ul>
+<p>  CommonEventPublishInfo</p>
+<p>  CommonEventPublishInfo封装公共事件发布相关属性、限制等信息，包括公共事件类型（有序或粘性）、接收者权限等。</p>
+<ul>
+<li></li>
+</ul>
+<pre><code>有序公共事件：主要场景是多个订阅者有依赖关系或者对处理顺序有要求，例如：高优先级订阅者可修改公共事件内容或处理结果，包括终止公共事件处理；或者低优先级订阅者依赖高优先级的处理结果等。
+
+有序公共事件的订阅者可以通过[CommonEventSubscribeInfo](https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-common-event-0000000000029871#ZH-CN_TOPIC_0000001050988893__li1490625910238).setPriority()方法指定优先级，缺省为0，优先级范围[-1000, 1000]，值越大优先级越高。
+</code></pre><ul>
+<li><p>粘性公共事件：指公共事件的订阅动作是在公共事件发布之后进行，订阅者也能收到的公共事件类型。主要场景是由公共事件服务记录某些系统状态，如蓝牙、WLAN、充电等事件和状态。不使用粘性公共事件机制时，应用可以通过直接访问系统服务获取该状态；在状态变化时，系统服务、硬件需要提供类似observer等方式通知应用。</p>
+<p>发布粘性公共事件可以通过setSticky()方法设置， 发布粘性公共事件需要申请如下权限。声明请参考<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__table73291742539" target="_blank">权限开发指导表1 reqPermissions权限申请字段说明</a>。</p>
+<pre><code>&quot;reqPermissions&quot;: [  {    &quot;name&quot;: &quot;ohos.permission.COMMONEVENT_STICKY&quot;,    &quot;reason&quot;: &quot;Obtain the required permission&quot;,    &quot;usedScene&quot;: {      &quot;ability&quot;: [        &quot;.MainAbility&quot;      ],      &quot;when&quot;: &quot;inuse&quot;    }  },  {    ...  }]
+</code></pre><p>| 接口名                                                     | 描述                                           |
+| ---------------------------------------------------------- | ---------------------------------------------- |
+| CommonEventPublishInfo()                                   | 创建公共事件信息。                             |
+| CommonEventPublishInfo(CommonEventPublishInfo publishInfo) | 拷贝一个公共事件信息。                         |
+| setSticky(boolean sticky）                                 | 设置公共事件的粘性属性。                       |
+| setOrdered(boolean ordered)                                | 设置公共事件的有序属性。                       |
+| setSubscriberPermissions(String[] subscriberPermissions)   | 设置公共事件订阅者的权限，多参数仅第一个生效。 |</p>
+</li>
+</ul>
+<ul>
+<li></li>
+</ul>
+<p>  CommonEventSubscribeInfo</p>
+<p>  CommonEventSubscribeInfo封装公共事件订阅相关信息，比如优先级、线程模式、事件范围等。</p>
+<p>  线程模式（ThreadMode）：设置订阅者的回调方法执行的线程模式。ThreadMode有HANDLER，POST，ASYNC，BACKGROUND四种模式，目前只支持HANDLER模式。</p>
+<ul>
+<li>HANDLER：在Ability的主线程上执行。</li>
+<li>POST：在事件分发线程执行。</li>
+<li>ASYNC：在一个新创建的异步线程执行。</li>
+<li><p>BACKGROUND：在后台线程执行。</p>
+<p>| 接口名                                                  | 描述                                   |
+| ------------------------------------------------------- | -------------------------------------- |
+| CommonEventSubscribeInfo(MatchingSkills matchingSkills) | 创建公共事件订阅器指定matchingSkills。 |
+| CommonEventSubscribeInfo(CommonEventSubscribeInfo)      | 拷贝公共事件订阅器对象。               |
+| setPriority(int priority)                               | 设置优先级，用于有序公共事件。         |
+| setThreadMode(ThreadMode threadMode)                    | 指定订阅者的回调函数运行在哪个线程上。 |
+| setPermission(String permission)                        | 设置发布者必须具备的权限。             |
+| setDeviceId(String deviceId)                            | 指定订阅哪台设备的公共事件。           |</p>
+</li>
+</ul>
+<ul>
+<li></li>
+</ul>
+<p>  CommonEventSubscriber</p>
+<p>  CommonEventSubscriber封装公共事件订阅者及相关参数。</p>
+<ul>
+<li>CommonEventSubscriber.AsyncCommonEventResult类处理有序公共事件异步执行，详见API参考。</li>
+<li><p>目前只能通过调用<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-common-event-0000000000029871#ZH-CN_TOPIC_0000001050988893__li18241142552416" target="_blank">CommonEventManager</a>的subscribeCommonEvent()进行订阅。</p>
+<p>| 接口名                                                       | 描述                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| CommonEventSubscriber(CommonEventSubscribeInfo subscribeInfo) | 构造公共事件订阅者实例。                                     |
+| onReceiveEvent(CommonEventData data)                         | 由开发者实现, 在接收到公共事件时被调用。                     |
+| AsyncCommonEventResult goAsyncCommonEvent()                  | 设置有序公共事件异步执行。                                   |
+| setCodeAndData(int code, String data)                        | 设置有序公共事件的异步结果。                                 |
+| setData(String data)                                         | 设置有序公共事件的异步结果数据。                             |
+| setCode(int code)                                            | 设置有序公共事件的异步结果码。                               |
+| getData()                                                    | 获取有序公共事件的异步结果数据。                             |
+| getCode()                                                    | 获取有序公共事件的异步结果码。                               |
+| abortCommonEvent()                                           | 取消当前的公共事件，仅对有序公共事件有效，取消后，公共事件不再向下一个订阅者传递。 |
+| getAbortCommonEvent()                                        | 获取当前有序公共事件是否取消的状态。                         |
+| clearAbortCommonEvent()                                      | 清除当前有序公共事件abort状态。                              |
+| isOrderedCommonEvent()                                       | 查询当前公共事件的是否为有序公共事件。                       |
+| isStickyCommonEvent()                                        | 查询当前公共事件是否为粘性公共事件。                         |</p>
+</li>
+</ul>
+<ul>
+<li></li>
+</ul>
+<p>  CommonEventManager</p>
+<p>  CommonEventManager是为应用提供订阅、退订和发布公共事件的静态接口类。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>publishCommonEvent(CommonEventData eventData)</td>
+<td>发布公共事件。</td>
+</tr>
+<tr>
+<td>publishCommonEvent(CommonEventData event, CommonEventPublishInfo publishInfo)</td>
+<td>发布公共事件指定发布信息。</td>
+</tr>
+<tr>
+<td>publishCommonEvent(CommonEventData event, CommonEventPublishInfo publishInfo, CommonEventSubscriber resultSubscriber)</td>
+<td>发布有序公共事件，指定发布信息和最后一个接收者。</td>
+</tr>
+<tr>
+<td>subscribeCommonEvent(CommonEventSubscriber subscriber)</td>
+<td>订阅公共事件。</td>
+</tr>
+<tr>
+<td>unsubscribeCommonEvent(CommonEventSubscriber subscriber)</td>
+<td>退订公共事件。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="发布公共事件"><a name="发布公共事件" class="plugin-anchor" href="#发布公共事件"><i class="fa fa-link" aria-hidden="true"></i></a>发布公共事件</h2>
+<p>开发者可以发布四种公共事件：无序的公共事件、带权限的公共事件、有序的公共事件、粘性的公共事件。</p>
+<p><strong>发布无序的公共事件：</strong>构造CommonEventData对象，设置Intent，通过构造operation对象把需要发布的公共事件信息传入intent对象。然后调用 CommonEventManager.publishCommonEvent(CommonEventData) 接口发布公共事件。</p>
+<pre><code>try {    Intent intent = new Intent();       Operation operation = new Intent.OperationBuilder()            .withAction(&quot;com.my.test&quot;)            .build();    intent.setOperation(operation);    CommonEventData eventData = new CommonEventData(intent);    CommonEventManager.publishCommonEvent(eventData);     HiLog.info(LABEL_LOG, &quot;Publish succeeded&quot;); } catch (RemoteException e) {    HiLog.error(LABEL_LOG, &quot;Exception occurred during publishCommonEvent invocation.&quot;); }
+</code></pre><p><strong>发布携带权限的公共事件：</strong>构造CommonEventPublishInfo对象，设置订阅者的权限。</p>
+<ul>
+<li><p>订阅者在config.json中申请所需的权限，各字段含义详见</p>
+<p>权限申请字段说明</p>
+<p>。</p>
+<p>说明</p>
+<p>非系统已定义的权限，需要先在config.json中自定义，才可以申请使用。详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__table16180174018340" target="_blank">权限定义字段说明</a></p>
+<pre><code>&quot;reqPermissions&quot;: [  {    &quot;name&quot;: &quot;com.example.MyApplication.permission&quot;,    &quot;reason&quot;: &quot;Obtain the required permission&quot;,    &quot;usedScene&quot;: {      &quot;ability&quot;: [        &quot;.MainAbility&quot;      ],      &quot;when&quot;: &quot;inuse&quot;    }  },   {    ...  }]
+</code></pre></li>
+<li><p>发布带权限的公共事件示例代码如下：</p>
+<pre><code>Intent intent = new Intent();Operation operation = new Intent.OperationBuilder()        .withAction(&quot;com.my.test&quot;)        .build();intent.setOperation(operation);CommonEventData eventData = new CommonEventData(intent);CommonEventPublishInfo publishInfo = new CommonEventPublishInfo();String[] permissions = {&quot;com.example.MyApplication.permission&quot;};publishInfo.setSubscriberPermissions(permissions); // 设置权限try {       CommonEventManager.publishCommonEvent(eventData, publishInfo);     HiLog.info(LABEL_LOG, &quot;Publish succeeded&quot;); } catch (RemoteException e) {    HiLog.error(LABEL_LOG, &quot;Exception occurred during publishCommonEvent invocation.&quot;); }
+</code></pre></li>
+</ul>
+<p><strong>发布有序的公共事件：</strong>构造CommonEventPublishInfo对象，通过setOrdered(true)指定公共事件属性为有序公共事件，也可以指定一个最后的公共事件接收者。</p>
+<pre><code>CommonEventSubscriber resultSubscriber = new MyCommonEventSubscriber();CommonEventPublishInfo publishInfo = new CommonEventPublishInfo();publishInfo.setOrdered(true); // 设置属性为有序公共事件try {       CommonEventManager.publishCommonEvent(eventData, publishInfo, resultSubscriber); // 指定resultSubscriber为有序公共事件最后一个接收者。} catch (RemoteException e) {    HiLog.error(LABEL_LOG, &quot;Exception occurred during publishCommonEvent invocation.&quot;); }
+</code></pre><p><strong>发布粘性公共事件：</strong>构造CommonEventPublishInfo对象，通过setSticky(true)指定公共事件属性为粘性公共事件。</p>
+<ol>
+<li><p>发布者首先在config.json中申请发布粘性公共事件所需的权限，各字段含义详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__table73291742539" target="_blank">权限申请字段说明</a>。</p>
+<pre><code>{    &quot;reqPermissions&quot;: [{        &quot;name&quot;: &quot;ohos.permission.COMMONEVENT_STICKY&quot;,        &quot;reason&quot;: &quot;Obtain the required permission&quot;,        &quot;usedScene&quot;: {           &quot;ability&quot;: [            &quot;.MainAbility&quot;           ],           &quot;when&quot;: &quot;inuse&quot;        }    }, {    ...    }]}
+</code></pre></li>
+<li><p>发布粘性公共事件。</p>
+<pre><code>CommonEventPublishInfo publishInfo = new CommonEventPublishInfo();publishInfo.setSticky(true); // 设置属性为粘性公共事件try {       CommonEventManager.publishCommonEvent(eventData, publishInfo); } catch (RemoteException e) {    HiLog.error(LABEL, &quot;Exception occurred during publishCommonEvent invocation.&quot;); }
+</code></pre></li>
+</ol>
+<h2 id="订阅公共事件"><a name="订阅公共事件" class="plugin-anchor" href="#订阅公共事件"><i class="fa fa-link" aria-hidden="true"></i></a>订阅公共事件</h2>
+<ol>
+<li><p>创建CommonEventSubscriber派生类，在onReceiveEvent()回调函数中处理公共事件。</p>
+<p>说明</p>
+<p>此处不能执行耗时操作，否则会阻塞UI线程，产生用户点击没有反应等异常。</p>
+<pre><code>class MyCommonEventSubscriber extends CommonEventSubscriber {     MyCommonEventSubscriber(CommonEventSubscribeInfo info) {         super(info);       }    @Override     public void onReceiveEvent(CommonEventData commonEventData) {    } }
+</code></pre></li>
+<li><p>构造MyCommonEventSubscriber对象，调用CommonEventManager.subscribeCommonEvent()接口进行订阅。</p>
+<pre><code>String event = &quot;com.my.test&quot;;MatchingSkills matchingSkills = new MatchingSkills();matchingSkills.addEvent(event); // 自定义事件matchingSkills.addEvent(CommonEventSupport.COMMON_EVENT_SCREEN_ON); // 亮屏事件CommonEventSubscribeInfo subscribeInfo = new CommonEventSubscribeInfo(matchingSkills);MyCommonEventSubscriber subscriber = new MyCommonEventSubscriber(subscribeInfo);try {    CommonEventManager.subscribeCommonEvent(subscriber); } catch (RemoteException e) {    HiLog.error(LABEL, &quot;Exception occurred during subscribeCommonEvent invocation.&quot;); }
+</code></pre><p>如果订阅拥有指定权限应用发布的公共事件，发布者需要在config.json中申请权限，各字段含义详见<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/security-permissions-guidelines-0000000000029886#ZH-CN_TOPIC_0000001072906209__table73291742539" target="_blank">权限申请字段说明</a>。</p>
+<pre><code>&quot;reqPermissions&quot;: [    {        &quot;name&quot;: &quot;ohos.abilitydemo.permission.PROVIDER&quot;,        &quot;reason&quot;: &quot;Obtain the required permission&quot;,        &quot;usedScene&quot;: {            &quot;ability&quot;: [&quot;com.hmi.ivi.systemsetting.MainAbility&quot;],            &quot;when&quot;: &quot;inuse&quot;        }    }]
+</code></pre><p>如果订阅的公共事件是有序的，可以调用setPriority(）指定优先级。</p>
+<pre><code>String event = &quot;com.my.test&quot;;MatchingSkills matchingSkills = new MatchingSkills();matchingSkills.addEvent(event); // 自定义事件
+CommonEventSubscribeInfo subscribeInfo = new CommonEventSubscribeInfo(matchingSkills);subscribeInfo.setPriority(100); // 设置优先级，优先级取值范围[-1000，1000]，值默认为0。MyCommonEventSubscriber subscriber = new MyCommonEventSubscriber(subscribeInfo);try {     CommonEventManager.subscribeCommonEvent(subscriber); } catch (RemoteException e) {     HiLog.error(LABEL, &quot;Exception occurred during subscribeCommonEvent invocation.&quot;); }
+</code></pre></li>
+<li><p>针对在onReceiveEvent中不能执行耗时操作的限制，可以使用CommonEventSubscriber的goAsyncCommonEvent()来实现异步操作，函数返回后仍保持该公共事件活跃，且执行完成后必须调用AsyncCommonEventResult .finishCommonEvent()来结束。</p>
+<pre><code>EventRunner runner = EventRunner.create(); // EventRunner创建新线程，将耗时的操作放到新的线程上执行MyEventHandler myHandler = new MyEventHandler(runner); // MyEventHandler为EventHandler的派生类，在不同线程间分发和处理事件和Runnable任务@Overridepublic void onReceiveEvent(CommonEventData commonEventData){    final AsyncCommonEventResult result = goAsyncCommonEvent();
+    Runnable task = new Runnable() {        @Override        public void run() {            ........         // 待执行的操作，由开发者定义            result.finishCommonEvent(); // 调用finish结束异步操作        }    };    myHandler.postTask(task);}
+</code></pre></li>
+</ol>
+<h2 id="退订公共事件"><a name="退订公共事件" class="plugin-anchor" href="#退订公共事件"><i class="fa fa-link" aria-hidden="true"></i></a>退订公共事件</h2>
+<p>在Ability的onStop()中调用CommonEventManager.unsubscribeCommonEvent()方法来退订公共事件。调用后，之前订阅的所有公共事件均被退订。</p>
+<pre><code>try {     CommonEventManager.unsubscribeCommonEvent(subscriber); } catch (RemoteException e) {    HiLog.error(LABEL, &quot;Exception occurred during unsubscribeCommonEvent invocation.&quot;); }
+</code></pre><h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对公共事件开发，有以下示例工程可供参考：</p>
+<ul>
+<li><p>CommonEvent</p>
+<p>本示例演示了公共事件的订阅、发布和退订。</p>
+</li>
+</ul>
+<p>针对公共事件，有以下Codelabs可供参考：</p>
+<ul>
+<li><p>分布式亲子早教系统</p>
+<p>基于分布式能力，实现一个多屏互动、跨设备协同的亲子早教系统。</p>
+</li>
+<li><p>分布式输入法</p>
+<p>基于分布式能力，将手机作为智慧屏的虚拟控制器，控制文字输入和遥控播放。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,10 +1697,14 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="notification-fwk-overview.html" class="navigation navigation-prev " aria-label="Previous page: 公共事件与通知概述">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="notification-fwk-notification.html" class="navigation navigation-next " aria-label="Next page: 通知开发指导">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -1508,7 +1713,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"公共事件开发指导","level":"3.2.3.2","depth":3,"next":{"title":"通知开发指导","level":"3.2.3.3","depth":3,"path":"notification-fwk-notification.md","ref":"notification-fwk-notification.md","articles":[]},"previous":{"title":"公共事件与通知概述","level":"3.2.3.1","depth":3,"path":"notification-fwk-overview.md","ref":"notification-fwk-overview.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"notification-fwk-common-event.md","mtime":"2021-06-09T13:14:56.060Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

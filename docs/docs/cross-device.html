@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>跨设备迁移 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -74,7 +74,7 @@
 
     
     
-    <link rel="prev" href="./" />
+    <link rel="prev" href="page-switching.html" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -588,7 +588,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.1.2.4" data-path="cross-device.html">
+        <li class="chapter active" data-level="3.2.1.2.4" data-path="cross-device.html">
             
                 <a href="cross-device.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >跨设备迁移</a>
     </h1>
 </div>
 
@@ -1469,7 +1469,70 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="跨设备迁移"><a name="跨设备迁移" class="plugin-anchor" href="#跨设备迁移"><i class="fa fa-link" aria-hidden="true"></i></a>跨设备迁移</h1>
+<p>跨设备迁移（下文简称“迁移”）支持将Page在同一用户的不同设备间迁移，以便支持用户无缝切换的诉求。以Page从设备A迁移到设备B为例，迁移动作主要步骤如下：</p>
+<ol>
+<li>设备A上的Page请求迁移。</li>
+<li>HarmonyOS处理迁移任务，并回调设备A上Page的保存数据方法，用于保存迁移必须的数据。</li>
+<li>HarmonyOS在设备B上启动同一个Page，并回调其恢复数据方法。</li>
+</ol>
+<p>开发者可以参考以下详细步骤开发具有迁移功能的Page。</p>
+<h2 id="实现iabilitycontinuation接口"><a name="实现iabilitycontinuation接口" class="plugin-anchor" href="#实现iabilitycontinuation接口"><i class="fa fa-link" aria-hidden="true"></i></a>实现IAbilityContinuation接口</h2>
+<p>说明</p>
+<p>一个应用可能包含多个Page，仅需要在支持迁移的Page中通过以下方法实现IAbilityContinuation接口。同时，此Page所包含的所有AbilitySlice也需要实现此接口。</p>
+<ul>
+<li><p>onStartContinuation()</p>
+<p>Page请求迁移后，系统首先回调此方法，开发者可以在此回调中决策当前是否可以执行迁移，比如，弹框让用户确认是否开始迁移。</p>
+</li>
+<li><p>onSaveData()</p>
+<p>如果onStartContinuation()返回true，则系统回调此方法，开发者在此回调中保存必须传递到另外设备上以便恢复Page状态的数据。</p>
+</li>
+<li><p>onRestoreData()</p>
+<p>源侧设备上Page完成保存数据后，系统在目标侧设备上回调此方法，开发者在此回调中接受用于恢复Page状态的数据。注意，在目标侧设备上的Page会重新启动其生命周期，无论其启动模式如何配置。且系统回调此方法的时机在onStart()之前。</p>
+</li>
+<li><p>onCompleteContinuation()</p>
+<p>目标侧设备上恢复数据一旦完成，系统就会在源侧设备上回调Page的此方法，以便通知应用迁移流程已结束。开发者可以在此检查迁移结果是否成功，并在此处理迁移结束的动作，例如，应用可以在迁移完成后终止自身生命周期。</p>
+</li>
+<li><p>onRemoteTerminated()</p>
+<p>如果开发者使用continueAbilityReversibly()而不是continueAbility()，则此后可以在源侧设备上使用reverseContinueAbility()进行回迁。这种场景下，相当于同一个Page（的两个实例）同时在两个设备上运行，迁移完成后，如果目标侧设备上Page因任何原因终止，则源侧Page通过此回调接收终止通知。</p>
+</li>
+</ul>
+<h2 id="请求迁移"><a name="请求迁移" class="plugin-anchor" href="#请求迁移"><i class="fa fa-link" aria-hidden="true"></i></a>请求迁移</h2>
+<p>实现IAbilityContinuation的Page可以在其生命周期内，调用continueAbility()或continueAbilityReversibly()请求迁移。两者的区别是，通过后者发起的迁移此后可以进行回迁。</p>
+<pre><code>try {    continueAbility();} catch (IllegalStateException e) {    // Maybe another continuation in progress.    ...}
+</code></pre><p>以Page从设备A迁移到设备B为例，详细的流程如下：</p>
+<ol>
+<li>设备A上的Page请求迁移。</li>
+<li>系统回调设备A上Page及其AbilitySlice栈中所有AbilitySlice实例的IAbilityContinuation.onStartContinuation()方法，以确认当前是否可以立即迁移。</li>
+<li>如果可以立即迁移，则系统回调设备A上Page及其AbilitySlice栈中所有AbilitySlice实例的IAbilityContinuation.onSaveData()方法，以便保存迁移后恢复状态必须的数据。</li>
+<li>如果保存数据成功，则系统在设备B上启动同一个Page，并恢复AbilitySlice栈，然后回调IAbilityContinuation.onRestoreData()方法，传递此前保存的数据；此后设备B上此Page从onStart()开始其生命周期回调。</li>
+<li>系统回调设备A上Page及其AbilitySlice栈中所有AbilitySlice实例的IAbilityContinuation.onCompleteContinuation()方法，通知数据恢复成功与否。</li>
+</ol>
+<h2 id="请求回迁"><a name="请求回迁" class="plugin-anchor" href="#请求回迁"><i class="fa fa-link" aria-hidden="true"></i></a>请求回迁</h2>
+<p>使用continueAbilityReversibly()请求迁移并完成后，源侧设备上已迁移的Page可以发起回迁，以便使用户活动重新回到此设备。</p>
+<pre><code>try {    reverseContinueAbility();} catch (IllegalStateException e) {    // Maybe another continuation in progress.    ...}
+</code></pre><p>以Page从设备A迁移到设备B后并请求回迁为例，详细的流程如下：</p>
+<ol>
+<li>设备A上的Page请求回迁。</li>
+<li>系统回调设备B上Page及其AbilitySlice栈中所有AbilitySlice实例的IAbilityContinuation.onStartContinuation()方法，以确认当前是否可以立即迁移。</li>
+<li>如果可以立即迁移，则系统回调设备B上Page及其AbilitySlice栈中所有AbilitySlice实例的IAbilityContinuation.onSaveData()方法，以便保存回迁后恢复状态必须的数据。</li>
+<li>如果保存数据成功，则系统在设备A上Page恢复AbilitySlice栈，然后回调IAbilityContinuation.onRestoreData()方法，传递此前保存的数据。</li>
+<li>如果数据恢复成功，则系统终止设备B上Page的生命周期。</li>
+</ol>
+<h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对Page Ability开发，有以下示例工程可供参考：</p>
+<ul>
+<li><p>PageAbility</p>
+<p>本示例演示了同一Page Ability内和不同Page间的AbilitySlice导航，以及Page Ability的跨端迁移。</p>
+</li>
+</ul>
+<p>针对跨设备迁移开发，有以下Codelabs可供参考：</p>
+<ul>
+<li><p>分布式邮件编辑</p>
+<p>基于跨设备迁移和分布式文件能力，实现邮件的跨设备编辑和附件的调用。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,7 +1559,7 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="page-switching.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: AbilitySlice间导航">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -1508,7 +1571,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"跨设备迁移","level":"3.2.1.2.4","depth":4,"next":{"title":"Service Ability","level":"3.2.1.3","depth":3,"ref":"","articles":[{"title":"Service Ability基本概念","level":"3.2.1.3.1","depth":4,"path":"service-concept.md","ref":"service-concept.md","articles":[]},{"title":"创建Service","level":"3.2.1.3.2","depth":4,"path":"service-creating.md","ref":"service-creating.md","articles":[]},{"title":"启动Service","level":"3.2.1.3.3","depth":4,"path":"service-starting.md","ref":"service-starting.md","articles":[]},{"title":"连接Service","level":"3.2.1.3.4","depth":4,"path":"service-connecting","ref":"service-connecting","articles":[]},{"title":"Service Ability生命周期","level":"3.2.1.3.5","depth":4,"path":"service-lifecycle.md","ref":"service-lifecycle.md","articles":[]},{"title":"前台Service","level":"3.2.1.3.6","depth":4,"path":"service-foreground.md","ref":"service-foreground.md","articles":[]}]},"previous":{"title":"AbilitySlice间导航","level":"3.2.1.2.3","depth":4,"path":"page-switching.md","ref":"page-switching.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"cross-device.md","mtime":"2021-06-09T13:11:52.573Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

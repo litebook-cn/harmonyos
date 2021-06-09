@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>IntentAgent开发指导 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -74,7 +74,7 @@
 
     
     
-    <link rel="prev" href="./" />
+    <link rel="prev" href="notification-fwk-notification.html" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -877,7 +877,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.3.4" data-path="notification-fwk-intentagent.html">
+        <li class="chapter active" data-level="3.2.3.4" data-path="notification-fwk-intentagent.html">
             
                 <a href="notification-fwk-intentagent.html">
             
@@ -1454,7 +1454,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >IntentAgent开发指导</a>
     </h1>
 </div>
 
@@ -1469,7 +1469,117 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="intentagent开发指导"><a name="intentagent开发指导" class="plugin-anchor" href="#intentagent开发指导"><i class="fa fa-link" aria-hidden="true"></i></a>IntentAgent开发指导</h1>
+<h2 id="场景介绍"><a name="场景介绍" class="plugin-anchor" href="#场景介绍"><i class="fa fa-link" aria-hidden="true"></i></a>场景介绍</h2>
+<p>IntentAgent封装了一个指定行为的<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-intent-0000000000038799" target="_blank">Intent</a>，可以通过triggerIntentAgent接口主动触发，也可以与通知绑定被动触发。具体的行为包括：启动Ability和发布公共事件。例如：收到通知后，在点击通知后跳转到一个新的Ability，不点击则不会触发。</p>
+<h2 id="接口说明"><a name="接口说明" class="plugin-anchor" href="#接口说明"><i class="fa fa-link" aria-hidden="true"></i></a>接口说明</h2>
+<p>IntentAgent相关基础类包括<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-intentagent-0000001050764907#ZH-CN_TOPIC_0000001050764907__li1179174919115" target="_blank">IntentAgentHelper</a>、<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-intentagent-0000001050764907#ZH-CN_TOPIC_0000001050764907__li1717915251523" target="_blank">IntentAgentInfo</a>、<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-intentagent-0000001050764907#ZH-CN_TOPIC_0000001050764907__li48031552527" target="_blank">IntentAgentConstant</a>和<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-intentagent-0000001050764907#ZH-CN_TOPIC_0000001050764907__li1637513341734" target="_blank">TriggerInfo</a>，基础类之间的关系如下图所示：</p>
+<p><strong>图1</strong> IntentAgent基础类关系图</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193021.52028455645937244209609837109677:50520607130708:2800:67213D71BD34E0614BC2E75CA681412B953238708521453CA0F055DE39AE520D.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<ul>
+<li></li>
+</ul>
+<p>  IntentAgentHelper</p>
+<p>  IntentAgentHelper封装了获取、激发、取消IntentAgent等静态方法。</p>
+<table>
+<thead>
+<tr>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getIntentAgent(Context context, IntentAgentInfo paramsInfo)</td>
+<td>获取一个IntentAgent实例。</td>
+</tr>
+<tr>
+<td>triggerIntentAgent(Context context, IntentAgent agent, IntentAgent.Oncompleted onCompleted, EventHandler handler, TriggerInfo paramsInfo)</td>
+<td>主动激发一个IntentAgent实例。</td>
+</tr>
+<tr>
+<td>cancel(IntentAgent agent)</td>
+<td>取消一个IntentAgent实例。</td>
+</tr>
+<tr>
+<td>judgeEquality(IntentAgent agent, IntentAgent otherAgent)</td>
+<td>判断两个IntentAgent实例是否相等。</td>
+</tr>
+<tr>
+<td>getHashCode(IntentAgent agent)</td>
+<td>获取一个IntentAgent实例的哈希码。</td>
+</tr>
+<tr>
+<td>getBundleName(IntentAgent agent)</td>
+<td>获取一个IntentAgent实例的包名。</td>
+</tr>
+<tr>
+<td>getUid(IntentAgent agent)</td>
+<td>获取一个IntentAgent实例的用户ID。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li></li>
+</ul>
+<p>  IntentAgentInfo</p>
+<p>  IntentAgentInfo类封装了获取一个IntentAgent实例所需的数据。使用构造函数IntentAgentInfo(int requestCode, OperationType operationType, List<flags> flags, List<intent> intents, IntentParams extraInfo)获取IntentAgentInfo对象。</intent></flags></p>
+<ul>
+<li>requestCode：使用者定义的一个私有值。</li>
+<li>operationType：为IntentAgentConstant.OperationType枚举中的值。</li>
+<li>flags：为IntentAgentConstant.Flags枚举中的值。</li>
+<li>intents：将被执行的意图列表。operationType的值为START_ABILITY，START_SERVICE和SEND_COMMON_EVENT时，intents列表只允许包含一个Intent；operationType的值为START_ABILITIES时，intents列表允许包含多个Intent</li>
+<li>extraInfo：表明如何启动一个有页面的ability，可以为null，只在operationType的值为START_ABILITY和START_ABILITIES时有意义。</li>
+</ul>
+<ul>
+<li></li>
+</ul>
+<p>  IntentAgentConstant</p>
+<p>  IntentAgentConstant类中包含OperationType和Flags两个枚举类：</p>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>枚举值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IntentAgentConstant.OperationType</td>
+<td>UNKNOWN_TYPE：不识别的类型。START_ABILITY：开启一个有页面的Ability。START_ABILITIES：开启多个有页面的Ability。START_SERVICE：开启一个无页面的ability。SEND_COMMON_EVENT：发送一个公共事件。</td>
+</tr>
+<tr>
+<td>IntentAgentConstant.Flags</td>
+<td>ONE_TIME_FLAG：IntentAgent仅能使用一次。只在operationType的值为START_ABILITY，START_SERVICE和SEND_COMMON_EVENT时有意义。NO_BUILD_FLAG：如果描述IntentAgent对象不存在，则不创建它，直接返回null。只在operationType的值为START_ABILITY，START_SERVICE和SEND_COMMON_EVENT时有意义。CANCEL_PRESENT_FLAG：在生成一个新的IntentAgent对象前取消已存在的一个IntentAgent对象。只在operationType的值为START_ABILITY，START_SERVICE和SEND_COMMON_EVENT时有意义。UPDATE_PRESENT_FLAG：使用新的IntentAgent的额外数据替换已存在的IntentAgent中的额外数据。只在operationType的值为START_ABILITY，START_SERVICE和SEND_COMMON_EVENT时有意义。CONSTANT_FLAG：IntentAgent是不可变的。REPLACE_ELEMENT：当前Intent中的element属性可被IntentAgentHelper.triggerIntentAgent()中Intent的element属性取代。REPLACE_ACTION: 当前Intent中的action属性可被IntentAgentHelper.triggerIntentAgent()中Intent的action属性取代。REPLACE_URI：当前Intent中的uri属性可被IntentAgentHelper.triggerIntentAgent()中Intent的uri属性取代。REPLACE_ENTITIES：当前Intent中的entities属性可被IntentAgentHelper.triggerIntentAgent()中Intent的entities属性取代。REPLACE_BUNDLE：当前Intent中的bundleName属性可被IntentAgentHelper.triggerIntentAgent()中Intent的bundleName属性取代。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li></li>
+</ul>
+<p>  TriggerInfo</p>
+<p>  TriggerInfo类封装了主动激发一个IntentAgent实例所需的数据，使用构造函数TriggerInfo(String permission, IntentParams extraInfo, Intent intent, int code)获取TriggerInfo对象。</p>
+<ul>
+<li>permission：IntentAgent的接收者的权限名称，只在operationType的值为SEND_COMMON_EVENT时，该参数才有意义。</li>
+<li>extraInfo：激发IntentAgent时用户自定义的额外数据。</li>
+<li>intent：额外的Intent。如果IntentAgentInfo成员变量flags包含CONSTANT_FLAG，则忽略该参数；如果flags包含REPLACE_ELEMENT，REPLACE_ACTION，REPLACE_URI，REPLACE_ENTITIES或REPLACE_BUNDLE，则使用额外Intent的element，action，uri，entities或bundleName属性替换原始Intent中对应的属性。如果intent是空，则不替换原始Intent的属性。</li>
+<li>code：提供给IntentAgent目标的结果码。</li>
+</ul>
+<h2 id="开发步骤"><a name="开发步骤" class="plugin-anchor" href="#开发步骤"><i class="fa fa-link" aria-hidden="true"></i></a>开发步骤</h2>
+<p>获取IntentAgent的代码示例如下：</p>
+<pre><code>// 指定要启动的Ability的BundleName和AbilityName字段// 将Operation对象设置到Intent中Operation operation = new Intent.OperationBuilder()        .withDeviceId(&quot;&quot;)        .withBundleName(&quot;com.testintentagent&quot;)        .withAbilityName(&quot;com.testintentagent.entry.IntentAgentAbility&quot;)        .build();intent.setOperation(operation);List&lt;Intent&gt; intentList = new ArrayList&lt;&gt;();intentList.add(intent);// 定义请求码int requestCode = 200;// 设置flagsList&lt;IntentAgentConstant.Flags&gt; flags = new ArrayList&lt;&gt;();flags.add(IntentAgentConstant.Flags.UPDATE_PRESENT_FLAG);// 指定启动一个有页面的AbilityIntentAgentInfo paramsInfo = new IntentAgentInfo(requestCode, IntentAgentConstant.OperationType.START_ABILITY, flags, intentList, null);// 获取IntentAgent实例IntentAgent agent = IntentAgentHelper.getIntentAgent(this, paramsInfo);
+</code></pre><p>通知中添加IntentAgent的代码示例如下:</p>
+<pre><code>int notificationId = 1;NotificationRequest request = new NotificationRequest(notificationId);String title = &quot;title&quot;;String text = &quot;There is a normal notification content.&quot;;NotificationRequest.NotificationNormalContent content = new NotificationRequest.NotificationNormalContent();content.setTitle(title)       .setText(text);NotificationContent notificationContent = new NotificationContent(content);request.setContent(notificationContent); // 设置通知的内容request.setIntentAgent(agent); // 设置通知的IntentAgent
+</code></pre><p>主动激发IntentAgent的代码示例如下：</p>
+<pre><code>int code = 100;IntentAgentHelper.triggerIntentAgent(this, agent, null, null, new TriggerInfo(null, null, null, code));
+</code></pre><h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对IntentAgent开发指导，有以下示例工程可供参考：</p>
+<ul>
+<li><p>IntentAgent</p>
+<p>本示例演示了如何通过IntentAgent启动Ability和发布公共事件。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,7 +1606,7 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="notification-fwk-notification.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 通知开发指导">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -1508,7 +1618,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"IntentAgent开发指导","level":"3.2.3.4","depth":3,"next":{"title":"服务卡片","level":"3.2.4","depth":2,"ref":"","articles":[{"title":"概述","level":"3.2.4.1","depth":3,"path":"service-widget-overview.md","ref":"service-widget-overview.md","articles":[]},{"title":"卡片提供方开发指导","level":"3.2.4.2","depth":3,"ref":"","articles":[{"title":"卡片开发说明","level":"3.2.4.2.1","depth":4,"path":"widget-provider-intro.md","ref":"widget-provider-intro.md","articles":[]},{"title":"JS卡片开发步骤","level":"3.2.4.2.2","depth":4,"path":"widget-provider-js.md","ref":"widget-provider-js.md","articles":[]},{"title":"Java卡片开发指导","level":"3.2.4.2.3","depth":4,"path":"widget-provider-java.md","ref":"widget-provider-java.md","articles":[]},{"title":"其他可选功能开发指引","level":"3.2.4.2.4","depth":4,"path":"widget-provider-optional.md","ref":"widget-provider-optional.md","articles":[]}]}]},"previous":{"title":"通知开发指导","level":"3.2.3.3","depth":3,"path":"notification-fwk-notification.md","ref":"notification-fwk-notification.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"notification-fwk-intentagent.md","mtime":"2021-06-09T13:15:16.602Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

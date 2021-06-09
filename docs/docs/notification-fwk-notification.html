@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>导读 · 鸿蒙OS开发文档</title>
+        <title>通知开发指导 · 鸿蒙OS开发文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -73,8 +73,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="notification-fwk-intentagent.html" />
     
-    <link rel="prev" href="./" />
+    
+    <link rel="prev" href="notification-fwk-common-event.html" />
     
 
     </head>
@@ -132,7 +134,7 @@
         
         
     
-        <li class="chapter active" data-level="2.1" data-path="dao-du.html">
+        <li class="chapter " data-level="2.1" data-path="dao-du.html">
             
                 <a href="dao-du.html">
             
@@ -864,7 +866,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2.3.3" data-path="notification-fwk-notification.html">
+        <li class="chapter active" data-level="3.2.3.3" data-path="notification-fwk-notification.html">
             
                 <a href="notification-fwk-notification.html">
             
@@ -1454,7 +1456,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >导读</a>
+        <a href="." >通知开发指导</a>
     </h1>
 </div>
 
@@ -1469,7 +1471,323 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="通知开发指导"><a name="通知开发指导" class="plugin-anchor" href="#通知开发指导"><i class="fa fa-link" aria-hidden="true"></i></a>通知开发指导</h1>
+<h2 id="场景介绍"><a name="场景介绍" class="plugin-anchor" href="#场景介绍"><i class="fa fa-link" aria-hidden="true"></i></a>场景介绍</h2>
+<p>HarmonyOS提供了通知功能，即在一个应用的UI界面之外显示的消息，主要用来提醒用户有来自该应用中的信息。当应用向系统发出通知时，它将先以图标的形式显示在通知栏中，用户可以下拉通知栏查看通知的详细信息。常见的使用场景：</p>
+<ul>
+<li>显示接收到短消息、即时消息等。</li>
+<li>显示应用的推送消息，如广告、版本更新等。</li>
+<li>显示当前正在进行的事件，如播放音乐、导航、下载等。</li>
+</ul>
+<h2 id="接口说明"><a name="接口说明" class="plugin-anchor" href="#接口说明"><i class="fa fa-link" aria-hidden="true"></i></a>接口说明</h2>
+<p>通知相关基础类包含<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-notification-0000000000038804#ZH-CN_TOPIC_0000001050988895__li1552717269392" target="_blank">NotificationSlot</a>、<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-notification-0000000000038804#ZH-CN_TOPIC_0000001050988895__li10626853134015" target="_blank">NotificationRequest</a>和<a href="https://developer.harmonyos.com/cn/docs/documentation/doc-guides/ability-notification-fwk-notification-0000000000038804#ZH-CN_TOPIC_0000001050988895__li8128174954415" target="_blank">NotificationHelper</a>。基础类之间的关系如下所示：</p>
+<p><strong>图1</strong> 通知基础类关系图</p>
+<p><img src="https://alliance-communityfile-drcn.dbankcdn.com/FileServer/getFile/cmtyPub/011/111/111/0000000000011111111.20210608193021.46951984685977986737494322526772:50520607130708:2800:87D2153506E37DEAC57EFB512D7153E12FDFC7A66636763E5B31E1D5276EAF03.png?needInitFileName=true?needInitFileName=true" alt="img"></p>
+<ul>
+<li></li>
+</ul>
+<p>  NotificationSlot</p>
+<p>  NotificationSlot可以对提示音、振动、锁屏显示和重要级别等进行设置。一个应用可以创建一个或多个NotificationSlot，在发布通知时，通过绑定不同的NotificationSlot，实现不同用途。</p>
+<p>  说明</p>
+<p>  NotificationSlot需要先通过NotificationHelper的addNotificationSlot(NotificationSlot)方法发布后，通知才能绑定使用；所有绑定该NotificationSlot的通知在发布后都具备相应的特性，对象在创建后，将无法更改这些设置，对于是否启动相应设置，用户有最终控制权。</p>
+<p>  不指定NotificationSlot时，当前通知会使用默认的NotificationSlot，默认的NotificationSlot优先级为LEVEL_DEFAULT。</p>
+<table>
+<thead>
+<tr>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NotificationSlot(String id, String name, int level)</td>
+<td>构造NotificationSlot。</td>
+</tr>
+<tr>
+<td>setLevel(int level)</td>
+<td>设置NotificationSlot的级别。</td>
+</tr>
+<tr>
+<td>setName(String name)</td>
+<td>设置NotificationSlot的命名。</td>
+</tr>
+<tr>
+<td>setDescription(String description)</td>
+<td>设置NotificationSlot的描述信息。</td>
+</tr>
+<tr>
+<td>enableBypassDnd(boolean bypassDnd)</td>
+<td>设置是否绕过系统的免打扰模式。</td>
+</tr>
+<tr>
+<td>setEnableVibration(boolean vibration)</td>
+<td>设置收到通知时是否使能振动。</td>
+</tr>
+<tr>
+<td>setLockscreenVisibleness(int visibleness)</td>
+<td>设置在锁屏场景下，收到通知后是否显示，以及显示的效果。</td>
+</tr>
+<tr>
+<td>setEnableLight(boolean isLightEnabled)</td>
+<td>设置收到通知时是否开启呼吸灯，前提是当前硬件支持呼吸灯。</td>
+</tr>
+<tr>
+<td>setLedLightColor(int color)</td>
+<td>设置收到通知时的呼吸灯颜色。</td>
+</tr>
+<tr>
+<td>setSlotGroup(String groupId)</td>
+<td>绑定当前NotificationSlot到一个NotificationSlot组。</td>
+</tr>
+</tbody>
+</table>
+<p>  NotificationSlot的级别目前支持如下几种， 由低到高：</p>
+<ul>
+<li>LEVEL_NONE： 表示通知不发布。</li>
+<li>LEVEL_MIN：表示通知可以发布，但是不显示在通知栏，不自动弹出，无提示音；该级别不适用于前台服务的场景。</li>
+<li>LEVEL_LOW：表示通知可以发布且显示在通知栏，不自动弹出，无提示音。</li>
+<li>LEVEL_DEFAULT：表示通知发布后可在通知栏显示，不自动弹出，触发提示音。</li>
+<li>LEVEL_HIGH：表示通知发布后可在通知栏显示，自动弹出，触发提示音。</li>
+</ul>
+<ul>
+<li></li>
+</ul>
+<p>  NotificationRequest</p>
+<p>  NotificationRequest用于设置具体的通知对象，包括设置通知的属性，如：通知的分发时间、小图标、大图标、自动删除等参数，以及设置具体的通知类型，如普通文本、长文本等。</p>
+<table>
+<thead>
+<tr>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NotificationRequest()</td>
+<td>构建一个通知。</td>
+</tr>
+<tr>
+<td>NotificationRequest(int notificationId)</td>
+<td>构建一个通知，指定通知的id。通知的Id在应用内容具有唯一性，如果不指定，默认为0。</td>
+</tr>
+<tr>
+<td>setNotificationId(int notificationId)</td>
+<td>设置当前通知id。</td>
+</tr>
+<tr>
+<td>setAutoDeletedTime(long time)</td>
+<td>设置通知自动取消的时间戳。</td>
+</tr>
+<tr>
+<td>setContent(NotificationRequest.NotificationContent content)</td>
+<td>设置通知的具体类型。</td>
+</tr>
+<tr>
+<td>setDeliveryTime(long deliveryTime)</td>
+<td>设置通知分发的时间戳。</td>
+</tr>
+<tr>
+<td>setSlotId(String slotId)</td>
+<td>设置通知的NotificationSlot id。</td>
+</tr>
+<tr>
+<td>setTapDismissed(boolean tapDismissed)</td>
+<td>设置通知在用户点击后是否自动取消。</td>
+</tr>
+<tr>
+<td>setLittleIcon(PixelMap smallIcon)</td>
+<td>设置通知的小图标，在通知左上角显示。</td>
+</tr>
+<tr>
+<td>setBigIcon(PixelMap bigIcon)</td>
+<td>设置通知的大图标，在通知的右边显示。</td>
+</tr>
+<tr>
+<td>setGroupValue(String groupValue)</td>
+<td>设置分组通知，相同分组的通知在通知栏显示时，将会折叠在一组应用中显示。</td>
+</tr>
+<tr>
+<td>addActionButton(NotificationActionButton actionButton)</td>
+<td>设置通知添加通知ActionButton。</td>
+</tr>
+<tr>
+<td>setIntentAgent(IntentAgent agent)</td>
+<td>设置通知承载指定的IntentAgent，在通知中实现即将触发的事件。</td>
+</tr>
+</tbody>
+</table>
+<p>  <strong>具体的通知类型：</strong>目前支持六种类型，包括普通文本NotificationNormalContent、长文本NotificationLongTextContent、图片NotificationPictureContent、多行NotificationMultiLineContent、社交NotificationConversationalContent、媒体NotificationMediaContent。</p>
+<table>
+<thead>
+<tr>
+<th>类名</th>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NotificationNormalContent</td>
+<td>setTitle(String title)</td>
+<td>设置通知标题。</td>
+</tr>
+<tr>
+<td>NotificationNormalContent</td>
+<td>setText(String text)</td>
+<td>设置通知内容。</td>
+</tr>
+<tr>
+<td>NotificationNormalContent</td>
+<td>setAdditionalText(String additionalText)</td>
+<td>设置通知次要内容，是对通知内容的补充。</td>
+</tr>
+<tr>
+<td>NotificationPictureContent</td>
+<td>setBriefText(String briefText)</td>
+<td>设置通知概要内容，是对通知内容的总结。</td>
+</tr>
+<tr>
+<td>NotificationPictureContent</td>
+<td>setExpandedTitle(String expandedTitle)</td>
+<td>设置附加图片的通知展开时的标题。</td>
+</tr>
+<tr>
+<td>NotificationPictureContent</td>
+<td>setBigPicture(PixelMap bigPicture)</td>
+<td>设置通知的图片内容，附加在setText(String text)下方。</td>
+</tr>
+<tr>
+<td>NotificationLongTextContent</td>
+<td>setLongText(String longText)</td>
+<td>设置通知的长文本。</td>
+</tr>
+<tr>
+<td>NotificationConversationalContent</td>
+<td>setConversationTitle(String conversationTitle)</td>
+<td>设置社交通知的标题。</td>
+</tr>
+<tr>
+<td>NotificationConversationalContent</td>
+<td>addConversationalMessage(ConversationalMessage message)</td>
+<td>通知添加一条消息。</td>
+</tr>
+<tr>
+<td>NotificationMultiLineContent</td>
+<td>addSingleLine(String line)</td>
+<td>在当前通知中添加一行文本。</td>
+</tr>
+<tr>
+<td>NotificationMediaContent</td>
+<td>setAVToken(AVToken avToken)</td>
+<td>将媒体通知绑定指定的AVToken。</td>
+</tr>
+<tr>
+<td>NotificationMediaContent</td>
+<td>setShownActions(int[] actions)</td>
+<td>设置媒体通知待展示的按钮。</td>
+</tr>
+</tbody>
+</table>
+<p>  说明</p>
+<p>  通知发布后，通知的设置不可修改。如果下次发布通知使用相同的id，就会更新之前发布的通知。</p>
+<ul>
+<li></li>
+</ul>
+<p>  NotificationHelper</p>
+<p>  NotificationHelper封装了发布、更新、删除通知等静态方法。</p>
+<table>
+<thead>
+<tr>
+<th>接口名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>publishNotification(NotificationRequest request)</td>
+<td>发布一条通知。</td>
+</tr>
+<tr>
+<td>publishNotification(String tag, NotificationRequest request)</td>
+<td>发布一条带TAG的通知。</td>
+</tr>
+<tr>
+<td>cancelNotification(int notificationId)</td>
+<td>取消指定的通知。</td>
+</tr>
+<tr>
+<td>cancelNotification(String tag, int notificationId)</td>
+<td>取消指定的带TAG的通知。</td>
+</tr>
+<tr>
+<td>cancelAllNotifications()</td>
+<td>取消之前发布的所有通知。</td>
+</tr>
+<tr>
+<td>addNotificationSlot(NotificationSlot slot)</td>
+<td>创建一个NotificationSlot。</td>
+</tr>
+<tr>
+<td>getNotificationSlot(String slotId)</td>
+<td>获取NotificationSlot。</td>
+</tr>
+<tr>
+<td>removeNotificationSlot(String slotId)</td>
+<td>删除一个NotificationSlot。</td>
+</tr>
+<tr>
+<td>getActiveNotifications()</td>
+<td>获取当前应用发的活跃通知。</td>
+</tr>
+<tr>
+<td>getActiveNotificationNums()</td>
+<td>获取系统中当前应用发的活跃通知的数量。</td>
+</tr>
+<tr>
+<td>setNotificationBadgeNum(int num)</td>
+<td>设置通知的角标。</td>
+</tr>
+<tr>
+<td>setNotificationBadgeNum()</td>
+<td>设置当前应用中活跃状态通知的数量在角标显示。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="开发步骤"><a name="开发步骤" class="plugin-anchor" href="#开发步骤"><i class="fa fa-link" aria-hidden="true"></i></a>开发步骤</h2>
+<p>通知的开发指导分为创建NotificationSlot、发布通知和取消通知等开发场景。</p>
+<p><strong>创建NotificationSlot</strong></p>
+<p>NotificationSlot可以设置公共通知的震动，锁屏模式，重要级别等，并通过调用NotificationHelper.addNotificationSlot()发布NotificationSlot对象。</p>
+<pre><code>NotificationSlot slot = new NotificationSlot(&quot;slot_001&quot;, &quot;slot_default&quot;, NotificationSlot.LEVEL_MIN); // 创建notificationSlot对象slot.setDescription(&quot;NotificationSlotDescription&quot;);slot.setEnableVibration(true); // 设置振动提醒slot.setLockscreenVisibleness(NotificationRequest.VISIBLENESS_TYPE_PUBLIC);// 设置锁屏模式slot.setEnableLight(true); // 设置开启呼吸灯提醒slot.setLedLightColor(Color.RED.getValue());// 设置呼吸灯的提醒颜色try {   NotificationHelper.addNotificationSlot(slot);} catch (RemoteException ex) {   HiLog.error(LABEL, &quot;Exception occurred during addNotificationSlot invocation.&quot;);}
+</code></pre><p><strong>发布通知</strong></p>
+<ol>
+<li><p>构建NotificationRequest对象，应用发布通知前，通过NotificationRequest的setSlotId()方法与NotificationSlot绑定，使该通知在发布后都具备该对象的特征。</p>
+<pre><code>int notificationId = 1;NotificationRequest request = new NotificationRequest(notificationId);request.setSlotId(slot.getId());
+</code></pre></li>
+<li><p>调用setContent()设置通知的内容。</p>
+<pre><code>String title = &quot;title&quot;;String text = &quot;There is a normal notification content.&quot;;NotificationNormalContent content = new NotificationNormalContent();content.setTitle(title)       .setText(text);NotificationRequest.NotificationContent notificationContent = new NotificationRequest.NotificationContent(content);request.setContent(notificationContent); // 设置通知的内容
+</code></pre></li>
+<li><p>调用publishNotification()发布通知。</p>
+<pre><code>try {   NotificationHelper.publishNotification(request);} catch (RemoteException ex) {   HiLog.error(LABEL, &quot;Exception occurred during publishNotification invocation.&quot;);}
+</code></pre></li>
+</ol>
+<p><strong>取消通知</strong></p>
+<p>取消通知分为取消指定单条通知和取消所有通知，应用只能取消自己发布的通知。</p>
+<ul>
+<li><p>调用cancelNotification()取消指定的单条通知。</p>
+<pre><code>int notificationId = 1;try {    NotificationHelper.cancelNotification(notificationId);} catch (RemoteException ex) {    HiLog.error(LABEL, &quot;Exception occurred during cancelNotification invocation.&quot;);}
+</code></pre></li>
+<li><p>调用cancelAllNotifications()取消所有通知。</p>
+<pre><code>try {    NotificationHelper.cancelAllNotifications();} catch (RemoteException ex) {    HiLog.error(LABEL, &quot;Exception occurred during cancelAllNotifications invocation.&quot;);}
+</code></pre></li>
+</ul>
+<h2 id="相关实例"><a name="相关实例" class="plugin-anchor" href="#相关实例"><i class="fa fa-link" aria-hidden="true"></i></a>相关实例</h2>
+<p>针对通知开发，有以下示例工程可供参考：</p>
+<ul>
+<li><p>Notification</p>
+<p>通知功能，即在一个应用的UI界面之外显示的消息，主要用来提醒用户有来自该应用中的信息。本示例演示了如何发布通知和取消通知。</p>
+</li>
+</ul>
+
                                 
                                 </section>
                             
@@ -1496,10 +1814,14 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 鸿蒙OS开发文档">
+                <a href="notification-fwk-common-event.html" class="navigation navigation-prev " aria-label="Previous page: 公共事件开发指导">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="notification-fwk-intentagent.html" class="navigation navigation-next " aria-label="Next page: IntentAgent开发指导">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -1508,7 +1830,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"导读","level":"2.1","depth":1,"next":{"title":"HarmonyOS概述","level":"2.2","depth":1,"ref":"","articles":[{"title":"系统定义","level":"2.2.1","depth":2,"path":"xi-tong-ding-yi.md","ref":"xi-tong-ding-yi.md","articles":[]},{"title":"技术特征","level":"2.2.2","depth":2,"path":"ji-zhu-te-zheng.md","ref":"ji-zhu-te-zheng.md","articles":[]},{"title":"系统安全","level":"2.2.3","depth":2,"path":"xi-tong-an-quan.md","ref":"xi-tong-an-quan.md","articles":[]}]},"previous":{"title":"鸿蒙OS开发文档","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"neutral"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"dao-du.md","mtime":"2021-06-08T02:22:11.083Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"通知开发指导","level":"3.2.3.3","depth":3,"next":{"title":"IntentAgent开发指导","level":"3.2.3.4","depth":3,"path":"notification-fwk-intentagent.md","ref":"notification-fwk-intentagent.md","articles":[]},"previous":{"title":"公共事件开发指导","level":"3.2.3.2","depth":3,"path":"notification-fwk-common-event.md","ref":"notification-fwk-common-event.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-sharing","-search","-livereload","-lunr","search-pro","splitter","expandable-chapters","chapter-fold","anchors","sharing-plus","baidu-nfer","back-to-top-button","code"],"root":"docs","styles":{"website":"styles/website.css"},"pluginsConfig":{"chapter-fold":{},"splitter":{},"search-pro":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"back-to-top-button":{},"baidu-nfer":{"token":"ac84ff22d92f93dc6bd83aa7a6745813"},"sharing":{"qq":false,"all":["google","facebook","weibo","twitter","qq","qzone","linkedin","pocket"],"douban":false,"facebook":false,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":false,"vk":false,"pocket":false,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"expandable-chapters":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"鸿蒙OS开发文档","language":"zh-hans","links":{"sidebar":{"文档大全":"http://litebook.cn/"}},"gitbook":"*","description":"华为自有开源操作系统鸿蒙OS，鸿蒙OS凭借多终端开发IDE，多语言统一编译，分布式架构Kit提供屏幕布局控件以及交互的自动适配，支持控件拖拽，面向预览的可视化编程，从而使开发者可以基于同一工程高效构建多端自动运行App，实现真正的一次开发，多端部署，在跨设备之间实现共享生态。"},"file":{"path":"notification-fwk-notification.md","mtime":"2021-06-09T13:15:08.948Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-06-09T13:18:31.180Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
